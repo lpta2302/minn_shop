@@ -33,7 +33,23 @@ public class UserService {
         return userRepository.findUserDetails(PageRequest.of(page, size)).toList();
     }
 
-    public User updateUser() {
-        return null;
+    public User updateUser(int id, User user) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        if(currentUser.getId() != id)
+            throw new RuntimeException("Permission denied! Can not update user that no authenticated");
+
+        return userRepository.save(user);
+    }
+
+    public boolean deleteUser(int id) {
+        User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        if(currentUser.getId() != id)
+            throw new RuntimeException("Permission denied! Can not update user that no authenticated");
+
+        userRepository.deleteById(id);
+
+        return true;
     }
 }
