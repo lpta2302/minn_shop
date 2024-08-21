@@ -11,7 +11,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     public Optional<User> findByUsername(String username);
 
     @Query("""
-        select new UserDetailRecord(
+        select new dev.minn_shop.minn_shop.user.UserDetailRecord(
         u.id, 
         u.username, 
         u.firstName, 
