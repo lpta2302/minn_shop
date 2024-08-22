@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -33,19 +34,21 @@ public class UserService {
         return userRepository.findUserDetails(PageRequest.of(page, size)).toList();
     }
 
-    public User updateUser(int id, User user) {
+    public UserDetailRecord updateUser(int id, UserDetailRecord userRecord) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
-        if(currentUser.getId() != id)
-            throw new RuntimeException("Permission denied! Can not update user that no authenticated");
 
-        return userRepository.save(user);
+        if (currentUser.getId() != id)
+            throw new RuntimeException("Permission denied! Can not update user that no authenticated");
+        
+        User updatedUser = userRepository.save(userMapper.toUser(currentUser, userRecord));
+
+        return userMapper.toUserDetailRecord(updatedUser);
     }
 
     public boolean deleteUser(int id) {
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        
-        if(currentUser.getId() != id)
+
+        if (currentUser.getId() != id)
             throw new RuntimeException("Permission denied! Can not update user that no authenticated");
 
         userRepository.deleteById(id);
