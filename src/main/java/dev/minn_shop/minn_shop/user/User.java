@@ -26,6 +26,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -64,6 +65,7 @@ public abstract class User extends BaseEntity implements UserDetails, Principal 
     @Basic(fetch = FetchType.LAZY)
     private byte[] avatar;
 
+    @Default
     private boolean accountLocked = false;
 
     @ManyToMany(fetch = FetchType.EAGER)

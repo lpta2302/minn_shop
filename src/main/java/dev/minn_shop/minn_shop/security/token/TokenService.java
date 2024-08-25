@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 public class TokenService {
     private final TokenRepository tokenRepository;
 
-    public boolean validateToken(String tokenString){
-        final Token token = tokenRepository.findByToken(tokenString).orElseThrow(()->new RuntimeException("Token not found!"));
+    public boolean isValidToken(String tokenString) {
+        final Token token = tokenRepository.findByToken(tokenString)
+                .orElseThrow(() -> new RuntimeException("Token not found!"));
 
-        return 
-            !token.isExpired() &&
-            !token.isRevoked();
+        return !token.isExpired() &&
+                !token.isRevoked();
     }
 }

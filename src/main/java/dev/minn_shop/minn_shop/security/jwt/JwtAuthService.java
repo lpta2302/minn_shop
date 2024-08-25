@@ -61,5 +61,8 @@ public class JwtAuthService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    
+    public boolean isValidToken(String token, UserDetails userDetails){
+        return extractUsername(token).equals(userDetails.getUsername()) &&
+            isExpiredJwtToken(token);
+    }
 }
