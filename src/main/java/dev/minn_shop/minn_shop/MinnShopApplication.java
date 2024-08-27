@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
-import dev.minn_shop.minn_shop.user.Role;
-import dev.minn_shop.minn_shop.user.RoleRepository;
-import dev.minn_shop.minn_shop.user.RoleType;
+import dev.minn_shop.minn_shop.user.role.Role;
+import dev.minn_shop.minn_shop.user.role.RoleRepository;
+import dev.minn_shop.minn_shop.user.role.RoleType;
 import lombok.RequiredArgsConstructor;
 
 @SpringBootApplication

@@ -10,11 +10,11 @@ import dev.minn_shop.minn_shop.security.jwt.JwtAuthService;
 import dev.minn_shop.minn_shop.security.token.Token;
 import dev.minn_shop.minn_shop.security.token.TokenRepository;
 import dev.minn_shop.minn_shop.security.token.TokenType;
-import dev.minn_shop.minn_shop.user.RoleRepository;
-import dev.minn_shop.minn_shop.user.RoleType;
 import dev.minn_shop.minn_shop.user.User;
 import dev.minn_shop.minn_shop.user.UserRepository;
 import dev.minn_shop.minn_shop.user.customer.Customer;
+import dev.minn_shop.minn_shop.user.role.RoleRepository;
+import dev.minn_shop.minn_shop.user.role.RoleType;
 import io.jsonwebtoken.lang.Collections;
 import lombok.RequiredArgsConstructor;
 
@@ -33,12 +33,14 @@ public class AuthService {
 
                 if (request.getRole().equals(RoleType.CUSTOMER.toString())) {
                         user = Customer
-                                .builder()
-                                .roles(Collections.of(
+                                        .builder()
+                                        .roles(Collections.of(
                                                 roleRepository.findByName(RoleType.CUSTOMER)
-                                                                .orElseThrow(() -> new IllegalStateException(request
-                                                                                .getRole() + " not found!"))))
-                                .build();
+                                                .orElseThrow(() -> new IllegalStateException(
+                                                                request
+                                                                                .getRole()
+                                                                                + " not found!"))))
+                                        .build();
                 }
 
                 if (user == null) {
@@ -54,10 +56,10 @@ public class AuthService {
                 userRepository.save(user);
 
                 Token token = Token.builder()
-                        .token(jwtAuthService.generateToken(user))
-                        .type(TokenType.BEARER)
-                        .user(user)
-                        .build();
+                                .token(jwtAuthService.generateToken(user))
+                                .type(TokenType.BEARER)
+                                .user(user)
+                                .build();
 
                 tokenRepository.save(token);
 

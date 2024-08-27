@@ -1,10 +1,11 @@
-package dev.minn_shop.minn_shop.user;
+package dev.minn_shop.minn_shop.user.role;
 
 import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import dev.minn_shop.minn_shop.BaseEntity;
+import dev.minn_shop.minn_shop.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

@@ -1,4 +1,4 @@
-package dev.minn_shop.minn_shop.user;
+package dev.minn_shop.minn_shop.user.role;
 
 import java.util.Optional;
 

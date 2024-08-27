@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import dev.minn_shop.minn_shop.BaseEntity;
 import dev.minn_shop.minn_shop.security.token.Token;
+import dev.minn_shop.minn_shop.user.role.Role;
 import jakarta.persistence.Basic;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
