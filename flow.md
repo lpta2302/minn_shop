@@ -26,4 +26,11 @@ recept --> completed
 recept --> review
 review --> completed
 
+style login fill:#0a0
+style login color:#a0a
+style register fill:#0a0
+style register color:#a0a
+style manageAccount fill:#0a0
+style manageAccount color:#a0a
+
 ```

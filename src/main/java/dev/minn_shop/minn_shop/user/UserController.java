@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -40,9 +41,8 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDetailRecord> updateUser(
-        @RequestBody UserDetailRecord user, 
-        @PathVariable("id") int id) {
-        return ResponseEntity.ok(userService.updateUser(id,user));
+        @Valid @RequestBody UserDetailRecord user) {
+        return ResponseEntity.ok(userService.updateUser(user));
     }
 
     @DeleteMapping("/{id}")
@@ -50,6 +50,5 @@ public class UserController {
         @PathVariable("id") int id) {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
-    
     
 }

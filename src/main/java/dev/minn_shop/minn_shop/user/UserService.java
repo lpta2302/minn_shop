@@ -37,16 +37,19 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("Not found user with id: " + id));
     }
 
+
     public List<UserDetailRecord> getUsersDetails(int page, int size) {
         return userRepository.findUserDetails(PageRequest.of(page, size)).toList();
     }
 
-    public UserDetailRecord updateUser(int id, UserDetailRecord userRecord) {
+    public UserDetailRecord updateUser(UserDetailRecord userRecord) {
+        final int id = userRecord.id();
         User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (currentUser.getId() != id)
             throw new OperationNotPermittedException("Permission denied! Can not update user that no authenticated");
-
+        currentUser = userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Not found user with id: " + id));
+        
         User updatedUser = userRepository.save(userMapper.toUser(currentUser, userRecord));
 
         return userMapper.toUserDetailRecord(updatedUser);
@@ -57,7 +60,7 @@ public class UserService {
 
         if (currentUser.getId() != id)
             throw new OperationNotPermittedException("Permission denied! Can not delete user that no authenticated");
-
+            
         userRepository.deleteById(id);
 
         return true;
