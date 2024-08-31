@@ -18,27 +18,28 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public User getCurrentUser() {
+    public UserDetailRecord getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             User currentUser = (User) authentication.getPrincipal();
-            
+
             int userId = currentUser.getId();
             currentUser = userRepository.findById(userId)
                     .orElseThrow(() -> new EntityNotFoundException("Not found user with id: " + userId));
-            return currentUser;
+            return userMapper.toUserDetailRecord(currentUser);
         } else
             throw new AuthenticationCredentialsNotFoundException("User not authenticated");
     }
 
-    public User getUserById(int id) {
-        return userRepository
+    public UserDetailRecord getUserById(int id) {
+        User user = userRepository
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Not found user with id: " + id));
+        
+        return userMapper.toUserDetailRecord(user);
     }
 
-
-    public List<UserDetailRecord> getUsersDetails(int page, int size) {
+    public List<UserBriefRecord> getUsersDetails(int page, int size) {
         return userRepository.findUserDetails(PageRequest.of(page, size)).toList();
     }
 
@@ -48,8 +49,9 @@ public class UserService {
 
         if (currentUser.getId() != id)
             throw new OperationNotPermittedException("Permission denied! Can not update user that no authenticated");
-        currentUser = userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Not found user with id: " + id));
-        
+        currentUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Not found user with id: " + id));
+
         User updatedUser = userRepository.save(userMapper.toUser(currentUser, userRecord));
 
         return userMapper.toUserDetailRecord(updatedUser);
@@ -60,7 +62,7 @@ public class UserService {
 
         if (currentUser.getId() != id)
             throw new OperationNotPermittedException("Permission denied! Can not delete user that no authenticated");
-            
+
         userRepository.deleteById(id);
 
         return true;

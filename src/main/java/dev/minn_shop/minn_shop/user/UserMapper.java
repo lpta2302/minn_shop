@@ -7,6 +7,15 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserMapper {
+    public UserBriefRecord toUserBriefRecord(User user) {
+        return new UserBriefRecord(
+                user.getId(),
+                user.getUsername(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getAvatar());
+    }
+
     public UserDetailRecord toUserDetailRecord(User user) {
         return new UserDetailRecord(
                 user.getId(),
@@ -27,6 +36,14 @@ public class UserMapper {
         user.setEmail(record.email());
         user.setPhoneNumber(record.phoneNumber());
         user.setBirthDate(record.birthDate());
+        user.setAvatar(record.avatar());
+        return user;
+    }
+    public User toUser(User user, UserBriefRecord record) {
+        user.setId(record.id());
+        user.setUsername(record.username());
+        user.setFirstName(record.firstName());
+        user.setLastName(record.lastName());
         user.setAvatar(record.avatar());
         return user;
     }

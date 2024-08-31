@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/profiles")
@@ -23,17 +22,17 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<User> getCurrentUser() {
+    public ResponseEntity<UserDetailRecord> getCurrentUser() {
         return ResponseEntity.ok(userService.getCurrentUser());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") int id) {
+    public ResponseEntity<UserDetailRecord> getUserById(@PathVariable("id") int id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<UserDetailRecord>> getUsersDetails(
+    public ResponseEntity<List<UserBriefRecord>> getUsersDetails(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "size") int size) {
         return ResponseEntity.ok(userService.getUsersDetails(page, size));
@@ -41,14 +40,14 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDetailRecord> updateUser(
-        @Valid @RequestBody UserDetailRecord user) {
+            @Valid @RequestBody UserDetailRecord user) {
         return ResponseEntity.ok(userService.updateUser(user));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> deleteUser(
-        @PathVariable("id") int id) {
+            @PathVariable("id") int id) {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
-    
+
 }

@@ -54,10 +54,10 @@ public abstract class User extends BaseEntity implements UserDetails, Principal 
     @Size(min = 2, max = 10, message = "Last name must be 2-10 character")
     private String lastName;
 
-    @Email
+    @Email(message = "Email is wrong formated")
     private String email;
 
-    @Pattern(regexp = "^\\+?[0-9]{10,15}$")
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message="Phone number is wrong formated")
     private String phoneNumber;
 
     private Date birthDate;
