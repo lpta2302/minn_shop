@@ -33,15 +33,15 @@ public class AuthService {
 
                 if (request.getRole().equals(RoleType.CUSTOMER.toString())) {
                         user = Customer
-                                        .builder()
-                                        .roles(Collections.of(
-                                                roleRepository.findByName(RoleType.CUSTOMER)
-                                                .orElseThrow(() -> new IllegalStateException(
-                                                                request
-                                                                                .getRole()
-                                                                                + " not found!"))))
-                                        .build();
-                }
+                        .builder()
+                        .roles(Collections.of(
+                                        roleRepository.findByName(RoleType.CUSTOMER)
+                                                        .orElseThrow(() -> new IllegalStateException(
+                                                                        request
+                                                                                        .getRole()
+                                                                                        + " not found!"))))
+                        .build();
+                } 
 
                 if (user == null) {
                         throw new RuntimeException("Failed to register a customer");

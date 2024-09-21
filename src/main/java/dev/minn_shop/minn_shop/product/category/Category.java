@@ -1,15 +1,12 @@
-package dev.minn_shop.minn_shop.user.role;
+package dev.minn_shop.minn_shop.product.category;
 
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import dev.minn_shop.minn_shop.BaseEntity;
-import dev.minn_shop.minn_shop.user.User;
-import jakarta.persistence.Column;
+import dev.minn_shop.minn_shop.product.Product;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,19 +14,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
-@Entity
-public class Role extends BaseEntity{
-    @Column(unique = true)
-    @Enumerated(EnumType.STRING)
-    private RoleType name;
+public class Category extends BaseEntity {
+    private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy="categories")
     @JsonIgnore
-    private List<User> users;
+    private List<Product>products;
 
 }

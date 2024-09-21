@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record UserBriefRecord(
+public record BriefUserRecord(
     @NotNull Integer id,
 
     @NotNull(message = "Username is mandatory!") 

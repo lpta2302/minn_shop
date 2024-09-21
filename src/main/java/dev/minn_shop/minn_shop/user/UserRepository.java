@@ -11,16 +11,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     public Optional<User> findByUsername(String username);
 
     @Query("""
-            select new dev.minn_shop.minn_shop.user.UserDetailRecord(
+            select new dev.minn_shop.minn_shop.user.BriefUserRecord(
             u.id,
             u.username,
             u.firstName,
             u.lastName,
-            u.email,
-            u.phoneNumber,
-            u.birthDate,
             u.avatar)
             from User u
             """)
-    public Page<UserBriefRecord> findUserDetails(Pageable pageable);
+    public Page<BriefUserRecord> findUserDetails(Pageable pageable);
 }

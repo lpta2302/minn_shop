@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserMapper {
-    public UserBriefRecord toUserBriefRecord(User user) {
-        return new UserBriefRecord(
+    public BriefUserRecord toUserBriefRecord(User user) {
+        return new BriefUserRecord(
                 user.getId(),
                 user.getUsername(),
                 user.getFirstName(),
@@ -16,8 +16,8 @@ public class UserMapper {
                 user.getAvatar());
     }
 
-    public UserDetailRecord toUserDetailRecord(User user) {
-        return new UserDetailRecord(
+    public DetailUserRecord toUserDetailRecord(User user) {
+        return new DetailUserRecord(
                 user.getId(),
                 user.getUsername(),
                 user.getFirstName(),
@@ -28,7 +28,7 @@ public class UserMapper {
                 user.getAvatar());
     }
 
-    public User toUser(User user, UserDetailRecord record) {
+    public User toUser(User user, DetailUserRecord record) {
         user.setId(record.id());
         user.setUsername(record.username());
         user.setFirstName(record.firstName());
@@ -39,7 +39,7 @@ public class UserMapper {
         user.setAvatar(record.avatar());
         return user;
     }
-    public User toUser(User user, UserBriefRecord record) {
+    public User toUser(User user, BriefUserRecord record) {
         user.setId(record.id());
         user.setUsername(record.username());
         user.setFirstName(record.firstName());

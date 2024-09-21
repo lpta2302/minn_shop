@@ -22,25 +22,25 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/me")
-    public ResponseEntity<UserDetailRecord> getCurrentUser() {
+    public ResponseEntity<DetailUserRecord> getCurrentUser() {
         return ResponseEntity.ok(userService.getCurrentUser());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDetailRecord> getUserById(@PathVariable("id") int id) {
+    public ResponseEntity<DetailUserRecord> getUserById(@PathVariable("id") int id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<UserBriefRecord>> getUsersDetails(
+    public ResponseEntity<List<BriefUserRecord>> getBriefUsers(
             @RequestParam(defaultValue = "0", name = "page") int page,
             @RequestParam(defaultValue = "10", name = "size") int size) {
-        return ResponseEntity.ok(userService.getUsersDetails(page, size));
+        return ResponseEntity.ok(userService.getBriefUsers(page, size));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDetailRecord> updateUser(
-            @Valid @RequestBody UserDetailRecord user) {
+    public ResponseEntity<DetailUserRecord> updateUser(
+            @Valid @RequestBody DetailUserRecord user) {
         return ResponseEntity.ok(userService.updateUser(user));
     }
 

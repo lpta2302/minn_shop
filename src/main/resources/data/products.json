@@ -1,0 +1,264 @@
+[
+  {
+    "name": "Smartphone X",
+    "sku": "SMX123456",
+    "description": "The latest smartphone with cutting-edge technology.",
+    "price": 499.99,
+    "quantityInStock": 50,
+    "types": [
+      {
+        "name": "Color",
+        "values": [
+          { "value": "Black" },
+          { "value": "White" }
+        ]
+      },
+      {
+        "name": "Storage",
+        "values": [
+          { "value": "64GB" },
+          { "value": "128GB" }
+        ]
+      }
+    ],
+    "tags": ["New", "Trending"],
+    "categories": ["Electronics", "Smartphones"]
+  },
+  {
+    "name": "4K Ultra HD TV",
+    "sku": "TV4K5678",
+    "description": "55-inch 4K Ultra HD TV with smart features.",
+    "price": 799.99,
+    "quantityInStock": 30,
+    "types": [
+      {
+        "name": "Size",
+        "values": [
+          { "value": "55 inch" },
+          { "value": "65 inch" }
+        ]
+      },
+      {
+        "name": "Type",
+        "values": [
+          { "value": "LED" },
+          { "value": "OLED" }
+        ]
+      }
+    ],
+    "tags": ["New", "Popular"],
+    "categories": ["Electronics", "Home Entertainment"]
+  },
+  {
+    "name": "Gaming Laptop",
+    "sku": "GL98765",
+    "description": "High-performance gaming laptop with the latest GPU.",
+    "price": 1299.99,
+    "quantityInStock": 20,
+    "types": [
+      {
+        "name": "RAM",
+        "values": [
+          { "value": "16GB" },
+          { "value": "32GB" }
+        ]
+      },
+      {
+        "name": "Storage",
+        "values": [
+          { "value": "512GB SSD" },
+          { "value": "1TB SSD" }
+        ]
+      }
+    ],
+    "tags": ["New", "Popular"],
+    "categories": ["Electronics", "Computers"]
+  },
+  {
+    "name": "Bluetooth Headphones",
+    "sku": "BH1234",
+    "description": "Noise-cancelling Bluetooth headphones with 20-hour battery life.",
+    "price": 199.99,
+    "quantityInStock": 75,
+    "types": [
+      {
+        "name": "Color",
+        "values": [
+          { "value": "Black" },
+          { "value": "Red" }
+        ]
+      }
+    ],
+    "tags": ["Popular", "Trending"],
+    "categories": ["Electronics", "Audio"]
+  },
+  {
+    "name": "Smartwatch Series 6",
+    "sku": "SW123456",
+    "description": "Smartwatch with fitness tracking and heart rate monitoring.",
+    "price": 349.99,
+    "quantityInStock": 60,
+    "types": [
+      {
+        "name": "Band Color",
+        "values": [
+          { "value": "Black" },
+          { "value": "Silver" }
+        ]
+      }
+    ],
+    "tags": ["New", "Fitness"],
+    "categories": ["Electronics", "Wearables"]
+  },
+  {
+    "name": "Coffee Maker",
+    "sku": "CM3456",
+    "description": "Programmable coffee maker with 12-cup capacity.",
+    "price": 79.99,
+    "quantityInStock": 100,
+    "types": [
+      {
+        "name": "Color",
+        "values": [
+          { "value": "Black" },
+          { "value": "Stainless Steel" }
+        ]
+      }
+    ],
+    "tags": ["Popular", "Home Essentials"],
+    "categories": ["Home Appliances", "Kitchen"]
+  },
+  {
+    "name": "Portable Speaker",
+    "sku": "PS6543",
+    "description": "Compact portable speaker with waterproof design.",
+    "price": 89.99,
+    "quantityInStock": 40,
+    "types": [
+      {
+        "name": "Color",
+        "values": [
+          { "value": "Blue" },
+          { "value": "Green" }
+        ]
+      }
+    ],
+    "tags": ["Popular", "Outdoor"],
+    "categories": ["Electronics", "Outdoor"]
+  },
+  {
+    "name": "Electric Toothbrush",
+    "sku": "ET12345",
+    "description": "Rechargeable electric toothbrush with 3 modes.",
+    "price": 49.99,
+    "quantityInStock": 120,
+    "types": [
+      {
+        "name": "Color",
+        "values": [
+          { "value": "White" },
+          { "value": "Pink" }
+        ]
+      }
+    ],
+    "tags": ["Health", "Personal Care"],
+    "categories": ["Personal Care", "Health"]
+  },
+  {
+    "name": "Backpack",
+    "sku": "BK7890",
+    "description": "Durable backpack with multiple compartments.",
+    "price": 59.99,
+    "quantityInStock": 90,
+    "types": [
+      {
+        "name": "Size",
+        "values": [
+          { "value": "Small" },
+          { "value": "Medium" }
+        ]
+      },
+      {
+        "name": "Color",
+        "values": [
+          { "value": "Gray" },
+          { "value": "Black" }
+        ]
+      }
+    ],
+    "tags": ["Popular", "Travel"],
+    "categories": ["Accessories", "Travel"]
+  },
+  {
+    "name": "Tablet Pro",
+    "sku": "TP67890",
+    "description": "10-inch tablet with high-resolution display and stylus support.",
+    "price": 399.99,
+    "quantityInStock": 25,
+    "types": [
+      {
+        "name": "Storage",
+        "values": [
+          { "value": "128GB" },
+          { "value": "256GB" }
+        ]
+      }
+    ],
+    "tags": ["New", "Electronics"],
+    "categories": ["Electronics", "Tablets"]
+  },
+  {
+    "name": "Desk Lamp",
+    "sku": "DL2345",
+    "description": "Adjustable desk lamp with LED light and touch control.",
+    "price": 39.99,
+    "quantityInStock": 85,
+    "types": [
+      {
+        "name": "Color",
+        "values": [
+          { "value": "White" },
+          { "value": "Black" }
+        ]
+      }
+    ],
+    "tags": ["Popular", "Office"],
+    "categories": ["Office", "Lighting"]
+  },
+  {
+    "name": "Blender",
+    "sku": "BL7890",
+    "description": "High-speed blender with 6-speed settings and pulse function.",
+    "price": 119.99,
+    "quantityInStock": 70,
+    "types": [
+      {
+        "name": "Color",
+        "values": [
+          { "value": "Red" },
+          { "value": "Black" }
+        ]
+      }
+    ],
+    "tags": ["Popular", "Kitchen"],
+    "categories": ["Kitchen", "Appliances"]
+  },
+  {
+    "name": "Fitness Tracker",
+    "sku": "FT4567",
+    "description": "Wearable fitness tracker with heart rate monitoring and sleep tracking.",
+    "price": 149.99,
+    "quantityInStock": 55,
+    "types": [
+      {
+        "name": "Band Color",
+        "values": [
+          { "value": "Black" },
+          { "value": "Blue" }
+        ]
+      }
+    ],
+    "tags": ["New", "Fitness"],
+    "categories": ["Health", "Fitness"]
+  }
+]

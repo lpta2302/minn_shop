@@ -1,8 +1,8 @@
 package dev.minn_shop.minn_shop.user;
 
 import java.security.Principal;
-import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -73,17 +73,17 @@ public abstract class User extends BaseEntity implements UserDetails, Principal 
     @JoinTable(name = "user_role", 
     joinColumns = @JoinColumn(name = "user_id"), 
     inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    private List<Role> roles;
 
     @OneToMany(mappedBy="user", cascade=CascadeType.REMOVE, orphanRemoval=true)
-    private Collection<Token> tokens;
+    private List<Token> tokens;
 
     public String fullname() {
         return firstName + " " + lastName;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public List<? extends GrantedAuthority> getAuthorities() {
         return roles
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().toString()))

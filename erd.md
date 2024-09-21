@@ -1,81 +1,104 @@
 ```mermaid
 erDiagram
 
-
-CUSTOMER {
-    string first_name
-    string last_name
+customer {
+    string firstName
+    string lastName
     string username
     string password
     string email
-    string phone_number
-    date birth_date
+    string phoneNumber
+    date birthDate
 }
 
-CUSTOMER ||--|{ ADDRESS : has
-CUSTOMER ||--|{ ORDER : places
-CUSTOMER ||--|| CART : has
-CUSTOMER ||--|{ REVIEW : writes
+customer ||--|{ address : has
+customer ||--|{ order : places
+customer ||--|| cart : has
+customer ||--|{ review : writes
 
-ADDRESS {
+address {
     string address
-    enum type 
-    boolean is_default
+    enum type
+    boolean isDefault
 }
 
-CART {
-    int cart_id
+cart {
+    int cartId
 }
 
-CART ||--|{ CART_ITEM : contains
-CART_ITEM {
+cart ||--|{ cartItem : contains
+cartItem {
     int quantity
 }
 
-CART_ITEM ||--|| PRODUCT : ""
+cartItem ||--|| product : ""
 
-ORDER {
-    int order_id
-    date date_ordered
-    date date_shipped
-    date date_paid
+order {
+    int orderId
+    date dateOrdered
+    date dateShipped
+    date datePaid
     enum status
-    float total_price
+    float totalPrice
 }
 
-ORDER ||--|{ ORDER_ITEM : contains
-ORDER_ITEM {
+order ||--|{ orderItem : contains
+orderItem {
     int quantity
     float price
 }
 
-ORDER_ITEM ||--|| PRODUCT : ""
+orderItem ||--|| product : ""
 
-PRODUCT {
+product {
     string name
     string description
     float price
-    blob image
+    blob coverImage
+    string rootSku
+    boolean isActive
+}
+
+product ||--|{ productType : have
+productType{
+    blob coverImage
+    blob[] image
     string sku
-    boolean is_active
 }
 
-PRODUCT ||--|{ TYPES : belongs_to
-TYPES {
+productType }|--|{ size : have
+size{
+    string value
+}
+
+product ||--|{ categories : belongsTo
+categories {
     string name
 }
 
-PRODUCT ||--|{ TAGS : tagged_with
-TAGS {
+product ||--|{ tags : taggedWith
+tags {
     string name
 }
 
-REVIEW {
-    int review_id
+option ||--|| product : have
+
+option {
+    string name
+}
+
+option ||--|{ optionValues : have
+
+optionValues {
+    string value
+}
+
+review {
+    int reviewId
     float rating
     string content
 }
 
-REVIEW }|--|{ PRODUCT: "for"
+review }|--|{ product : "for"
 
 ```
