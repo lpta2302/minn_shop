@@ -18,16 +18,15 @@
             "mainClass": "com.thienan.discovery_server.DiscoveryServerApplication",
             "projectName": "discovery-server",
             "args": "",
-            "envFile": "${workspaceFolder}/.env",
-            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=41105 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=discovery-server"
+            "envFile": "${workspaceFolder}/.env"
         },
         {
             "type": "java",
-            "name": "Spring Boot-GatewayApplication<gateway>",
+            "name": "Spring Boot-CategoryServiceApplication<category-service>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "com.thienan.gateway.GatewayApplication",
-            "projectName": "gateway",
+            "mainClass": "com.thienan.category_service.CategoryServiceApplication",
+            "projectName": "category-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }

@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://${SPRING_DATASOURCE_URL:localhost:5432}/category_db
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database: postgresql
+    show-sql: true
+  flyway:
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+server:
+  port: 8060
