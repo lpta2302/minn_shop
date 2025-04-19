@@ -1,2 +1,19 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: category-service
+        uri: lb://category-service
+        predicates:
+        - Path=/categories/**
+      - id: product-service
+        uri: lb://product-service
+        predicates:
+        - Path=/products/**
+      - id: product-variant-service
+        uri: lb://product-service
+        predicates:
+        - Path=/product-variants/**
+
 server:
   port: 8222
