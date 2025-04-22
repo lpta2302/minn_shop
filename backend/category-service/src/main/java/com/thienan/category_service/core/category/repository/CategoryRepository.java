@@ -31,8 +31,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long>{
     @Query("""
         select c
         from Category c
-        where (:code = null or code like concat(:code, "%")) or 
-            (:name is null or name like concat(:name, "%"))
+        where (:code = null or code like :code%) or 
+            (:name is null or name like :name%)
         """)
     Page<Category> search(Pageable pageable, String code, String name);
 
