@@ -1,0 +1,70 @@
+---
+config:
+  look: classic
+  theme: classic
+---
+classDiagram
+direction LR
+    class Product {
+	    - status ProductStatus
+	    - name String
+	    - code String
+	    - description String
+	    - tags List~String~
+        - categoryName String
+    }
+    class ProductStatus {
+	    ACTIVE
+	    INACTIVE
+	    DRAFT
+	    DELETED
+	    ARCHIVED
+	    OUT_OF_STOCK
+	    ARRIVING
+    }
+    class ProductVariant {
+	    - sku String
+        - name String
+        - categoryName String
+	    - price Float
+	    - originalPrice Float
+	    - discount Float
+	    - soldQuantity Integer
+	    - status ProductStatus
+    }
+    class ProductVariantOption {
+        - name String
+    }
+    class ProductVariantStatus {
+	    ACTIVE
+	    INACTIVE
+	    DRAFT
+	    DELETED
+	    ARCHIVED
+	    OUT_OF_STOCK
+	    ARRIVING
+    }
+    class ProductVariantImage {
+        - imageUrl String
+        - isPrimary boolean   
+    }
+    class Stock {
+	    - quantity Integer
+	    - soldQuantity Integer
+    }
+    class StockOptionValue {
+	    - name String
+        - weight Integer
+    }
+    
+	<<Enumeration>> ProductStatus
+	<<Enumeration>> ProductVariantStatus
+
+    Product "0..*" --o "1" Category
+    Product "0..*" --> "1" ProductStatus
+    Product "1" *-- "1..n" ProductVariant
+    ProductVariant "1" *-- "0..*" ProductVariantImage
+    ProductVariant "1" *-- "0..*" Stock
+    ProductVariant "1" *-- "1..*" ProductVariantOption
+    ProductVariant "0..*" --> "1" ProductVariantStatus
+    Stock "0..n" --* "1" StockOptionValue

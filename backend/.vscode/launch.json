@@ -8,7 +8,8 @@
             "mainClass": "com.thienan.config_server.ConfigServerApplication",
             "projectName": "config-server",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=40031 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=config-server"
         },
         {
             "type": "java",
@@ -27,6 +28,16 @@
             "cwd": "${workspaceFolder}",
             "mainClass": "com.thienan.category_service.CategoryServiceApplication",
             "projectName": "category-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ProductServiceApplication<product-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.thienan.product_service.ProductServiceApplication",
+            "projectName": "product-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
         }
