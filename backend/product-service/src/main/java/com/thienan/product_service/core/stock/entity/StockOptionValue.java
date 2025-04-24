@@ -4,7 +4,7 @@ import com.thienan.product_service.common.BaseEntity;
 import com.thienan.product_service.core.weight_type.entity.WeightType;
 
 import jakarta.persistence.Entity;
-import static jakarta.persistence.FetchType.EAGER;
+import static jakarta.persistence.FetchType.LAZY;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -34,7 +34,7 @@ public class StockOptionValue extends  BaseEntity{
     @JoinColumn(name="weight_type_id")
     private WeightType weightType;
 
-    @ManyToOne(fetch=EAGER)
+    @ManyToOne(fetch=LAZY)
     @JoinColumn(name="stock_option_id")
     private StockOption stockOption;
 }

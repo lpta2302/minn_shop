@@ -21,11 +21,6 @@ import com.thienan.product_service.core.weight_type.service.WeightTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-
-
-
-
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/weight-types")
@@ -63,6 +58,15 @@ public class WeightTypeController {
         return ResponseEntity.ok(service.findAll(pageable));
     } 
 
+    @GetMapping("/deleted")
+    public ResponseEntity<PageResponse<WeightType>> findAllDeleted(
+        @ParameterObject
+        @PageableDefault(page=0, size=10)
+        Pageable pageable
+    ) {
+        return ResponseEntity.ok(service.findAllDeleted(pageable));
+    } 
+
     @GetMapping("/search")
     public ResponseEntity<PageResponse<WeightType>> search(
         @ParameterObject
@@ -70,24 +74,31 @@ public class WeightTypeController {
         Pageable pageable,
         String name,
         String code,
-        Integer min,
-        Integer max) {
-        return ResponseEntity.ok(service.search(pageable, name, code, min, max));
+        Integer minWeight,
+        Integer maxWeight) {
+        return ResponseEntity.ok(service.search(pageable, name, code, minWeight, maxWeight));
     }
     
-    
-    @PatchMapping("/{id}/soft-delete")
-    public ResponseEntity<Long> softDeleteById(
+    @PatchMapping("/{id}/recovery")
+    public ResponseEntity<Long> recovery(
         @PathVariable Long id
     ){
-        return ResponseEntity.ok(service.softDeleteById(id));
+        return ResponseEntity.ok(service.recovery(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(
+    public ResponseEntity<Long> softDeleteById(
         @PathVariable Long id
     ){
-        service.deleteById(id);
+        service.softDeleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}/hard-delete")
+    public ResponseEntity<Void> hardDeleteById(
+        @PathVariable Long id
+    ){
+        service.hardDeleteById(id);
         return ResponseEntity.noContent().build();
     }
     

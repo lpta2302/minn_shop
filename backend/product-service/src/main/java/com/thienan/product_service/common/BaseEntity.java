@@ -2,6 +2,8 @@ package com.thienan.product_service.common;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.type.TrueFalseConverter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,6 +31,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
+@SoftDelete(columnName="deleted", converter=TrueFalseConverter.class)
 public abstract class BaseEntity {
     @Id
     @GeneratedValue
@@ -39,12 +42,16 @@ public abstract class BaseEntity {
     @JsonIgnore
     private int version;
 
-    @Column(updatable = false, nullable = false)
     @CreatedDate
+    @Column(updatable = false, nullable=false)
     @Schema(accessMode=READ_ONLY)
     private LocalDate createdDate;
 
     @LastModifiedDate
     @Schema(accessMode=READ_ONLY)
     private LocalDate modifiedDate;
+
+    @Column(name = "deleted", insertable = false, updatable = false)
+    @JsonIgnore
+    private boolean deleted;
 }

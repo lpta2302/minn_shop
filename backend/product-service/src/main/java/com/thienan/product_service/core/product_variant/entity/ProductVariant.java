@@ -64,7 +64,7 @@ public class ProductVariant extends BaseEntity{
     private Product product;
 
     @OneToOne
-    @JoinColumn(name="product_variant_options")
+    @JoinColumn(name="product_variant_option_id")
     private ProductVariantOption productVariantOption;
 
     @OneToMany(mappedBy="stockId.productVariant")
@@ -80,12 +80,12 @@ public class ProductVariant extends BaseEntity{
             this.stocks.clear();
         }
 
-        stocks.forEach((productVariant) -> {
-            if (productVariant.getStockId() == null) {
-                productVariant.setStockId(new StockId());
+        stocks.forEach((stock) -> {
+            if (stock.getStockId() == null) {
+                stock.setStockId(new StockId());
             }
-            productVariant.getStockId().setProductVariant(this);
-            this.stocks.add(productVariant);
+            stock.getStockId();
+            this.stocks.add(stock);
         });
     }
 }

@@ -33,8 +33,8 @@ public class WeightTypeRepositoryTest {
             WeightType.builder()
             .code("WT1")
             .name("SMALL")
-            .min(1)
-            .max(20)
+            .minWeight(1)
+            .maxWeight(20)
             .status(ACTIVE)
             .createdDate(LocalDate.now())
             .build();
