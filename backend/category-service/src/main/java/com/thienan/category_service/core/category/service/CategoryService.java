@@ -24,19 +24,21 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    public Category createFrom(CategoryRequest request) {
-        if (request.parentCategoryId() != null) {
-            Category parentCategory = findById(request.parentCategoryId());
-            return categoryMapper.convertToCategory(request, parentCategory);
-        } else {
-            return categoryMapper.convertToCategory(request, null);
-        }
-    }
-
+    @Transactional
     public Long createAndSave(CategoryRequest categoryRequest) {
-        return categoryRepository.save(createFrom(categoryRequest)).getId();
+        var newCategory = categoryMapper.convertToCategory(categoryRequest);
+        var savedCategory = categoryRepository.save(newCategory);
+
+        if (categoryRequest.parentCategoryId() != null) {
+            var parentCategory = findById(categoryRequest.parentCategoryId());
+            parentCategory.addCategory(savedCategory);
+            categoryRepository.save(parentCategory);
+        }
+        
+        return savedCategory.getId();
     }
 
+    @Transactional
     public Long updateAndSave(Long categoryId, CategoryRequest categoryRequest) {
         Category updatingCategory = findById(categoryId);
         if (!updatingCategory.getCode().equals(categoryRequest.code())) {
@@ -47,15 +49,30 @@ public class CategoryService {
             updatingCategory.setName(categoryRequest.name());
         }
 
-        if (categoryRequest.parentCategoryId() == null) {
-            updatingCategory.setParentCategory(null);
-        } else if (updatingCategory.getParentCategory() == null ||
-            !updatingCategory.getParentCategory().getId().equals(categoryRequest.parentCategoryId())) {
-                Category foundCategory = findById(categoryRequest.parentCategoryId());
-                updatingCategory.setParentCategory(foundCategory);
+        if (!updatingCategory.getStatus().equals(categoryRequest.status())){
+            updatingCategory.setStatus(categoryRequest.status());
         }
 
-        updatingCategory.setStatus(categoryRequest.status());
+        var oldParentCategory = updatingCategory.getParentCategory();
+        Long newParentCategoryId = categoryRequest.parentCategoryId();
+
+        if (updatingCategory.getParentCategory() == null){
+            if (newParentCategoryId != null){
+                var parentCategory = findById(newParentCategoryId);
+                parentCategory.addCategory(updatingCategory);
+                updatingCategory.setParentCategory(parentCategory);
+            }
+        } else if (newParentCategoryId == null){
+            updatingCategory.getParentCategory().getSubCategories().remove(updatingCategory);
+            categoryRepository.save(updatingCategory.getParentCategory());
+            updatingCategory.setParentCategory(null);
+        } else if(!oldParentCategory.getId().equals(newParentCategoryId)){
+            var parentCategory = findById(newParentCategoryId);
+            parentCategory.addCategory(updatingCategory);
+            oldParentCategory.getSubCategories().remove(updatingCategory);
+            categoryRepository.save(oldParentCategory);
+            categoryRepository.save(parentCategory);
+        }
 
         return categoryRepository.save(updatingCategory).getId();
     }
