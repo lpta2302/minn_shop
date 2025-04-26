@@ -3,3 +3,9 @@ spring:
     name: category-service
   config:
     import: optional:configserver:${SPRING_CONFIG_IMPORT:http://localhost:8888}
+server:
+  servlet:
+    context-path: /api/v1
+springdoc:
+  swagger-ui:
+    operations-sorter: method

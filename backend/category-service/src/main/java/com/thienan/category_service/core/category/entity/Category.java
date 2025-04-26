@@ -1,15 +1,21 @@
 package com.thienan.category_service.core.category.entity;
 
-import static jakarta.persistence.EnumType.STRING;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.type.TrueFalseConverter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import static jakarta.persistence.EnumType.STRING;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -32,6 +38,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SoftDelete(columnName="deleted", converter=TrueFalseConverter.class)
 @EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "categories")
@@ -64,6 +71,10 @@ public class Category {
 
     @LastModifiedDate
     private LocalDate modifiedDate;
+
+    @JsonIgnore
+    @Column(name="deleted", updatable=false, insertable=false)
+    private boolean deleted;
 
     @Enumerated(STRING)
     private CategoryStatus status;

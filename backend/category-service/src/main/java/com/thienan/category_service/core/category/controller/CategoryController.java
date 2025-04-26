@@ -1,25 +1,27 @@
 package com.thienan.category_service.core.category.controller;
 
+import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.thienan.category_service.common.PageResponse;
 import com.thienan.category_service.core.category.dto.CategoryRequest;
 import com.thienan.category_service.core.category.dto.CategoryResponse;
 import com.thienan.category_service.core.category.entity.Category;
 import com.thienan.category_service.core.category.service.CategoryService;
+
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -58,7 +60,13 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findAll(pageable));
     }
 
-    @GetMapping("/is-displayed")
+    @GetMapping("/deleted")
+    public ResponseEntity<PageResponse<CategoryResponse>> findAllDeleted    (
+            @PageableDefault(page = 0, size = 10) @ParameterObject Pageable pageable) {
+        return ResponseEntity.ok(categoryService.findAllDeleted(pageable));
+    }
+
+    @GetMapping("/displayed")
     public ResponseEntity<PageResponse<CategoryResponse>> findAllDisplayedByIdWithFullDetail(
         @PageableDefault(page = 0, size = 10) 
         @ParameterObject Pageable pageable) {
@@ -80,15 +88,20 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.search(pageable, name, code));
     }
 
-    @PatchMapping("/{id}/soft-delete")
+    @PatchMapping("/{id}/recovery")
+    public ResponseEntity<Long> recovery(@PathVariable Long id) {
+        return ResponseEntity.ok(categoryService.recoveryById(id));
+    }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> softDelete(@PathVariable Long id) {
         categoryService.softDeleteCategoryById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        categoryService.deleteCategoryById(id);
+    @DeleteMapping("/{id}/hard-delete")
+    public ResponseEntity<Void> hardDelete(@PathVariable Long id) {
+        categoryService.hardDeleteById(id);
         return ResponseEntity.noContent().build();
     }
 

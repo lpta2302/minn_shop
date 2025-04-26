@@ -1,5 +1,5 @@
 package com.thienan.category_service.core.category.entity;
 
 public enum CategoryStatus {
-    ACTIVE, INACTIVE, DELETED, ARCHIVED, DRAFT
+    ACTIVE, INACTIVE, ARCHIVED, DRAFT
 }

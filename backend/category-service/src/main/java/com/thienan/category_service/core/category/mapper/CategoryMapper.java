@@ -2,7 +2,9 @@ package com.thienan.category_service.core.category.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.stereotype.Component;
+
 import com.thienan.category_service.core.category.dto.CategoryRequest;
 import com.thienan.category_service.core.category.dto.CategoryResponse;
 import com.thienan.category_service.core.category.entity.Category;
@@ -14,6 +16,7 @@ public class CategoryMapper {
             .code(request.code())
             .name(request.name())
             .parentCategory(parentCategory)
+            .status(request.status())
             .build();
     }
 
@@ -21,6 +24,7 @@ public class CategoryMapper {
             Category category,
             List<Category> subCategories) {
         return CategoryResponse.builder()
+            .id(category.getId())
             .code(category.getCode())
             .name(category.getName())
             .parentCategory(category.getParentCategory() == null ? null : category.getParentCategory().getId())

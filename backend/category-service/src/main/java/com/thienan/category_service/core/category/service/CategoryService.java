@@ -1,16 +1,19 @@
 package com.thienan.category_service.core.category.service;
 
 import static java.lang.String.format;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import com.thienan.category_service.common.PageResponse;
 import com.thienan.category_service.core.category.dto.CategoryRequest;
 import com.thienan.category_service.core.category.dto.CategoryResponse;
 import com.thienan.category_service.core.category.entity.Category;
-import com.thienan.category_service.core.category.entity.CategoryStatus;
 import com.thienan.category_service.core.category.mapper.CategoryMapper;
 import com.thienan.category_service.core.category.repository.CategoryRepository;
+
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -88,6 +91,16 @@ public class CategoryService {
         );
     }
 
+    public PageResponse<CategoryResponse> findAllDeleted(Pageable pageable){
+        var pageResult = categoryRepository.findAllDeleted(pageable);
+        return PageResponse.fromPage(
+            pageResult,
+            pageResult.stream().map(
+                categoryMapper::convertToCategoryResponse
+            ).toList()
+        );
+    }
+
     public PageResponse<CategoryResponse> search(
         Pageable pageable,
         String code, 
@@ -107,13 +120,16 @@ public class CategoryService {
             pageResult.stream().map(categoryMapper::convertToCategoryResponse).toList());
     }
 
-    public Long softDeleteCategoryById(Long id) {
-        var category = findById(id);
-        category.setStatus(CategoryStatus.DELETED);
-        return categoryRepository.save(category).getId();
+    public void softDeleteCategoryById(Long id) {
+        categoryRepository.deleteById(id);
     }
 
-    public void deleteCategoryById(Long id) {
-        categoryRepository.deleteById(id);
+    public Long recoveryById(Long id) {
+        return categoryRepository.recoveryById(id).getId();
+    }
+
+    @Transactional
+    public void hardDeleteById(Long id) {
+        categoryRepository.hardDeleteById(id);
     }
 }
