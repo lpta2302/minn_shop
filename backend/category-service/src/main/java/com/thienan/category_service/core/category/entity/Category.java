@@ -57,7 +57,7 @@ public class Category {
     @Size(max = 200, message = "category name length can't be more than 200 characters")
     private String name;
 
-    @ManyToOne(optional = true)
+    @ManyToOne
     @JoinColumn(name = "parent_category_id")
     private Category parentCategory;
 
@@ -79,14 +79,6 @@ public class Category {
     @Enumerated(STRING)
     private CategoryStatus status;
 
-    public Category(Long id, String code, String name, Long parentCategoryId, List<Category> subCategories){
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.parentCategory = Category.builder().id(parentCategoryId).build();
-        this.subCategories = subCategories;
-    }
-
     public void setSubCategories(List<Category> categories){
         if (this.subCategories == null) {
             this.subCategories = new ArrayList<>();
@@ -94,7 +86,19 @@ public class Category {
             this.subCategories.clear();
         }
 
-        categories.forEach(category->
-            this.subCategories.add(category));
+        this.subCategories.addAll(categories);
+    }
+
+    public void setParentCategory(Category parentCategory){
+        this.parentCategory = parentCategory;
+    }
+
+    public void addCategory(Category subCategory) {
+        if(subCategories == null){
+            subCategories = new ArrayList<>();
+        }
+
+        subCategories.add(subCategory);
+        subCategory.setParentCategory(this);
     }
 }

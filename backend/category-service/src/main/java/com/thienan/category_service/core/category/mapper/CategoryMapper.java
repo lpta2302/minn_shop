@@ -20,6 +20,10 @@ public class CategoryMapper {
             .build();
     }
 
+    public Category convertToCategory(CategoryRequest request){
+        return convertToCategory(request, null);
+    }
+
     public CategoryResponse convertToCategoryResponse(
             Category category,
             List<Category> subCategories) {
