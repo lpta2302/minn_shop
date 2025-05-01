@@ -73,7 +73,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findAllDisplayWithFullDetail(pageable));
     }
 
-    @GetMapping("/{parentCategoryId}")
+    @GetMapping("/{parentCategoryId}/sub-categories")
     public ResponseEntity<PageResponse<CategoryResponse>> findAllSubCategories(
             @PageableDefault(page = 0, size = 10) @ParameterObject Pageable pageable,
             @PathVariable Long parentCategoryId) {
