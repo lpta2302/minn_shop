@@ -14,4 +14,36 @@ public class SwaggerConfiguration {
             .pathsToMatch("/weight-types/**")
             .build();
     }
+
+    @Bean
+    GroupedOpenApi stockOptionApi(){
+        return GroupedOpenApi.builder()
+            .group("stock option")
+            .pathsToMatch("/stock-options/**")
+            .build();
+    }
+
+    @Bean
+    GroupedOpenApi stockApi(){
+        return GroupedOpenApi.builder()
+            .group("stock")
+            .pathsToMatch("/stocks/**")
+            .build();
+    }
+
+    @Bean
+    GroupedOpenApi productApi(){
+        return GroupedOpenApi.builder()
+            .group("product")
+            .pathsToMatch("/products/**")
+            .build();
+    }
+
+    @Bean
+    GroupedOpenApi productVariantApi(){
+        return GroupedOpenApi.builder()
+            .group("product variant")
+            .pathsToMatch("/product-variants/**")
+            .build();
+    }
 }

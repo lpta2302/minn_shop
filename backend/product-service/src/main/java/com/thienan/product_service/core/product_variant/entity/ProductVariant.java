@@ -1,7 +1,10 @@
 package com.thienan.product_service.core.product_variant.entity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.thienan.product_service.common.BaseEntity;
 import com.thienan.product_service.core.product.entity.Product;
@@ -9,6 +12,8 @@ import com.thienan.product_service.core.product_variant.enumeration.ProductVaria
 import com.thienan.product_service.core.stock.entity.Stock;
 import com.thienan.product_service.core.stock.entity.StockId;
 
+import static jakarta.persistence.CascadeType.MERGE;
+import static jakarta.persistence.CascadeType.PERSIST;
 import jakarta.persistence.Entity;
 import static jakarta.persistence.EnumType.STRING;
 import jakarta.persistence.Enumerated;
@@ -16,8 +21,8 @@ import static jakarta.persistence.FetchType.LAZY;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -33,10 +38,15 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_variants")
-public class ProductVariant extends BaseEntity{
-    private String categoryName;
-    
+@Table(
+    name = "product_variants",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueProductAndProductOption",
+            columnNames = {"product", "productOption"})
+    }
+)
+@DynamicUpdate
+public class ProductVariant extends BaseEntity {
     @Size(max = 100, message = "variantId of product variant length can't be more than 100 characters")
     private String variantId;
 
@@ -48,10 +58,10 @@ public class ProductVariant extends BaseEntity{
     private String name;
 
     @PositiveOrZero(message="price must be positive or zero")
-    private float price;
+    private BigDecimal price;
 
     @PositiveOrZero(message="original price must be positive or zero")
-    private float originalPrice;
+    private BigDecimal originalPrice;
 
     @PositiveOrZero(message="discount must be positive or zero")
     private float discount;
@@ -59,16 +69,16 @@ public class ProductVariant extends BaseEntity{
     @PositiveOrZero(message="sold quantity must be positive or zero")
     private int soldQuantity;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name="product_id")
-    private Product product;
-
-    @OneToOne
-    @JoinColumn(name="product_variant_option_id")
-    private ProductVariantOption productVariantOption;
-
     @OneToMany(mappedBy="stockId.productVariant")
     private List<Stock> stocks;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @ManyToOne(cascade = {PERSIST, MERGE})
+    @JoinColumn(name = "product_option_id")
+    private ProductOption productOption;
 
     @Enumerated(STRING)
     private ProductVariantStatus status;
@@ -84,7 +94,7 @@ public class ProductVariant extends BaseEntity{
             if (stock.getStockId() == null) {
                 stock.setStockId(new StockId());
             }
-            stock.getStockId();
+            stock.getStockId().setProductVariant(this);
             this.stocks.add(stock);
         });
     }

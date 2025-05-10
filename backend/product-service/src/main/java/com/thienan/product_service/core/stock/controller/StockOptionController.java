@@ -1,17 +1,11 @@
 package com.thienan.product_service.core.stock.controller;
 
+import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.thienan.product_service.common.PageResponse;
 import com.thienan.product_service.core.stock.dto.StockOptionRequest;
@@ -24,14 +18,14 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/stock-option")
+@RequestMapping("/stock-options")
 public class StockOptionController {
     private final StockOptionService service;
 
     @PostMapping
     public ResponseEntity<Long> create(
-        @RequestBody 
-        @Valid 
+        @Valid
+        @RequestBody
         StockOptionRequest stockOption) {
         return ResponseEntity.ok(service.createAndSave(stockOption));
     }
@@ -39,14 +33,14 @@ public class StockOptionController {
     @PatchMapping("/{id}/information")
     public ResponseEntity<Long> update(
         @PathVariable Long id,
-        @Valid StockOptionRequest request) {
+        @Valid @RequestBody StockOptionRequest request) {
         return ResponseEntity.ok(service.updateInformation(id, request));
     }
 
     @PostMapping("/{id}/stock-option-values")
     public ResponseEntity<Long> addStockOptionValue(
         @PathVariable Long id,
-        @Valid StockOptionValueRequest request) {
+        @Valid @RequestBody StockOptionValueRequest request) {
         return ResponseEntity.ok(service.addStockOptionValue(id, request));
     }
 
@@ -54,11 +48,11 @@ public class StockOptionController {
     public ResponseEntity<Long> updateStockOptionValue(
         @PathVariable Long id,
         @PathVariable Long valueId,
-        @Valid StockOptionValueRequest request) {
+        @Valid @RequestBody StockOptionValueRequest request) {
         return ResponseEntity.ok(service.updateStockOptionValue(id, valueId, request));
     }
 
-    @PatchMapping("/{id}/stock-option-values/{valueId}/soft-delete")
+    @DeleteMapping("/{id}/stock-option-values/{valueId})")
     public ResponseEntity<Void> softDeleteStockOptionValue(
         @PathVariable Long id,
         @PathVariable Long valueId) {
@@ -66,7 +60,7 @@ public class StockOptionController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}/stock-option-values/{valueId}")
+    @DeleteMapping("/{id}/stock-option-values/{valueId}/hard-delete")
     public ResponseEntity<Void> deleteStockOptionValue(
         @PathVariable Long id,
         @PathVariable Long valueId) {
@@ -94,13 +88,29 @@ public class StockOptionController {
         @ParameterObject
         @PageableDefault(page=0, size=10)
         Pageable pageable,
-        String name,
-        String code) {
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String code) {
         return ResponseEntity.ok(service.search(pageable, name, code));
+    }
+
+    @GetMapping("/deleted")
+    public ResponseEntity<PageResponse<StockOptionResponse>> findAllDeleted(
+            @ParameterObject
+            @PageableDefault(page=0, size=10)
+            Pageable pageable) {
+        return ResponseEntity.ok(service.findAllDeleted(pageable));
+    }
+
+    @GetMapping("{id}/stock-option-values/deleted")
+    public ResponseEntity<PageResponse<StockOptionValueResponse>> findAllStockOptionValuesDeleted(
+            @ParameterObject
+            @PageableDefault(page=0, size=10)
+            Pageable pageable) {
+        return ResponseEntity.ok(service.findAllStockOptionValuesDeleted(pageable));
     }
     
     
-    @PatchMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> softDeleteById(
         @PathVariable Long id
     ){

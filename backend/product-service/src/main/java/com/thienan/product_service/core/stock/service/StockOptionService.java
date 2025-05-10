@@ -2,6 +2,8 @@ package com.thienan.product_service.core.stock.service;
 
 import java.util.List;
 
+import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ import com.thienan.product_service.core.stock.entity.StockOption;
 import com.thienan.product_service.core.stock.entity.StockOptionValue;
 import com.thienan.product_service.core.stock.mapper.StockOptionMapper;
 import com.thienan.product_service.core.stock.repository.StockOptionRepository;
-import com.thienan.product_service.handler.exceptions.common.EntityNotFoundException;
+import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +26,7 @@ public class StockOptionService {
     private final StockOptionMapper stockOptionMapper;
     private final StockOptionValueService stockOptionValueService;
 
+    @Transactional
     public Long createAndSave(StockOptionRequest request){
         List<StockOptionValue> stockOptionValues = 
             stockOptionValueService.create(request.stockOptionValues());
@@ -52,6 +55,7 @@ public class StockOptionService {
         return stockOptionRepository.save(stockOption).getId();
     }
 
+    @Transactional
     public Long addStockOptionValue(Long id, StockOptionValueRequest request) {
         var stockOption = findById(id);
         var value = stockOptionValueService.create(request);
@@ -61,6 +65,7 @@ public class StockOptionService {
         return stockOptionRepository.save(stockOption).getId();
     }
 
+    @Transactional
     public Long updateStockOptionValue(Long id, Long valueId,
             StockOptionValueRequest request) {
         var stockOption = findById(id);
@@ -69,19 +74,20 @@ public class StockOptionService {
             .filter(
                 value->value.getId().equals(valueId))
             .findFirst()
-            .orElseThrow(()->new EntityNotFoundException("Stock option value", valueId));
+            .orElseThrow(()->new EntityNotFoundByIDException("Stock option value", valueId.toString()));
         
         stockOptionValueService.update(stockOptionValue, request);
 
         return stockOptionRepository.save(stockOption).getId();
     }
 
+    @Transactional
     public void softDeleteStockOptionValue(Long id, Long valueId) {
         var stockOption = findById(id);
         
-        boolean isDeleted = stockOption.getStockOptionValues().removeIf(value -> value.getId().equals(valueId));
+        boolean isDeleted = stockOption.getStockOptionValues().removeIf(value -> value.getId().equals(valueId.toString()));
         if (!isDeleted) {
-            throw new EntityNotFoundException("Stock option value", valueId);
+            throw new EntityNotFoundByIDException("Stock option value", valueId.toString());
         }
 
         stockOptionRepository.save(stockOption);
@@ -96,18 +102,18 @@ public class StockOptionService {
     }
 
     public void hardDeleteById(Long id){
-        stockOptionRepository.deleteById(id);
+        stockOptionRepository.hardDeleteById(id);
     }
 
     public StockOption findById(Long id){
         var stockOption = stockOptionRepository.findById(id)
-            .orElseThrow(()-> new EntityNotFoundException("Weight type", id));
+            .orElseThrow(()-> new EntityNotFoundByIDException("Weight type", id.toString()));
         return stockOption;
     }
 
     public StockOptionResponse findDetailById(Long id){
         var stockOption = stockOptionRepository.findById(id)
-            .orElseThrow(()-> new EntityNotFoundException("Weight type", id));
+            .orElseThrow(()-> new EntityNotFoundByIDException("Weight type", id.toString()));
         return stockOptionMapper.convertToStockOptionResponse(stockOption);
     }
 
@@ -125,6 +131,17 @@ public class StockOptionService {
         var pageResult = stockOptionRepository.search(pageable, name, code);
         return PageResponse.fromPage(pageResult, 
             pageResult.stream().map(stockOptionMapper::convertToStockOptionResponseExcludeValues).toList()
+        );
+    }
+
+    public PageResponse<StockOptionValueResponse> findAllStockOptionValuesDeleted(Pageable pageable) {
+        return stockOptionValueService.findAllDeleted(pageable);
+    }
+
+    public PageResponse<StockOptionResponse> findAllDeleted(Pageable pageable) {
+        var pageResult = stockOptionRepository.findAllDeleted(pageable);
+        return PageResponse.fromPage(pageResult,
+                pageResult.stream().map(stockOptionMapper::convertToStockOptionResponseExcludeValues).toList()
         );
     }
 }

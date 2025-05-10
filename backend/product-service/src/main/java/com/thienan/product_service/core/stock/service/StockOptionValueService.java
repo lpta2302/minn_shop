@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.thienan.product_service.common.PageResponse;
+import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
+import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.thienan.product_service.core.stock.dto.StockOptionValueRequest;
@@ -27,7 +31,7 @@ public class StockOptionValueService {
         weightTypeService.findAllById(requests.stream().map(StockOptionValueRequest::weightTypeId).toList())
             .forEach(wt->weightTypeMap.put(wt.getId(), wt));
 
-        List<StockOptionValue> result = requests.stream()
+        return requests.stream()
         .map(req -> {
             StockOptionValue value = StockOptionValue
                 .builder()
@@ -37,7 +41,6 @@ public class StockOptionValueService {
             return value;
         })
         .toList();
-        return result;
     }
 
     public StockOptionValue create(StockOptionValueRequest request) {
@@ -65,5 +68,28 @@ public class StockOptionValueService {
 
     public void hardDeleteById(Long valueId) {
         stockOptionValueRepository.hardDeleteById(valueId);
+    }
+
+    public PageResponse<StockOptionValueResponse> findAllDeleted(Pageable pageable) {
+        var pageResult = stockOptionValueRepository.findAllDeleted(pageable);
+        return PageResponse.fromPage(pageResult,
+                pageResult.stream().map(
+                    stockOptionValue -> StockOptionValueResponse
+                        .builder()
+                        .id(stockOptionValue.getId())
+                        .name(stockOptionValue.getName())
+                        .minWeight(stockOptionValue.getWeightType().getMinWeight())
+                        .maxWeight(stockOptionValue.getWeightType().getMaxWeight())
+                        .weightType(stockOptionValue.getWeightType().getName())
+                        .build()
+                ).toList()
+        );
+    }
+
+    public StockOptionValue findReferenceById(Long id) {
+        if (!stockOptionValueRepository.existsById(id)) {
+            throw new EntityNotFoundByIDException("Stock option value", id.toString());
+        }
+        return stockOptionValueRepository.getReferenceById(id);
     }
 }

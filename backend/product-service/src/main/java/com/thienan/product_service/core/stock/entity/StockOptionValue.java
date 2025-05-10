@@ -29,7 +29,6 @@ public class StockOptionValue extends  BaseEntity{
     @Size(max = 200, message = "name of stock option value length can't be more than 200 characters")
     private String name;
 
-    @PositiveOrZero(message="weight must be positive or zero")
     @ManyToOne
     @JoinColumn(name="weight_type_id")
     private WeightType weightType;

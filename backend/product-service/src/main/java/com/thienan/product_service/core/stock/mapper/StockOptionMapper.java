@@ -29,6 +29,7 @@ public class StockOptionMapper {
             .map(value->
                 StockOptionValueResponse
                 .builder()
+                .id(value.getId())
                 .name(value.getName())
                 .weightType(value.getWeightType().getName())
                 .minWeight(value.getWeightType().getMinWeight())

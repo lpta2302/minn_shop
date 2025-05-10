@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.thienan.product_service.common.PageResponse;
 import com.thienan.product_service.core.weight_type.entity.WeightType;
 import com.thienan.product_service.core.weight_type.repository.WeightTypeRepository;
-import com.thienan.product_service.handler.exceptions.common.EntityNotFoundException;
+import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
 import com.thienan.product_service.handler.exceptions.weight_type.InvalidWeightRangeException;
 
 import jakarta.transaction.Transactional;
@@ -60,7 +60,7 @@ public class WeightTypeService {
 
     public WeightType findById(Long id){
         return weightTypeRepository.findById(id)
-            .orElseThrow(()-> new EntityNotFoundException("Weight type", id));
+            .orElseThrow(()-> new EntityNotFoundByIDException("Weight type", id.toString()));
     }
 
     public List<WeightType> findAllById(List<Long> ids){
