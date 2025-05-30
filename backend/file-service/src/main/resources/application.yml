@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: file-service
+  config:
+    import: optional:configserver:${SPRING_CONFIG_IMPORT:http://localhost:8888}
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://${SPRING_DATASOURCE_URL:localhost:5432}/category_db
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database: postgresql
+    show-sql: true
+  servlet:
+    multipart:                 
+      max-file-size: 10MB
+      max-request-size: 10MB
+  flyway:
+    enabled: false
+eureka:
+  client:
+    enabled: false
+aws:
+  region: ap-southeast-2
+  profile: minn-shop-admin
+  s3:
+    bucket: minn-shop-bucket

@@ -1,6 +1,5 @@
 package com.thienan.product_service.core.stock.repository;
 
-import com.thienan.product_service.core.stock.dto.StockOptionResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -2,8 +2,6 @@ package com.thienan.product_service.core.stock.service;
 
 import java.util.List;
 
-import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
-import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +9,14 @@ import com.thienan.product_service.common.PageResponse;
 import com.thienan.product_service.core.stock.dto.StockOptionRequest;
 import com.thienan.product_service.core.stock.dto.StockOptionResponse;
 import com.thienan.product_service.core.stock.dto.StockOptionValueRequest;
+import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
 import com.thienan.product_service.core.stock.entity.StockOption;
 import com.thienan.product_service.core.stock.entity.StockOptionValue;
 import com.thienan.product_service.core.stock.mapper.StockOptionMapper;
 import com.thienan.product_service.core.stock.repository.StockOptionRepository;
 import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -85,7 +85,7 @@ public class StockOptionService {
     public void softDeleteStockOptionValue(Long id, Long valueId) {
         var stockOption = findById(id);
         
-        boolean isDeleted = stockOption.getStockOptionValues().removeIf(value -> value.getId().equals(valueId.toString()));
+        boolean isDeleted = stockOption.getStockOptionValues().removeIf(value -> value.getId().equals(valueId));
         if (!isDeleted) {
             throw new EntityNotFoundByIDException("Stock option value", valueId.toString());
         }

@@ -1,17 +1,17 @@
 package com.thienan.product_service.core.product.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Component;
+
 import com.thienan.product_service.core.product.dto.ProductRequest;
 import com.thienan.product_service.core.product.dto.ProductResponse;
 import com.thienan.product_service.core.product.entity.Product;
 import com.thienan.product_service.core.product_variant.dto.ProductVariantResponse;
-import com.thienan.product_service.core.product_variant.entity.ProductVariant;
 import com.thienan.product_service.core.product_variant.mapper.ProductVariantMapper;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor

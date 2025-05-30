@@ -1,26 +1,26 @@
 package com.thienan.product_service.handler;
 
-import com.thienan.product_service.handler.exceptions.common.BadRequestException;
-import com.thienan.product_service.handler.exceptions.common.CustomBadRequestException;
-import com.thienan.product_service.handler.exceptions.common.ValidationException;
-import jakarta.persistence.EntityNotFoundException;
-import lombok.extern.slf4j.Slf4j;
+import java.util.stream.Collectors;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
-import com.thienan.product_service.handler.exceptions.weight_type.InvalidWeightRangeException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.stream.Collectors;
+import com.thienan.product_service.handler.exceptions.common.BadRequestException;
+import com.thienan.product_service.handler.exceptions.common.CustomBadRequestException;
+import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
+import com.thienan.product_service.handler.exceptions.common.ValidationException;
+import com.thienan.product_service.handler.exceptions.weight_type.InvalidWeightRangeException;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
@@ -74,13 +74,14 @@ public class GlobalHandler {
                 FieldError::getField,
                 fieldError -> fieldError.getDefaultMessage() == null ?
                     "Not valid" : fieldError.getDefaultMessage(),
-                (existing, replacement)->existing));
+                (existing, _)->existing));
         return ResponseEntity
             .badRequest()
             .body(
                 ErrorResponse.builder()
                 .error(HttpStatus.BAD_REQUEST.name())
                 .status(BAD_REQUEST.value())
+                .details(details)
                 .message(exception.getMessage())
                 .build()
             );

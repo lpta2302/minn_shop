@@ -1,13 +1,11 @@
 package com.thienan.product_service.handler.exceptions.common;
 
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.util.Map;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import org.springframework.web.server.ResponseStatusException;
+
+import lombok.Getter;
 
 @Getter
 public class CustomBadRequestException extends ResponseStatusException {

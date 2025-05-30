@@ -1,7 +1,8 @@
 package com.thienan.product_service.core.product.repository;
 
-import com.thienan.product_service.core.product.dto.ProductResponse;
-import com.thienan.product_service.core.product.entity.Product;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,8 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-import java.util.Optional;
+import com.thienan.product_service.core.product.entity.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("""

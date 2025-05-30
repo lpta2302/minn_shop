@@ -12,6 +12,7 @@ import com.thienan.product_service.core.product_variant.enumeration.ProductVaria
 import com.thienan.product_service.core.stock.entity.Stock;
 import com.thienan.product_service.core.stock.entity.StockId;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
 import jakarta.persistence.Entity;
@@ -21,6 +22,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -79,6 +81,12 @@ public class ProductVariant extends BaseEntity {
     @ManyToOne(cascade = {PERSIST, MERGE})
     @JoinColumn(name = "product_option_id")
     private ProductOption productOption;
+
+    @OneToOne(optional = true)
+    private ProductVariantImage thumbnailImage;
+
+    @OneToMany(cascade={ ALL })
+    private List<ProductVariantImage> images;
 
     @Enumerated(STRING)
     private ProductVariantStatus status;

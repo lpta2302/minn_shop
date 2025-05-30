@@ -1,12 +1,9 @@
 package com.thienan.product_service.core.product.specification;
 
-import com.thienan.product_service.core.product.entity.Product;
-import com.thienan.product_service.core.product.enums.ProductStatus;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.math.BigDecimal;
-import java.util.Map;
-import java.util.function.Function;
+import com.thienan.product_service.core.product.entity.Product;
+import com.thienan.product_service.core.product.enums.ProductStatus;
 
 public class ProductSpecification {
     public static Specification<Product> hasName(String name) {

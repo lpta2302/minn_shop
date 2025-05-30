@@ -1,6 +1,7 @@
 package com.thienan.product_service.common;
 
 import java.util.List;
+
 import org.springframework.data.domain.Page;
 import lombok.Builder;
 

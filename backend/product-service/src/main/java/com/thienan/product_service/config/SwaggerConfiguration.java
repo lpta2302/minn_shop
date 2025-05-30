@@ -5,10 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@SuppressWarnings("unused")
 public class SwaggerConfiguration {
     @Bean
-    GroupedOpenApi weightTypeApi(){
+    public GroupedOpenApi weightTypeApi(){
         return GroupedOpenApi.builder()
             .group("weight type")
             .pathsToMatch("/weight-types/**")
@@ -16,7 +15,7 @@ public class SwaggerConfiguration {
     }
 
     @Bean
-    GroupedOpenApi stockOptionApi(){
+    public GroupedOpenApi stockOptionApi(){
         return GroupedOpenApi.builder()
             .group("stock option")
             .pathsToMatch("/stock-options/**")
@@ -24,7 +23,7 @@ public class SwaggerConfiguration {
     }
 
     @Bean
-    GroupedOpenApi stockApi(){
+    public GroupedOpenApi stockApi(){
         return GroupedOpenApi.builder()
             .group("stock")
             .pathsToMatch("/stocks/**")
@@ -32,7 +31,7 @@ public class SwaggerConfiguration {
     }
 
     @Bean
-    GroupedOpenApi productApi(){
+    public GroupedOpenApi productApi(){
         return GroupedOpenApi.builder()
             .group("product")
             .pathsToMatch("/products/**")
@@ -40,7 +39,7 @@ public class SwaggerConfiguration {
     }
 
     @Bean
-    GroupedOpenApi productVariantApi(){
+    public GroupedOpenApi productVariantApi(){
         return GroupedOpenApi.builder()
             .group("product variant")
             .pathsToMatch("/product-variants/**")

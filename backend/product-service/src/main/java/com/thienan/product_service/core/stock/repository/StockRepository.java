@@ -1,18 +1,18 @@
 package com.thienan.product_service.core.stock.repository;
 
-import com.thienan.product_service.common.PageResponse;
-import com.thienan.product_service.core.stock.dto.StockResponse;
-import com.thienan.product_service.core.stock.entity.Stock;
-import com.thienan.product_service.core.stock.entity.StockId;
-import jakarta.persistence.Tuple;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
-import java.util.Optional;
+import com.thienan.product_service.core.stock.dto.StockResponse;
+import com.thienan.product_service.core.stock.entity.Stock;
+import com.thienan.product_service.core.stock.entity.StockId;
+
+import jakarta.persistence.Tuple;
 
 public interface StockRepository extends JpaRepository<Stock, StockId> {
     @Query("""

@@ -1,8 +1,6 @@
 package com.thienan.product_service.core.stock.dto;
 
-import lombok.*;
-
-import java.util.Objects;
+import lombok.Builder;
 
 @Builder
 public record StockResponse (

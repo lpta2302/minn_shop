@@ -5,10 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 
 @Configuration
-@SuppressWarnings("unused")
 public class BeansConfiguration {
     @Bean
-    AuditorAware<String> auditorAware() {
+    public AuditorAware<String> auditorAware() {
         return new ApplicationAuditAware();
     }
 }
