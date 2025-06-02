@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.thienan.file_service.core.dto.FileInfoRequest;
 import com.thienan.file_service.core.entity.FileInfo;
 import com.thienan.file_service.core.service.FileInfoService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 
@@ -25,7 +27,7 @@ public class FileInfoController {
     private final FileInfoService fileInfoService;
 
     @PostMapping
-    public ResponseEntity<Long> create(@RequestBody FileInfo fileInfo) {
+    public ResponseEntity<Long> create(@RequestBody @Valid FileInfoRequest fileInfo) {
         return ResponseEntity.ok(fileInfoService.createAndSave(fileInfo));
     }
 

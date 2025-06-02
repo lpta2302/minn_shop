@@ -29,7 +29,9 @@ public class ProductVariantMapper {
             .discount(productVariantRequest.discount())
             .originalPrice(productVariantRequest.originalPrice())
             .slug(productVariantRequest.slug())
-            .status(productVariantRequest.status())
+            .status(
+                productVariantRequest.status()
+            )
             .stocks(stocks)
             .build();
     }

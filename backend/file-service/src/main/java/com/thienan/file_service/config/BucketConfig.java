@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import com.thienan.file_service.core.enumeration.ObjectTypes;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,18 +22,21 @@ public class BucketConfig {
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
-    @Builder.Default
-    private Map<String, String> foldersMap = new HashMap<>();
+    @Value("${aws.region}")
+    private String region;
 
-    public String getFolderName(String folderObject){
+    @Builder.Default
+    private Map<ObjectTypes, String> foldersMap = new HashMap<>();
+
+    public String getFolderName(ObjectTypes folderObject){
         return foldersMap.get(folderObject);
     }
 
-    public void addFolder(String folderObject, String folderName){
+    public void addFolder(ObjectTypes folderObject, String folderName){
         foldersMap.put(folderObject, folderName);
     }
 
-    public void addFolders(Map<String, String> newFoldersMap){
+    public void addFolders(Map<ObjectTypes, String> newFoldersMap){
         foldersMap.putAll(foldersMap);
     }
 }

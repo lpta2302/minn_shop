@@ -1,11 +1,13 @@
 package com.thienan.product_service.core.product_variant.dto;
 
+import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thienan.product_service.core.product_variant.enumeration.ProductVariantStatus;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-
-import java.math.BigDecimal;
 
 public record ProductVariantRequest(
     @Size(max = 100, message = "variantId of product variant length can't be more than 100 characters")
@@ -29,6 +31,8 @@ public record ProductVariantRequest(
 
     String productOptionName,
 
+    @JsonProperty(defaultValue="DRAFT")
     ProductVariantStatus status
 )
-{ }
+{
+}

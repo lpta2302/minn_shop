@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.thienan.file_service.core.enumeration.ObjectTypes;
+import static com.thienan.file_service.core.enumeration.ObjectTypes.PRODUCT_VARIANT;
+
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -29,7 +32,7 @@ public class AWSConfiguration {
     }
 
     @Bean
-    S3Client amazonS3Client() {
+    public S3Client s3Client() {
         return S3Client
             .builder()
             .region(getRegion())
@@ -38,7 +41,7 @@ public class AWSConfiguration {
     }
 
     @Bean
-    S3Presigner s3Presigned() {
+    public S3Presigner s3Presigned() {
         return S3Presigner
             .builder()
             .region(getRegion())
@@ -47,10 +50,10 @@ public class AWSConfiguration {
     }
 
     @Bean
-    BucketConfig bucketConfig(){
+    public BucketConfig bucketConfig(){
         BucketConfig bucketConfig = BucketConfig.builder().build();
-        Map<String, String> newFoldersMap = new HashMap<>();
-        newFoldersMap.put("product-variant", "/product-variant");
+        Map<ObjectTypes, String> newFoldersMap = new HashMap<>();
+        newFoldersMap.put(PRODUCT_VARIANT, "/product-variant");
 
         bucketConfig.addFolders(newFoldersMap);
         return bucketConfig;

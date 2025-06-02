@@ -9,7 +9,7 @@ spring:
     url: jdbc:postgresql://${SPRING_DATASOURCE_URL:localhost:5432}/category_db
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
     database: postgresql
     show-sql: true
   servlet:
@@ -18,6 +18,15 @@ spring:
       max-request-size: 10MB
   flyway:
     enabled: false
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:http://localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring:
+          json:
+            type-mapping: file-info:com.thienan.file_service.core.entity.FileInfo
 eureka:
   client:
     enabled: false
@@ -26,3 +35,6 @@ aws:
   profile: minn-shop-admin
   s3:
     bucket: minn-shop-bucket
+kafka:
+  topics:
+    created-product-variant-image: created-product-variant-image

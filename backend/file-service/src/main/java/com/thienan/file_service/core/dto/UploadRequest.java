@@ -3,10 +3,11 @@ package com.thienan.file_service.core.dto;
 import java.util.List;
 
 import com.thienan.file_service.core.enumeration.FileAccess;
+import com.thienan.file_service.core.enumeration.ObjectTypes;
 
 public record UploadRequest(
-    String objectType,
+    ObjectTypes objectType,
     FileAccess fileAccess,
-    List<FileInfoRequest> files,
-    FileInfoRequest file
+    List<FilePropertiesRequest> files,
+    FilePropertiesRequest file
 ) {}

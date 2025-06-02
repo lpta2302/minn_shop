@@ -1,5 +1,10 @@
 package com.thienan.product_service.core.product.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import com.thienan.product_service.common.PageResponse;
 import com.thienan.product_service.core.category.CategoryClient;
 import com.thienan.product_service.core.product.dto.ProductInformationRequest;
@@ -11,19 +16,16 @@ import com.thienan.product_service.core.product.mapper.ProductMapper;
 import com.thienan.product_service.core.product.repository.ProductRepository;
 import com.thienan.product_service.core.product.specification.ProductSpecification;
 import com.thienan.product_service.core.product.validator.ProductValidatorSteps;
-import com.thienan.product_service.pipelines.validator.ValidatorPipeline;
 import com.thienan.product_service.core.product_variant.dto.ProductVariantRequest;
 import com.thienan.product_service.core.product_variant.entity.ProductVariant;
 import com.thienan.product_service.core.product_variant.service.ProductVariantService;
 import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
+import com.thienan.product_service.pipelines.validator.ValidatorPipeline;
+
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -51,7 +53,6 @@ public class ProductService {
 
         List<ProductVariant> productVariants = productVariantService.createProductVariants(productRequest.productVariants());
         product.setProductVariants(productVariants);
-
 
         return productRepository.save(product).getId();
     }

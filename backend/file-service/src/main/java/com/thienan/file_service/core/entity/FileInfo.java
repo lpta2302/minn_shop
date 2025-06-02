@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thienan.file_service.core.enumeration.FileAccess;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
@@ -21,6 +22,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Builder
@@ -29,6 +31,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@ToString
 public class FileInfo{
     @Id
     @GeneratedValue
@@ -48,8 +51,19 @@ public class FileInfo{
     @Schema(accessMode=READ_ONLY)
     private LocalDate modifiedDate;
 
-    private Long size;
     private String fileName;
+    
+    private String key;
+    
+    @Schema(accessMode=READ_ONLY)
+    private Long size;
+    
+    @Schema(accessMode=READ_ONLY)
     private String mimeType;
-    private String s3_key;
+
+    @Schema(accessMode=READ_ONLY)
+    private String objectUrl;
+
+    @Schema(accessMode=READ_ONLY)
+    private FileAccess fileAccess;
 }

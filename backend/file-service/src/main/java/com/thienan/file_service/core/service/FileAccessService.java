@@ -15,8 +15,8 @@ import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 public class FileAccessService {
     private final Map<FileAccess, String> fileAccessMap = new HashMap<>(){{
         put(FileAccess.PRIVATE, ObjectCannedACL.PRIVATE.toString());
-        put(FileAccess.PUBLIC_EDIT, ObjectCannedACL.PUBLIC_READ_WRITE.toString());
-        put(FileAccess.PUBLIC_READ, ObjectCannedACL.PUBLIC_READ.toString());
+        put(FileAccess.WRITE, ObjectCannedACL.PUBLIC_READ_WRITE.toString());
+        put(FileAccess.READ, ObjectCannedACL.PUBLIC_READ.toString());
     }};
     
     public String getACL(FileAccess fileAccess){

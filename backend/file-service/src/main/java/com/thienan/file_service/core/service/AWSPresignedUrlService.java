@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.thienan.file_service.config.BucketConfig;
-import com.thienan.file_service.core.dto.FileInfoRequest;
+import com.thienan.file_service.core.dto.FilePropertiesRequest;
 import com.thienan.file_service.core.dto.PresignedRequestParams;
 import com.thienan.file_service.core.dto.PresignedUrl;
 import com.thienan.file_service.core.dto.UploadPresignedUrlResponse;
@@ -63,7 +63,7 @@ public class AWSPresignedUrlService {
         }
     }
 
-    private PresignedUrl generatePresignedUrl(FileInfoRequest file, String folderPath, FileAccess fileAccess){
+    private PresignedUrl generatePresignedUrl(FilePropertiesRequest file, String folderPath, FileAccess fileAccess){
         String keyName = generateKeyName(folderPath, file);
         String ACL = fileAccessService.getACL(fileAccess);
         PresignedRequestParams params = new PresignedRequestParams(file, keyName, ACL);
@@ -76,7 +76,7 @@ public class AWSPresignedUrlService {
         );
     }
 
-    private String generateKeyName(String folder, FileInfoRequest file){
+    private String generateKeyName(String folder, FilePropertiesRequest file){
         if (file.key() == null) {
             return 
                 folder == null ?
@@ -90,7 +90,7 @@ public class AWSPresignedUrlService {
             format("%s/%s", folder, file.key());
     }
 
-    public String generatePresignedGetUrl(FileInfoRequest file, String keyName){
+    public String generatePresignedGetUrl(FilePropertiesRequest file, String keyName){
         String bucketName = bucketConfig.getBucketName();
 
         GetObjectRequest objectRequest = GetObjectRequest.builder()
@@ -113,7 +113,6 @@ public class AWSPresignedUrlService {
     public String generatePresignedPutUrl(PresignedRequestParams presignedRequestParams){
         String keyName = presignedRequestParams.keyName();
         String ACL = presignedRequestParams.ACL();
-
         String bucketName = bucketConfig.getBucketName();
 
         AwsRequestOverrideConfiguration override = AwsRequestOverrideConfiguration
@@ -141,4 +140,5 @@ public class AWSPresignedUrlService {
 
         return presignedRequest.url().toExternalForm();
     }
+
 }

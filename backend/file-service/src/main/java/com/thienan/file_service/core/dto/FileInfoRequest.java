@@ -1,10 +1,12 @@
 package com.thienan.file_service.core.dto;
 
-import java.util.List;
+import com.thienan.file_service.core.enumeration.ObjectTypes;
 
+import jakarta.validation.constraints.NotBlank;
 public record FileInfoRequest(
-    int id,
-    String key,
-    String fileName,
-    List<Metadata> metadata
-) {}
+    ObjectTypes objectType,
+    @NotBlank(message="Must have key for save file info")
+    String key
+) {
+    
+}

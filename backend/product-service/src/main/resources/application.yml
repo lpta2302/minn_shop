@@ -20,6 +20,8 @@ spring:
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:http://localhost9092}
 springdoc:
   swagger-ui:
     operations-sorter: method
