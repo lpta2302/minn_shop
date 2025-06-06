@@ -15,6 +15,7 @@ import com.thienan.product_service.core.stock.entity.StockId;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import static jakarta.persistence.EnumType.STRING;
 import jakarta.persistence.Enumerated;
@@ -81,9 +82,6 @@ public class ProductVariant extends BaseEntity {
     @ManyToOne(cascade = {PERSIST, MERGE})
     @JoinColumn(name = "product_option_id")
     private ProductOption productOption;
-
-    @OneToOne(optional = true)
-    private ProductVariantImage thumbnailImage;
 
     @OneToMany(cascade={ ALL })
     private List<ProductVariantImage> images;

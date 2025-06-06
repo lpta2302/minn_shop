@@ -1,6 +1,7 @@
 package com.thienan.product_service.core.product_variant.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.thienan.product_service.core.product_variant.enumeration.ProductVariantStatus;
@@ -30,6 +31,8 @@ public record ProductVariantRequest(
     float discount,
 
     String productOptionName,
+
+    List<ProductVariantImageRequest> productVariantImageRequests,
 
     @JsonProperty(defaultValue="DRAFT")
     ProductVariantStatus status

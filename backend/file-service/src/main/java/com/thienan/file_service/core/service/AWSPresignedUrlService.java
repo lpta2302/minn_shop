@@ -1,19 +1,22 @@
 package com.thienan.file_service.core.service;
 
-import static java.lang.String.format;
 import java.time.Duration;
 import java.util.List;
-
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.thienan.file_service.config.BucketConfig;
 import com.thienan.file_service.core.dto.FilePropertiesRequest;
+import com.thienan.file_service.core.dto.GenerateUploadPresignedUrlRequest;
 import com.thienan.file_service.core.dto.PresignedRequestParams;
 import com.thienan.file_service.core.dto.PresignedUrl;
 import com.thienan.file_service.core.dto.UploadPresignedUrlResponse;
-import com.thienan.file_service.core.dto.UploadRequest;
 import com.thienan.file_service.core.enumeration.FileAccess;
 import com.thienan.file_service.core.enumeration.PresignedUrlHeaders;
+import com.thienan.file_service.core.validator.FileInfoValidator;
+import com.thienan.file_service.handler.exceptions.common.ExistedS3FileKeyException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +33,18 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 @Slf4j
 @RequiredArgsConstructor
 public class AWSPresignedUrlService {
+
+    private final FileInfoValidator fileInfoValidator;
     private final FileAccessService fileAccessService;
     private final BucketConfig bucketConfig;
     private final S3Presigner s3Presigner;
+
+    @Value("${app.aws-generate-key.maxRetries}")
+    private int maxRetries;
+    @Value("${app.aws-generate-key.retryDelayMillis}")
+    private long retryDelayMillis;
     
-    public UploadPresignedUrlResponse generatePresignedUploadUrl(UploadRequest request) {
+    public UploadPresignedUrlResponse generatePresignedUploadUrl(GenerateUploadPresignedUrlRequest request) {
         String folderName = bucketConfig.getFolderName(request.objectType());
         FileAccess fileAccess = request.fileAccess();
 
@@ -76,18 +86,30 @@ public class AWSPresignedUrlService {
         );
     }
 
-    private String generateKeyName(String folder, FilePropertiesRequest file){
-        if (file.key() == null) {
-            return 
-                folder == null ?
-                file.fileName() :
-                format("%s/%s", folder, file.fileName());
+    public String generateKeyName(String folder, FilePropertiesRequest file) {
+        int attempts = 0;
+        while (attempts < maxRetries) {
+            String uuid = UUID.randomUUID().toString();
+            String key = folder == null ?
+                    String.format("%s_%s", uuid, file.fileName()) :
+                    String.format("%s/%s_%s", folder, uuid, file.fileName());
+
+            try {
+                fileInfoValidator.validateUniqueKey(key);
+                return key;
+            } catch (ExistedS3FileKeyException e) {
+                attempts++;
+                log.warn("Key collision detected: {}. Retrying (attempt {}/{})", key, attempts, maxRetries);
+                try {
+                    TimeUnit.MILLISECONDS.sleep(retryDelayMillis);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException("Thread interrupted during retry delay", ie);
+                }
+            }
         }
 
-        return
-            folder == null ?
-            file.key() :
-            format("%s/%s", folder, file.key());
+        throw new RuntimeException("Failed to generate a unique key after " + maxRetries + " attempts");
     }
 
     public String generatePresignedGetUrl(FilePropertiesRequest file, String keyName){

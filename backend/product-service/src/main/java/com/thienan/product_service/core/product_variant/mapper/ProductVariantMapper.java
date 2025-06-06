@@ -51,6 +51,7 @@ public class ProductVariantMapper {
             .discount(productVariant.getDiscount())
             .slug(productVariant.getSlug())
             .soldQuantity(productVariant.getSoldQuantity())
+            .productVariantImages(productVariant.getImages())
             .productOption(ProductOptionResponse
                 .builder()
                 .id(productVariant.getProductOption().getId())

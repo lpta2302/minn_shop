@@ -38,7 +38,6 @@ public class ProductService {
     private final ProductVariantService productVariantService;
     private final ProductValidatorSteps productValidator;
 
-    //<editor-fold desc="Create methods">
     public Long createAndSave(ProductRequest productRequest){
         ValidatorPipeline<ProductRequest> validatorPipeline = new ValidatorPipeline<ProductRequest>()
             .add(productValidator.checkUniqueCode(ProductRequest::code));
@@ -56,9 +55,7 @@ public class ProductService {
 
         return productRepository.save(product).getId();
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Update methods">
     public Long updateProductInformation(Long id, @Valid ProductInformationRequest productInformationRequest) {
         ValidatorPipeline<ProductInformationRequest> validatorPipeline = new ValidatorPipeline<ProductInformationRequest>()
             .add(productValidator.checkUniqueCode(ProductInformationRequest::code));
@@ -106,9 +103,7 @@ public class ProductService {
 
         return productRepository.save(updatingProduct).getId();
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Query methods">
     public Product findById(Long id){
         return productRepository.findById(id)
             .orElseThrow(()-> new EntityNotFoundByIDException("Prodyct", id.toString()));
@@ -168,9 +163,7 @@ public class ProductService {
                 .toList()
         );
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Delete methods">
     public void softDeleteById(Long id) {
         productRepository.deleteById(id);
     }
@@ -187,5 +180,4 @@ public class ProductService {
         productVariantService.recoveryAllById(productVariantIds);
         return id;
     }
-    //</editor-fold>
 }

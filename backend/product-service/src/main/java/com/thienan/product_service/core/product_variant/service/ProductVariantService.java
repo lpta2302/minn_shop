@@ -13,6 +13,7 @@ import com.thienan.product_service.core.product_variant.dto.ProductVariantReques
 import com.thienan.product_service.core.product_variant.dto.ProductVariantResponse;
 import com.thienan.product_service.core.product_variant.entity.ProductOption;
 import com.thienan.product_service.core.product_variant.entity.ProductVariant;
+import com.thienan.product_service.core.product_variant.entity.ProductVariantImage;
 import com.thienan.product_service.core.product_variant.mapper.ProductVariantMapper;
 import com.thienan.product_service.core.product_variant.repository.ProductVariantRepository;
 import com.thienan.product_service.core.product_variant.validator.ProductVariantValidatorSteps;
@@ -31,6 +32,7 @@ public class ProductVariantService {
     private final ProductVariantMapper productVariantMapper;
     private final ProductOptionService productOptionService;
     private final ProductVariantValidatorSteps productVariantValidatorSteps;
+    private final ProductVariantImageService productVariantImageService;
 
     public ProductVariant createProductVariant(ProductVariantRequest productVariantRequest, Long productId){
         ValidatorPipeline<ProductVariantRequest> validatorPipeline =
@@ -40,11 +42,16 @@ public class ProductVariantService {
         
         ProductVariant productVariant = productVariantMapper.convertProductVariant(productVariantRequest);
         updateProductOption(productVariant, productVariantRequest.productOptionName());
+        List<ProductVariantImage> images = 
+            productVariantImageService.createProductVariantImages(
+                productVariantRequest.productVariantImageRequests());
+        
+        productVariant.setImages(images);
 
         return productVariant;
     }
 
-    // TODO: NEED VALIDATION
+    // TODO: NEED VALIDATE PRODUCT VARIANT
     public List<ProductVariant> createProductVariants(List<ProductVariantRequest> productVariantRequests) {
         Map<String, ProductOption> options = new HashMap<>();
         productOptionService
@@ -52,15 +59,18 @@ public class ProductVariantService {
                 productVariantRequests.stream().map(ProductVariantRequest::productOptionName).toList())
             .forEach(productOption -> options.put(productOption.getName(), productOption));
 
-
         return productVariantRequests.stream()
             .map(productVariantRequest -> {
                 ProductOption productOption = options.get(productVariantRequest.productOptionName()) == null ?
                     ProductOption.builder().name(productVariantRequest.productOptionName()).build() :
                     options.get(productVariantRequest.productOptionName());
 
+                List<ProductVariantImage> images = productVariantImageService
+                    .createProductVariantImages(productVariantRequest.productVariantImageRequests());
+
                 var productVariant = productVariantMapper.convertProductVariant(productVariantRequest);
                 productVariant.setProductOption(productOption);
+                productVariant.setImages(images);
 
                 return productVariant;
             })
@@ -84,8 +94,7 @@ public class ProductVariantService {
         ProductVariant newVariant = productVariantMapper
             .copyToProductVariant(updatingVariant);
 
-        ValidatorPipeline<ProductVariantRequest> validatorPipeline =
-            productVariantValidatorSteps.getProductVariantRequestValidator(updatingVariant.getProduct().getId());
+        ValidatorPipeline<ProductVariantRequest> validatorPipeline = new ValidatorPipeline<>();
 
         if (!Objects.equals(productVariantRequest.variantId(), updatingVariant.getVariantId())){
             validatorPipeline
@@ -100,16 +109,20 @@ public class ProductVariantService {
             newVariant.setSlug(productVariantRequest.slug());
         }
 
-        if (updatingVariant.getProductOption() != null
-            && !Objects.equals(updatingVariant.getProductOption().getName(), productVariantRequest.productOptionName())
+        if (!Objects.equals(updatingVariant.getProductOption().getName(), productVariantRequest.productOptionName())
         ){
             validatorPipeline
                 .add(productVariantValidatorSteps.hasUniqueProductAndProductOption(
                     newVariant.getProduct().getId(),
                     ProductVariantRequest::productOptionName));
             updateProductOption(newVariant, productVariantRequest.productOptionName());
-
         }
+
+        newVariant.setImages(
+            productVariantImageService.updateInProductVariant(
+                updatingVariant.getImages(),
+                productVariantRequest.productVariantImageRequests())
+            );
 
         validatorPipeline.add(
             productVariantValidatorSteps.hasDiscountAndPriceAfterAllSet(

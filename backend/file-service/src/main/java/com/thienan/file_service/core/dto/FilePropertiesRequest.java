@@ -4,7 +4,6 @@ import java.util.List;
 
 public record FilePropertiesRequest(
     int id,
-    String key,
     String fileName,
     List<Metadata> metadata
 ) {}

@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.thienan.file_service.core.dto.GenerateUploadPresignedUrlRequest;
 import com.thienan.file_service.core.dto.UploadPresignedUrlResponse;
-import com.thienan.file_service.core.dto.UploadRequest;
 import com.thienan.file_service.core.service.AWSPresignedUrlService;
 
 import jakarta.validation.Valid;
@@ -23,7 +23,7 @@ public class AWSPresignedUrlController {
     
     @PostMapping
     public ResponseEntity<UploadPresignedUrlResponse> getUploadPresignedUrl(
-        @RequestBody @Valid UploadRequest request
+        @RequestBody @Valid GenerateUploadPresignedUrlRequest request
     ) { 
         return ResponseEntity.ok(awsPresignedUrlService.generatePresignedUploadUrl(request));
     }

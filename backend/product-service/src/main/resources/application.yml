@@ -21,7 +21,14 @@ spring:
     password: ${spring.datasource.password}
     url: ${spring.datasource.url}
   kafka:
-    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:http://localhost9092}
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      auto-offset-reset: earliest
+      group-id: product-variant-image
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.type.mapping: file-info:com.thienan.product_service.kafka.file_info.FileInfo
 springdoc:
   swagger-ui:
     operations-sorter: method
@@ -31,11 +38,17 @@ application:
     category-service:
       name: category-service
       url: ${APPLICATION_CONFIG_CATEGORY_SERVICE_URL:http://localhost:8060}/api/v1/categories
-
+eureka:
+  client:
+    enabled: false
+app:
+  kafka:
+    topics:
+      product-variant-image:
+        created-product-variant-image: created-product-variant-image
+    group-id: 
+        product-variant-image: product-variant-image
 server:
   port: 8070
   servlet:
     context-path: /api/v1
-eureka:
-  client:
-    enabled: false

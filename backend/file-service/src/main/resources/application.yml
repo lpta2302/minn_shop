@@ -26,7 +26,8 @@ spring:
       properties:
         spring:
           json:
-            type-mapping: file-info:com.thienan.file_service.core.entity.FileInfo
+            type:
+              mapping: file-info:com.thienan.file_service.core.entity.FileInfo
 eureka:
   client:
     enabled: false
@@ -38,3 +39,7 @@ aws:
 kafka:
   topics:
     created-product-variant-image: created-product-variant-image
+app:
+  aws-generate-key:
+    maxRetries: 10
+    retryDelayMillis: 1000

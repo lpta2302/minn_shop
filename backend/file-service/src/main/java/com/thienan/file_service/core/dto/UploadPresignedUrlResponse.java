@@ -11,11 +11,4 @@ import lombok.Builder;
 public record UploadPresignedUrlResponse(
     List<PresignedUrl> presignedUrls,
     PresignedUrl presignedUrl
-) { 
-    public UploadPresignedUrlResponse(List<PresignedUrl> urls){
-        this(urls, null);
-    }
-    public UploadPresignedUrlResponse(PresignedUrl url){
-        this(null, url);
-    }
-}
+) { }
