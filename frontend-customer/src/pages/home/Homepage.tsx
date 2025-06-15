@@ -8,14 +8,8 @@ function Homepage() {
                 <MainCarousel/>
             </section>
             <section className="px-page_x">
-                <h1 className="
-                    text-3xl
-                    font-semibold
-                ">
-                    Sale
-                </h1>
                 <div>
-                    <ProductCarousel/>
+                    <ProductCarousel title="Sale"/>
                 </div>
             </section>
         </div>

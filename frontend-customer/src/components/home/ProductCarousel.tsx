@@ -3,13 +3,19 @@ import { CarouselContent, CarouselItem, Carousel, type CarouselApi } from "../ui
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from "../shared/ProductCard"
 import { Button } from "../ui/button"
+import { cn } from "@/lib/utils"
 
 interface CanScroll {
     canScrollNext: boolean
     canScrollPrev: boolean
 }
 
-function ProductCarousel() {
+interface ProductCarouselProps{
+    title?: string
+    titleClassname?:string
+}
+
+function ProductCarousel({title, titleClassname}:ProductCarouselProps) {
     const [api, setApi] = useState<CarouselApi>()
     const [canScroll, setCanScroll] = useState<CanScroll>({ canScrollNext: true, canScrollPrev: true })
 
@@ -41,6 +47,12 @@ function ProductCarousel() {
 
     return (
         <div>
+            {
+                title &&
+                <h1 className={cn("text-3xl font-semibold", titleClassname)}>
+                    {title}
+                </h1>
+            }
             <div className="flex justify-end space-x-2 mb-2">
                 <Button
                     data-slot="carousel-prev"
