@@ -7,46 +7,86 @@ import {
 } from "../ui/card"
 import { Button } from "../ui/button"
 import { HeartIcon } from "lucide-react"
-import { useState } from "react"
+import { useCallback, useMemo, useState } from "react"
+import type { ProductVariant, ProductVariantImage } from "@/types/productVariant"
+import { toVND } from "@/lib/stringUtils"
 
-const imageUrl = "https://static.nike.com/a/images/c_limit,w_592,f_auto/t_product_v1/ff58ef98-c8a1-43de-bba2-770062c58622/ENT+W+NK+DF+STAD+JSY+SS+AW.png"
-const discount = Math.random() % 2 == 0
-function ProductCard() {
+function ProductCard({ product }: { product: ProductVariant }) {
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const navigate = useNavigate()
+
+    const getThumbnail = useCallback(
+        (images: ProductVariantImage[]) => {
+            if (images.length < 0) {
+                return
+            }
+
+            const thumbnail = images.find(image => image.isThumbnail)
+            if (thumbnail) {
+                return thumbnail
+            } else {
+                return images[0]
+            }
+        },
+        [],
+    )
+
+    const { discount, finalPrice } = useMemo(() => {
+        const percentDiscountPrice: number = product.originalPrice * (1 - product.discount)
+        if (percentDiscountPrice <= product.price) {
+            return { discount: product.discount, finalPrice: percentDiscountPrice }
+        } if (product.originalPrice <= product.price || product.price === 0) {
+            return { discount: 0, finalPrice: product.originalPrice }
+        } else {
+            return { discount: Math.round(product.originalPrice / product.price - 1), finalPrice: product.price }
+        }
+
+    }, [product?.discount, product?.originalPrice, product?.price])
+
+
 
     return (
         <Card
             className="gap-2 pt-0 cursor-pointer 
                 [&:has(:not(*:hover))]:hover:opacity-80"
             onClick={() => {
-                navigate("/product/abc", {state: {slug: 'abc', id: 1}})
+                navigate("/product/abc", { state: { slug: product.slug, id: product.id } })
             }
             }
         >
             <CardHeader className="p-0">
-                <img
-                    src={imageUrl}
-                    alt="variant"
-                />
+                {
+                    product.productVariantImages.length > 0 ?
+                        <img
+                            src={getThumbnail(product.productVariantImages)?.url}
+                            alt={product.name}
+                        /> :
+                        <div className="bg-white-smoke" />
+                }
             </CardHeader>
             <CardContent
                 className="
                     px-2
                 "
             >
-                <h4 className="text-sm">Name</h4>
-                <p className="text-xs text-subtitle">Short description</p>
-                <div className="flex space-x-2">
+                <h4 className="text-md font-medium">Name</h4>
+                <p className="text-sm text-subtitle">Short description</p>
+                <div className="flex space-x-2 w-full justify-end">
                     {
                         discount &&
-                        <p className="line-through text-subtitle">1.100.000đ</p>
+                        <p className="line-through text-subtitle">
+                            {toVND(product.originalPrice)}
+                        </p>
                     }
                     <p
-                        className={`
-                            ${discount && 'red-500'}  
+                        className={`font-semibold
+                            ${discount && 'text-red-600'}  
                         `}
-                    >1.100.000đ</p>
+                    >
+                        {
+                            toVND(finalPrice)
+                        }
+                    </p>
                 </div>
             </CardContent>
             <CardFooter

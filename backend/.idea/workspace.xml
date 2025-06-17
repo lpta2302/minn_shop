@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="26936c89-2a9c-48a9-b3c0-a47edc2ee97a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../frontend-customer/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-customer/src/tanstack/api/crud.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/../.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config-server/src/main/resources/configurations/gateway.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/src/main/resources/configurations/gateway.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/components/home/ProductCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/components/home/ProductCarousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/components/shared/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/components/shared/ProductCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/pages/home/Homepage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/pages/home/Homepage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/pages/product/ProductDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/pages/product/ProductDetail.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/pages/shared/navbar/MainTopNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/pages/shared/navbar/MainTopNavigation.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/tanstack/query.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/vite-env.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/vite.config.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;lpta2302&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/lpta2302/minn_shop.git&quot;,
+    &quot;accountId&quot;: &quot;de011ef6-17c9-47a7-a8b2-45d9c9a7c0a7&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2ya6vZBipar87xVYfT9YmHmyr9d" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;client-fe&quot;
+  }
+}</component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="26936c89-2a9c-48a9-b3c0-a47edc2ee97a" name="Changes" comment="" />
+      <created>1750060568304</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750060568304</updated>
+    </task>
+    <servers />
+  </component>
+</project>

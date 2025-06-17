@@ -1,4 +1,3 @@
-import ProductCarousel from "@/components/home/ProductCarousel"
 import ProductDetailImageCarousel from "@/components/product/ProductDetailImageCarousel"
 import Loading from "@/components/shared/Loading"
 import { Button } from "@/components/ui/button"
@@ -140,12 +139,12 @@ function ProductDetail() {
                     </div>
                 </div>
             </section>
-            <section className="mt-12">
+            {/* <section className="mt-12">
                 <ProductCarousel 
                     title="Related Products"
                     titleClassname="font-light"
                 />
-            </section>
+            </section> */}
         </div>
     )
 }

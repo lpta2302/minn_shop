@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from "../shared/ProductCard"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
+import type { ProductVariant } from "@/types/productVariant"
 
 interface CanScroll {
     canScrollNext: boolean
@@ -13,13 +14,12 @@ interface CanScroll {
 interface ProductCarouselProps{
     title?: string
     titleClassname?:string
+    products: ProductVariant[]
 }
 
-function ProductCarousel({title, titleClassname}:ProductCarouselProps) {
+function ProductCarousel({title, titleClassname, products}:ProductCarouselProps) {
     const [api, setApi] = useState<CarouselApi>()
     const [canScroll, setCanScroll] = useState<CanScroll>({ canScrollNext: true, canScrollPrev: true })
-
-    const slides = Array.from({ length: 5 })
 
     const scroll = useCallback((isScrollNext: boolean) => {
         if (!api) {
@@ -82,9 +82,9 @@ function ProductCarousel({title, titleClassname}:ProductCarouselProps) {
                 className="w-full relative"
             >
                 <CarouselContent>
-                    {slides.map((_, index) => (
+                    {products.map((product, index) => (
                         <CarouselItem className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4" key={index}>
-                            <ProductCard />
+                            <ProductCard product={product} />
                         </CarouselItem>
                     ))}
                 </CarouselContent>
