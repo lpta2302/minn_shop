@@ -15,6 +15,7 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ProductVariantResponse(
     Long id,
+    Long productId,
     String variantId,
     String slug,
     String name,

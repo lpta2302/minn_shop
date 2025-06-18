@@ -38,9 +38,7 @@ application:
     category-service:
       name: category-service
       url: ${APPLICATION_CONFIG_CATEGORY_SERVICE_URL:http://localhost:8060}/api/v1/categories
-eureka:
-  client:
-    enabled: false
+
 app:
   kafka:
     topics:

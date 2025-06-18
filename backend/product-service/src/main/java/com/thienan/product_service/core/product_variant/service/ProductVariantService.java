@@ -179,6 +179,18 @@ public class ProductVariantService {
         );
     }
 
+    public PageResponse<ProductVariantResponse> findAllDisplayed(Pageable pageable) {
+        var pageResult = productVariantRepository.findAllDisplayed(pageable);
+        return PageResponse.fromPage(
+            pageResult,
+            pageResult.stream()
+                .map((productVariant) -> 
+                    productVariantMapper.convertToProductVariantResponse(productVariant, null)    
+                )
+                .toList()
+        );
+    }
+
     // TODO: not be implemented
     public PageResponse<ProductVariantResponse> findAllByCategory(Pageable pageable, Long categoryId) {
         return null;

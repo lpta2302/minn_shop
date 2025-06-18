@@ -1,19 +1,31 @@
 spring:
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETEp
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: false
       routes:
-      - id: category-service
-        uri: lb://category-service
-        predicates:
-        - Path=/categories/**
-      - id: product-service
-        uri: lb://product-service
-        predicates:
-        - Path=/products/**
-      - id: product-variant-service
-        uri: lb://product-service
-        predicates:
-        - Path=/product-variants/**
+        - id: category-service
+          uri: lb://category-service
+          predicates:
+            - Path=/api/v1/categories/**
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/products/**
+        - id: product-variant-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/product-variants/**
 
 server:
   port: 8222
