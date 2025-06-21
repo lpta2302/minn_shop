@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: account-service
+  config:
+    import: optional:configserver:${SPRING_CONFIG_IMPORT:http://localhost:8888}
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://${SPRING_DATASOURCE_URL:localhost:5432}/account_db
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: false
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+server:
+  port: 8062
+  servlet:
+    context-path: /api/v1

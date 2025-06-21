@@ -23,9 +23,6 @@ spring:
 springdoc:
   swagger-ui:
     operations-sorter: method
-eureka:
-  client:
-    enabled: false
 application:
   security:
     secretKey: 3292a479c01428d3f4d9129f46d4165a809452ec4a7359e889e14d84d648ae23c5f6b7e8b395572ba4b697f2e9167dab

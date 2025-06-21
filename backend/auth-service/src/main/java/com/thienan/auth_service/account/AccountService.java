@@ -30,11 +30,12 @@ public class AccountService {
         return accountRepository.save(newAccount);
     }
 
-    public AccountDetail findAccountByEmail(String email){
+    public Account findByEmail(String email){
         var account = accountRepository.findByEmail(email)
             .orElseThrow(()->new EntityNotFoundException(
                 String.format("Not found account with email: %s", email)
             ));
         return account;
     }
+
 }

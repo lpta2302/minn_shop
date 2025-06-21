@@ -47,8 +47,4 @@ public abstract class BaseEntity {
     @LastModifiedDate
     @Schema(accessMode=READ_ONLY)
     private LocalDate modifiedDate;
-
-    @Column(name = "deleted", insertable = false, updatable = false)
-    @JsonIgnore
-    private boolean deleted;
 }

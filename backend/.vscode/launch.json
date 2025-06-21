@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AccountServiceApplication",
+            "request": "launch",
+            "mainClass": "com.thienan.account_service.AccountServiceApplication",
+            "projectName": "account-service"
+        },
+        {
+            "type": "java",
             "name": "FileServiceApplication",
             "request": "launch",
             "mainClass": "FileServiceApplication",
@@ -26,6 +33,17 @@
             "projectName": "file-service",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CustomerServiceApplication<account-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.thienan.customer_service.CustomerServiceApplication",
+            "projectName": "account-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=41825 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=account-service"
         }
     ]
 }

@@ -14,6 +14,18 @@ spring:
             allowedHeaders: "*"
             allowCredentials: false
       routes:
+        - id: test-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/test/**
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/api/v1/accounts/**
         - id: category-service
           uri: lb://category-service
           predicates:
@@ -27,5 +39,13 @@ spring:
           predicates:
             - Path=/api/v1/product-variants/**
 
+application:
+  openFeign:
+    auth-service:
+      name: auth-service
+      url: ${APPLICATION_CONFIG_AUTH_SERVICE_URL:http://localhost:8222}/api/v1/auth
+logging:
+  level:
+    org.springframework.security: DEBUG
 server:
   port: 8222
