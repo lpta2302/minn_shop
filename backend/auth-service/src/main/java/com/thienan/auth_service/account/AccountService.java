@@ -19,6 +19,12 @@ public class AccountService {
 
     @Transactional
     public Account registerAccount(RegisterRequest registerRequest){
+        var isExistedEmail = accountRepository.existsByEmail(registerRequest.email());
+
+        if (isExistedEmail) {
+            throw new IllegalArgumentException("Existed email");
+        }
+
         var newAccount = Account.builder()
             .password(passwordEncoder.encode(registerRequest.password()))
             .email(registerRequest.email())

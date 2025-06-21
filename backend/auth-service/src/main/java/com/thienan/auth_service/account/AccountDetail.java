@@ -1,7 +1,11 @@
 package com.thienan.auth_service.account;
 
+import lombok.Builder;
+
+@Builder
 public record  AccountDetail(
     String email,
-    String password,
-    String fullname
+    String fullname,
+    Role role,
+    AccountStatus accountStatus
 ) {}

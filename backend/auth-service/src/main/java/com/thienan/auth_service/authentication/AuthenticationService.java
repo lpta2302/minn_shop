@@ -3,6 +3,7 @@ package com.thienan.auth_service.authentication;
 import org.springframework.stereotype.Service;
 
 import com.thienan.auth_service.account.Account;
+import com.thienan.auth_service.account.AccountDetail;
 import com.thienan.auth_service.account.AccountService;
 import com.thienan.auth_service.handler.exceptions.common.BadRequestException;
 import com.thienan.auth_service.token.JwtTokenService;
@@ -56,7 +57,13 @@ public class AuthenticationService {
         if (jwtTokenService.isTokenValid(jwtToken, account) && isTokenValid) {
           return TokenValidatingResponse.builder()
             .isValid(isTokenValid)
-            .account(account)
+            .account(AccountDetail.builder()
+                .fullname(account.getFullname())
+                .email(account.getEmail())
+                .role(account.getRole())
+                .accountStatus(account.getStatus())
+                .build()
+            )
             .build();
           
         //     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
