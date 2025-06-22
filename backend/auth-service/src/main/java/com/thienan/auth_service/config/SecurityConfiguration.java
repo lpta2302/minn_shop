@@ -19,7 +19,8 @@ public class SecurityConfiguration {
         "/auth/**",
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/swagger-ui.html"
+        "/swagger-ui.html",
+        "/account-profiles/**"
     };
     private final SecurityFilter securityFilter;
     
@@ -29,9 +30,9 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(req ->
                     req.requestMatchers(WHITE_LIST_URL)
-                            .permitAll()
-                            .anyRequest()
-                            .authenticated()
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             // .authenticationProvider(authenticationProvider)

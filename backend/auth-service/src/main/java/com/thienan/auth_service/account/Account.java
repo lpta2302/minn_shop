@@ -36,15 +36,13 @@ public class Account extends BaseEntity implements UserDetails {
     @Size(min = 6, message = "Password must have at least 6 characters")
     private String password;
 
-    private String fullname;
-
     @Enumerated(EnumType.STRING)
     private AccountStatus status;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="account")
     private List<Token> tokens;
 
     @Override

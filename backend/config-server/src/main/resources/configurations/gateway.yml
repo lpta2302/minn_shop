@@ -26,6 +26,10 @@ spring:
           uri: lb://account-service
           predicates:
             - Path=/api/v1/accounts/**
+        - id: account-profiles-service
+          uri: lb://account-service
+          predicates:
+            - Path=/api/v1/account-profiles/**
         - id: category-service
           uri: lb://category-service
           predicates:
@@ -38,11 +42,9 @@ spring:
           uri: lb://product-service
           predicates:
             - Path=/api/v1/product-variants/**
-
 application:
   openFeign:
     auth-service:
-      name: auth-service
       url: ${APPLICATION_CONFIG_AUTH_SERVICE_URL:http://localhost:8222}/api/v1/auth
 logging:
   level:

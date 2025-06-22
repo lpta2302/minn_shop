@@ -58,7 +58,7 @@ public class AuthenticationService {
           return TokenValidatingResponse.builder()
             .isValid(isTokenValid)
             .account(AccountDetail.builder()
-                .fullname(account.getFullname())
+                .id(account.getId())
                 .email(account.getEmail())
                 .role(account.getRole())
                 .accountStatus(account.getStatus())

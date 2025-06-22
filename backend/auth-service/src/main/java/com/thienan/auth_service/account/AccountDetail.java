@@ -4,8 +4,8 @@ import lombok.Builder;
 
 @Builder
 public record  AccountDetail(
+    long id,
     String email,
-    String fullname,
     Role role,
     AccountStatus accountStatus
 ) {}

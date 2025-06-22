@@ -1,5 +1,6 @@
 package com.thienan.gateway.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ public class WebClientConfiguration {
     private String authServiceUrl;
    
     @Bean
+    @Qualifier("authWebClient")
     public WebClient authWebClient(WebClient.Builder builder) {
         return builder
             .baseUrl(authServiceUrl)

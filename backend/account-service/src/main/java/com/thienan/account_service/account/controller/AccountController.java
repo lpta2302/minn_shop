@@ -1,15 +1,12 @@
 package com.thienan.account_service.account.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thienan.account_service.account.dto.AccountDetail;
-import com.thienan.account_service.account.dto.RegisterRequest;
+import com.thienan.account_service.account.dto.AccountProfileRequest;
 import com.thienan.account_service.account.service.AccountService;
 
 import jakarta.validation.Valid;
@@ -18,26 +15,26 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/accounts")
+@RequestMapping("/account-profiles")
 public class AccountController {
 
     private final AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<String> register(
+    public ResponseEntity<Long> create(
         @Valid
         @RequestBody
-        RegisterRequest request
+        AccountProfileRequest request
     ){
-        return ResponseEntity.ok(accountService.registerAccount(request));
+        return ResponseEntity.ok(accountService.create(request));
     }
 
-    @GetMapping("/email/{email}")
-    public ResponseEntity<AccountDetail> findAccountByEmail(
-        @PathVariable
-        String email
-    ) {
-        return ResponseEntity.ok(accountService.findAccountByEmail(email));
-    }
+    // @GetMapping("/email/{email}")
+    // public ResponseEntity<AccountDetail> findAccountByEmail(
+    //     @PathVariable
+    //     String email
+    // ) {
+    //     return ResponseEntity.ok(accountService.findAccountByEmail(email));
+    // }
     
 }

@@ -2,47 +2,24 @@ package com.thienan.account_service.account.service;
 
 import org.springframework.stereotype.Service;
 
-import com.thienan.account_service.account.dto.AccountDetail;
-import com.thienan.account_service.account.dto.RegisterRequest;
-import com.thienan.account_service.account.entity.Account;
-import com.thienan.account_service.account.repository.AccountRepository;
-import com.thienan.account_service.customer.entity.Customer;
+import com.thienan.account_service.account.dto.AccountProfileRequest;
+import com.thienan.account_service.account.enumeration.Role;
 import com.thienan.account_service.customer.service.CustomerService;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class AccountService {
 
-    private final AccountRepository accountRepository;
-
     private final CustomerService customerService;
+    
+    public Long create(AccountProfileRequest request) {
+        if (request.account().getRole().equals(Role.CUSTOMER)) {
+            return customerService.createAndSave(request); 
+        }
 
-    @Transactional
-    public String registerAccount(RegisterRequest request){
-        Customer newCustomer = customerService.createAndSave(
-            Customer.builder().fullname(request.fullname()).build()
-        );
-
-        Account account = Account
-            .builder()
-            .email(request.email())
-            .password(request.password())
-            .build();
-
-        accountRepository.save(account);
-        newCustomer.setAccount(account);
-
-        return null;
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
-
-    public AccountDetail findAccountByEmail(String email){
-        var account = accountRepository.findByEmail(email)
-            .orElseThrow(()->new EntityNotFoundException(
-                String.format("Not found account with email: %s", email)
-            ));
-        return account;
-    }
+    
 }

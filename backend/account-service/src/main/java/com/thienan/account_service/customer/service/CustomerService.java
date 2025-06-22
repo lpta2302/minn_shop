@@ -1,11 +1,12 @@
 package com.thienan.account_service.customer.service;
 
 import org.springframework.stereotype.Service;
-import com.thienan.account_service.account.entity.Account;
-import com.thienan.account_service.customer.dto.CustomerRequest;
+
+import com.thienan.account_service.account.dto.AccountProfileRequest;
 import com.thienan.account_service.customer.entity.Customer;
 import com.thienan.account_service.customer.mapper.CustomerMapper;
 import com.thienan.account_service.customer.repository.CustomerRepository;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -16,7 +17,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    public Long createAndSave(CustomerRequest request){
+    public Long createAndSave(AccountProfileRequest request){
         return customerRepository.save(
             customerMapper.convertToCustomer(request))
             .getId();

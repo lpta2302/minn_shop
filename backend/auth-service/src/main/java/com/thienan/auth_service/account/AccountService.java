@@ -15,6 +15,8 @@ public class AccountService {
     
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AccountMapper accountMapper;
+    private final AccountProfileClient accountProfileClient;
 
 
     @Transactional
@@ -28,12 +30,20 @@ public class AccountService {
         var newAccount = Account.builder()
             .password(passwordEncoder.encode(registerRequest.password()))
             .email(registerRequest.email())
-            .fullname(registerRequest.fullname())
             .role(registerRequest.role())
             .status(AccountStatus.INACTIVE)
             .build();
 
-        return accountRepository.save(newAccount);
+        var savedAccount = accountRepository.save(newAccount);
+        var accountRequest = AccountProfileRequest.builder()
+            .account(accountMapper.convertToAccountDetail(newAccount))
+            .firstName(registerRequest.firstName())
+            .lastName(registerRequest.lastName())
+            .build();
+
+        accountProfileClient.createProfile(accountRequest);
+
+        return savedAccount;
     }
 
     public Account findByEmail(String email){

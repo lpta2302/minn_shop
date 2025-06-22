@@ -1,5 +1,6 @@
 package com.thienan.gateway.auth;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -30,6 +31,11 @@ public class JwtAuthenticationFilter implements WebFilter {
         final String jwt;
 
         if (exchange.getRequest().getPath().toString().startsWith("/api/v1/auth")) {
+            return chain.filter(exchange);
+        } else if (
+            exchange.getRequest().getPath().toString().startsWith("/api/v1/account-profiles") &&
+            exchange.getRequest().getMethod().equals(HttpMethod.POST)
+        ) {
             return chain.filter(exchange);
         }
 
