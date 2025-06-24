@@ -18,8 +18,8 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
 
     public Long createAndSave(AccountProfileRequest request){
-        return customerRepository.save(
-            customerMapper.convertToCustomer(request))
+        Customer customer = customerMapper.convertToCustomer(request);
+        return customerRepository.save(customer)
             .getId();
     }
 

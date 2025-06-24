@@ -79,4 +79,12 @@ public interface StockRepository extends JpaRepository<Stock, StockId> {
         """, nativeQuery = true)
     @Modifying
     void hardDeleteById(Long productVariantId, Long stockOptionValueId);
+
+    @Query("""
+        select st.quantity
+        from Stock st
+        where st.stockId.productVariant.id = :productVariantId and
+        st.stockId.stockOptionValue.id = :stockOptionValueId
+    """)
+    Optional<Integer> checkStockAvailability(Long productVariantId, Long stockOptionValueId, Long quantity);
 }

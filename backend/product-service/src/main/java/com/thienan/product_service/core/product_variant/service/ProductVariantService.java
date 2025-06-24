@@ -195,4 +195,12 @@ public class ProductVariantService {
     public PageResponse<ProductVariantResponse> findAllByCategory(Pageable pageable, Long categoryId) {
         return null;
     }
+
+    public ProductVariantResponse findProductVariantResponseById(long productVariantId) {
+        var variant = productVariantRepository.findProductVariantFullDetailById(productVariantId)
+            .orElseThrow(()-> new EntityNotFoundByIDException("Product variant", String.valueOf(productVariantId)));
+
+        return productVariantMapper
+            .convertToProductVariantResponse(variant);
+    }
 }

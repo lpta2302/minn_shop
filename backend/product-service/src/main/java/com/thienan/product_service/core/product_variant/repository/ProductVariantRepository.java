@@ -1,6 +1,7 @@
 package com.thienan.product_service.core.product_variant.repository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,4 +33,13 @@ public interface ProductVariantRepository extends JpaRepository<ProductVariant, 
     boolean existsBySlug(String slug);
 
     boolean existsByProduct_IdAndProductOption_Name(Long productId, String productOptionName);
+
+
+    @Query("""
+        select pv
+        from ProductVariant pv
+        join pv.stocks st
+        where pv.id = :productVariantId     
+    """)
+    Optional<ProductVariant> findProductVariantFullDetailById(long productVariantId);
 }

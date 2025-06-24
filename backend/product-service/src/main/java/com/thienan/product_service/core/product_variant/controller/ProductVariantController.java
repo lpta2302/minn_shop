@@ -51,6 +51,17 @@ public class ProductVariantController {
         return ResponseEntity.ok(productVariantService.findAllDisplayed(pageable));
     }
     
+    @GetMapping("/{productVariantId}")
+    public ResponseEntity<ProductVariantResponse> findFullDetailById(
+        @PathVariable
+        long productVariantId    
+    ) {
+        return ResponseEntity.ok(
+            productVariantService.findProductVariantResponseById(productVariantId)
+        );
+    }
+    
+
     @GetMapping("/categories/{categoryId}")
     public ResponseEntity<PageResponse<ProductVariantResponse>> findAllByCategory(
         @ParameterObject

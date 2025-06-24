@@ -23,6 +23,15 @@ spring:
 springdoc:
   swagger-ui:
     operations-sorter: method
+application:
+  config: 
+    open-api: 
+      security:
+        bearer-token: bearerAuth
+  openFeign:
+    stock-service:
+      name: stock-service
+      url: ${APPLICATION_CONFIG_CATEGORY_SERVICE_URL:http://localhost:8070}/api/v1/stocks
 server:
   port: 8062
   servlet:

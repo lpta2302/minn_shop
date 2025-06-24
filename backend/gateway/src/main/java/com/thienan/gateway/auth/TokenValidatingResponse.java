@@ -5,5 +5,6 @@ import com.thienan.gateway.user.Account;
 
 public record TokenValidatingResponse(
     boolean isValid,
-    Account account
+    Account account,
+    Long accountProfile
 ) {}

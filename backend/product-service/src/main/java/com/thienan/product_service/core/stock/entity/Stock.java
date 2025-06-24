@@ -2,13 +2,20 @@ package com.thienan.product_service.core.stock.entity;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.type.TrueFalseConverter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.thienan.product_service.core.product_variant.entity.ProductVariant;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -27,6 +34,13 @@ import lombok.Setter;
 @Table(name = "stocks")
 @SoftDelete(columnName="deleted", converter= TrueFalseConverter.class)
 public class Stock {
+    public Stock(ProductVariant productVariant, StockOptionValue stockOptionValue) {
+        this.stockId = StockId.builder()
+            .productVariant(productVariant)
+            .stockOptionValue(stockOptionValue)
+            .build();
+    }
+
     @EmbeddedId
     private StockId stockId;
 
@@ -35,7 +49,7 @@ public class Stock {
     private String sku;
 
     @Version
-    private int version;
+    private Long version;
 
     @Column(updatable = false, nullable = false)
     @CreatedDate

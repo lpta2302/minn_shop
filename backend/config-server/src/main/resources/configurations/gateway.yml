@@ -22,6 +22,7 @@ spring:
           uri: lb://auth-service
           predicates:
             - Path=/api/v1/auth/**
+
         - id: account-service
           uri: lb://account-service
           predicates:
@@ -30,10 +31,16 @@ spring:
           uri: lb://account-service
           predicates:
             - Path=/api/v1/account-profiles/**
+        - id: cart-service
+          uri: lb://account-service
+          predicates:
+            - Path=/api/v1/carts/**
+
         - id: category-service
           uri: lb://category-service
           predicates:
             - Path=/api/v1/categories/**
+
         - id: product-service
           uri: lb://product-service
           predicates:
@@ -42,6 +49,10 @@ spring:
           uri: lb://product-service
           predicates:
             - Path=/api/v1/product-variants/**
+        - id: stock-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/stocks/**
 application:
   openFeign:
     auth-service:
