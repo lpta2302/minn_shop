@@ -21,7 +21,7 @@ public record ProductVariantResponse(
     String name,
     BigDecimal price,
     BigDecimal originalPrice,
-    Float finalPrice,
+    BigDecimal finalPrice,
     float discount,
     int soldQuantity,
     List<ProductVariantImage> productVariantImages,

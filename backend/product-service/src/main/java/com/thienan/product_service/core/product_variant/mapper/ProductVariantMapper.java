@@ -8,6 +8,7 @@ import com.thienan.product_service.core.product_variant.dto.ProductOptionRespons
 import com.thienan.product_service.core.product_variant.dto.ProductVariantRequest;
 import com.thienan.product_service.core.product_variant.dto.ProductVariantResponse;
 import com.thienan.product_service.core.product_variant.entity.ProductVariant;
+import com.thienan.product_service.core.product_variant.utils.PriceCalculator;
 import com.thienan.product_service.core.stock.dto.StockResponse;
 import com.thienan.product_service.core.stock.entity.Stock;
 import com.thienan.product_service.core.stock.mapper.StockMapper;
@@ -49,6 +50,8 @@ public class ProductVariantMapper {
                     .findFirst()
                     .orElse(null);
         var thumbnailUrl = thumbnail == null ? null : thumbnail.getUrl();
+
+        var finalPrice = PriceCalculator.calculateFinalPrice(productVariant);
         
         return ProductVariantResponse
             .builder()
@@ -59,6 +62,7 @@ public class ProductVariantMapper {
             .price(productVariant.getPrice())
             .originalPrice(productVariant.getOriginalPrice())
             .discount(productVariant.getDiscount())
+            .finalPrice(finalPrice)
             .slug(productVariant.getSlug())
             .soldQuantity(productVariant.getSoldQuantity())
             .productVariantImages(productVariant.getImages())

@@ -65,7 +65,7 @@ public class ProductVariant extends BaseEntity {
     private BigDecimal originalPrice;
 
     @PositiveOrZero(message="discount must be positive or zero")
-    private float discount;
+    private Float discount;
 
     @PositiveOrZero(message="sold quantity must be positive or zero")
     private int soldQuantity;
