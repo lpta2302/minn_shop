@@ -21,9 +21,11 @@ public record ProductVariantResponse(
     String name,
     BigDecimal price,
     BigDecimal originalPrice,
+    Float finalPrice,
     float discount,
     int soldQuantity,
     List<ProductVariantImage> productVariantImages,
+    String thumbnail,
     List<StockResponse> stocks,
     ProductOptionResponse productOption,
     ProductVariantStatus status

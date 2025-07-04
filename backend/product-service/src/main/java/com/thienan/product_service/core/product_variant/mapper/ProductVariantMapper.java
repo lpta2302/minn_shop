@@ -41,6 +41,15 @@ public class ProductVariantMapper {
     }
 
     public ProductVariantResponse convertToProductVariantResponse(ProductVariant productVariant, List<StockResponse> stockResponses) {
+        var thumbnail = productVariant
+                    .getImages()
+                    .stream()
+                    .filter(
+                        image->image.isThumbnail())
+                    .findFirst()
+                    .orElse(null);
+        var thumbnailUrl = thumbnail == null ? null : thumbnail.getUrl();
+        
         return ProductVariantResponse
             .builder()
             .id(productVariant.getId())
@@ -53,6 +62,9 @@ public class ProductVariantMapper {
             .slug(productVariant.getSlug())
             .soldQuantity(productVariant.getSoldQuantity())
             .productVariantImages(productVariant.getImages())
+            .thumbnail(
+                thumbnailUrl
+            )
             .productOption(ProductOptionResponse
                 .builder()
                 .id(productVariant.getProductOption().getId())
@@ -74,6 +86,7 @@ public class ProductVariantMapper {
         return ProductVariant
             .builder()
             .id(oldProductVariant.getId())
+       
             .version(oldProductVariant.getVersion())
             .variantId(oldProductVariant.getVariantId())
             .name(oldProductVariant.getName())

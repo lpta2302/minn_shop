@@ -31,17 +31,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "customers")
 public class Customer extends BaseEntity {
-    @Override
-    @Column(name = "id") 
-    public Long getId() {
-        return super.getId(); 
-    }
-
-    @Override
-    public void setId(Long id) {
-        super.setId(id);
-    }
-
     @Size(min=2, max=200, message="first name must have 2 - 200 characters")
     String firstName;
     @Size(min=2, max=200, message="last name must have 2 - 200 characters")

@@ -2,9 +2,10 @@ package com.thienan.account_service.cart.service;
 
 import org.springframework.stereotype.Service;
 
-import com.thienan.account_service.cart.cart.CartRepository;
+import com.thienan.account_service.cart.dto.CartResponse;
 import com.thienan.account_service.cart.entity.Cart;
 import com.thienan.account_service.cart.entity.CartItem;
+import com.thienan.account_service.cart.repository.CartRepository;
 import com.thienan.account_service.handler.exceptions.common.EntityNotFoundByIDException;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -16,18 +17,24 @@ public class CartService {
     private final CartRepository cartRepository;
     private final CartItemService cartItemService;
 
-
     public void validateCartItem(CartItem cartItem, Cart cart){
         boolean isExisted = cart.getItems()
             .stream()
             .anyMatch(item-> 
-                item.getProductVariantId().equals(cartItem.getProductVariantId()) &&
-                item.getStockOptionValueId().equals(cartItem.getStockOptionValueId()));
+                item.getProductVariant().id().equals(cartItem.getId()) &&
+                item.getStockOptionValue().id() == cartItem.getStockOptionValue().id());
         if (isExisted) {
             throw new IllegalArgumentException("Existed cart item but not have id in path variable");
         }
 
-        cartItemService.checkProductAvailability(cartItem.getProductVariantId(), cartItem.getStockOptionValueId(), cartItem.getQuantity());
+        var checkResponse = 
+            cartItemService
+                .checkProductAvailability(
+                    cartItem.getProductVariant().id(), 
+                    cartItem.getStockOptionValue().id(), cartItem.getQuantity());
+        
+        cartItem.setProductVariant(checkResponse.productVariant());
+        cartItem.setStockOptionValue(checkResponse.stockOptionValue());
     }
 
     public Long updateItem(long customerId ,CartItem cartItem, Long cartItemId){
@@ -61,6 +68,17 @@ public class CartService {
             ));
 
         return cart;
+    }
+
+    public CartResponse getPersonalCart(long userId){
+        Cart cart = findByCustomerId(userId);
+
+        return CartResponse.builder()
+            .items(
+                cart.getItems()
+            )
+            .totalItem(cart.getItems().size())
+            .build();
     }
 
 }

@@ -128,7 +128,12 @@ public class StockService {
 
         boolean isValid = quantity <= validQuantity;
 
+        var stockOptionValue = stockOptionValueService.findBriefDetailById(stockOptionValueId);
+        var productVariant = productVariantService.findProductVariantResponseById(productVariantId);
+
         var response = ProductAvailabilityResponse.builder()
+            .productVariant(productVariant)
+            .stockOptionValue(stockOptionValue)
             .available(isValid)
             .availableStock(validQuantity)
             .message(

@@ -3,9 +3,13 @@ package com.thienan.account_service.cart.entity;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.thienan.account_service.product.ProductVariant;
 import io.swagger.v3.oas.annotations.media.Schema;
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,15 +42,24 @@ public class CartItem {
     private Long version;
     
     @NotNull
-    private Long productVariantId;
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "product_variant_id")),
+        @AttributeOverride(name = "name", column = @Column(name = "product_variant_name")),
+        @AttributeOverride(name = "status", column = @Column(name = "product_variant_status")),
+    })
+    private ProductVariant productVariant;
+    
     @NotNull
-    private Long stockOptionValueId;
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "stock_option_value_id")),
+        @AttributeOverride(name = "name", column = @Column(name = "stock_option_value_name")),
+    })
+    private StockOptionValue stockOptionValue;
+    
     @NotNull
     private Long quantity;
-    
-    // @NotNull
-    @Schema(accessMode=READ_ONLY)
-    private BigDecimal price;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore

@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 public class CustomerMapper {
     public Customer convertToCustomer(AccountProfileRequest request){
         return Customer.builder()
-            .id(request.account().getId())
             .firstName(request.firstName())
             .lastName(request.lastName())
             .account(request.account())

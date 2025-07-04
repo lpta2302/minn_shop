@@ -7,6 +7,6 @@ public record StockOptionValueResponse(
     long id,
     String name, 
     String weightType,
-    int minWeight,
-    int maxWeight
+    Integer minWeight,
+    Integer maxWeight
 )  {}
