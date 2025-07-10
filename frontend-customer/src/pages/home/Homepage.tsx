@@ -1,8 +1,8 @@
 import MainCarousel from "@/components/home/MainCarousel"
 import ProductCarousel from "@/components/home/ProductCarousel"
 import Loading from "@/components/shared/Loading"
-import { useGetAllDisplayedProductVariants } from "@/tanstack/queries/productVariantQueries"
-import type { ProductVariant } from "@/types/productVariant"
+import { useGetAllDisplayedProductVariants } from "@/tanstack/queries/productQueries"
+import type { ProductVariant } from "@/types/product"
 import { useEffect, useState } from "react"
 
 function Homepage() {
@@ -16,6 +16,7 @@ function Homepage() {
     if (isLoading || !allProducts) {
         return <Loading/>
     }
+    
 
     return (
         <div className="flex flex-col space-y-10">

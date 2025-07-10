@@ -1,50 +1,25 @@
 import ProductDetailImageCarousel from "@/components/product/ProductDetailImageCarousel"
 import Loading from "@/components/shared/Loading"
 import { Button } from "@/components/ui/button"
+import { getThumbnail } from "@/lib/imageUtils"
 import { toVND } from "@/lib/stringUtils"
+import { useGetProductWithFullVariantsById } from "@/tanstack/queries/productQueries"
+import type { ProductVariant } from "@/types/product"
 import { HeartIcon } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useLocation, useNavigate } from "react-router"
 
 const discount = Math.random() % 2
-
-interface ProductVariant{
-    id: number
-    name: string
-    category: string
-    originalPrice: number
-    discount: number
-    description: string
-}
-
-const defaultVariant : ProductVariant = {
-    id: 1,
-    name: "Jordan Sport",
-    category: "Women's Tunnel Trousers",
-    originalPrice: 2759000,
-    discount: 0.2,
-    description: `Players have the tunnel walk. 
-    You have the pavement. 
-    Both are the perfect opportunity to get a 
-    'fit off. The easy, relaxed cut and 4-way 
-    stretch material lets these trousers move 
-    with you while maintaining their shape (and your look). 
-    Gathered jogger-style cuffs break perfectly to showcase 
-    that pair of J's you just added to your rotation.
-    Colour Shown: Medium Olive/Cargo Khaki
-    Style: FB4659-222
-    Country/Region of Origin: China"`
-}
-
-const variants : ProductVariant[] = [
-    defaultVariant,
-    {...defaultVariant, id: 2}
-]
 
 function ProductDetail() {
     const navigate = useNavigate()
     const location = useLocation()
     const state = location.state
+    
+    const {data: product, isLoading, isError} = useGetProductWithFullVariantsById(state?.productId)
+    const variants = useMemo(() => product?.productVariants, [product?.productVariants])
+    console.log(product);
+    
 
     const [currentVariant, setCurrentVariant] = useState<ProductVariant | undefined>(undefined)
 
@@ -55,30 +30,36 @@ function ProductDetail() {
     }, [state, navigate])
     
     useEffect(() => {
-        if (!currentVariant) {
-            setCurrentVariant(defaultVariant)    
+        if (!currentVariant && state?.id) {
+            let variant = product?.productVariants.find(variant=>variant.id === state.id)
+            if (!variant && product?.productVariants?.length) {
+                variant = product?.productVariants[0]
+            }
+
+            setCurrentVariant(variant)
         }
-    }, [currentVariant]);
+    }, [currentVariant, product?.productVariants, state.id]);
 
     if (!state || !state.id || !state.slug) return null
 
 
-    if (!currentVariant) {
+    if (!currentVariant || isLoading) {
         return <Loading/>
     }
+
 
     return (
         <div className="flex flex-col space-y-10 px-page_x py-10">
             <section className="flex w-full space-x-8">
                 <div className="flex-1">
-                    <ProductDetailImageCarousel />
+                    <ProductDetailImageCarousel images={currentVariant.productVariantImages} />
                 </div>
                 <div className="flex flex-col flex-1">
                     <h2 className="text-xl font-semibold">
                         {currentVariant.name}
                     </h2>
                     <p className="text-subtitle">
-                        {currentVariant.category}
+                        {product?.category.name}
                     </p>
                     <div className="flex space-x-2 mt-4">
                         {
@@ -97,15 +78,16 @@ function ProductDetail() {
                     </div>
                     <div className="flex items-start space-x-4 mt-8">
                         {
-                            variants.map((variant, index) => (
+                            variants?.map((variant) => (
                                 <img
+                                    key={variant.id}
                                     className={`
                                         size-15 rounded-sm
                                         cursor-pointer
                                         hover:opacity-80
                                         ${ currentVariant.id === variant?.id && "border-2 border-foreground opacity-80"}
                                     `}
-                                    src={`https://picsum.photos/600/350?v=${index}`}
+                                    src={`${getThumbnail(variant.productVariantImages)?.url}`}
                                     alt="Your alt text"
                                     onClick={()=>setCurrentVariant(variant)}
                                 />
@@ -132,7 +114,7 @@ function ProductDetail() {
                         </Button>
                     </div>
                     <div className="max-w-sm mt-12 ">
-                        {currentVariant.description}
+                        {product?.description}
                     </div>
                     <div className="pt-8">
                         <h1 className="font-semibold text-lg">Review</h1>

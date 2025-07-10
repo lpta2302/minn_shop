@@ -2,23 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="26936c89-2a9c-48a9-b3c0-a47edc2ee97a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../frontend-customer/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../frontend-customer/src/tanstack/api/crud.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/../.vscode/launch.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/launch.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config-server/src/main/resources/configurations/gateway.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config-server/src/main/resources/configurations/gateway.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/product-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/product-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-customer/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-customer/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-customer/src/components/home/ProductCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/components/home/ProductCarousel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/components/product/ProductDetailImageCarousel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/components/product/ProductDetailImageCarousel.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-customer/src/components/shared/ProductCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/components/shared/ProductCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-customer/src/pages/home/Homepage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/pages/home/Homepage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../frontend-customer/src/pages/product/ProductDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/pages/product/ProductDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/pages/shared/navbar/MainTopNavigation.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/pages/shared/navbar/MainTopNavigation.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/tanstack/query.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/vite-env.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/vite-env.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-customer/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../frontend-customer/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/tanstack/keys/productVariantKeys.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/tanstack/queries/categoryQueries.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../frontend-customer/src/tanstack/queries/categoryQueries.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/tanstack/queries/productVariantQueries.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../frontend-customer/src/types/productVariant.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

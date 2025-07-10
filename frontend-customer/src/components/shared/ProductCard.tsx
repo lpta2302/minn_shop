@@ -7,29 +7,14 @@ import {
 } from "../ui/card"
 import { Button } from "../ui/button"
 import { HeartIcon } from "lucide-react"
-import { useCallback, useMemo, useState } from "react"
-import type { ProductVariant, ProductVariantImage } from "@/types/productVariant"
+import { useMemo, useState } from "react"
+import type { ProductVariant } from "@/types/product"
 import { toVND } from "@/lib/stringUtils"
+import { getThumbnail } from "@/lib/imageUtils"
 
 function ProductCard({ product }: { product: ProductVariant }) {
     const [isLiked, setIsLiked] = useState<boolean>(false)
     const navigate = useNavigate()
-
-    const getThumbnail = useCallback(
-        (images: ProductVariantImage[]) => {
-            if (images.length < 0) {
-                return
-            }
-
-            const thumbnail = images.find(image => image.isThumbnail)
-            if (thumbnail) {
-                return thumbnail
-            } else {
-                return images[0]
-            }
-        },
-        [],
-    )
 
     const { discount, finalPrice } = useMemo(() => {
         const percentDiscountPrice: number = product.originalPrice * (1 - product.discount)
@@ -50,7 +35,7 @@ function ProductCard({ product }: { product: ProductVariant }) {
             className="gap-2 pt-0 cursor-pointer 
                 [&:has(:not(*:hover))]:hover:opacity-80"
             onClick={() => {
-                navigate("/product/abc", { state: { slug: product.slug, id: product.id } })
+                navigate("/product/" + product.slug, { state: { slug: product.slug, id: product.id, productId: product.productId } })
             }
             }
         >

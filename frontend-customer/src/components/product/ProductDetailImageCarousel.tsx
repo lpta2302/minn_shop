@@ -1,20 +1,19 @@
+import type { ProductVariantImage } from "@/types/product"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "../ui/carousel"
 import { useState } from "react"
 
-const slides = Array.from({ length: 5 })
-
-function ProductDetailImageCarousel() {
+function ProductDetailImageCarousel({images} : {images: ProductVariantImage[]}) {
     const [api, setApi] = useState<CarouselApi>(undefined)
 
     return (
         <div className="flex space-x-4">
             <div className="flex flex-col space-y-2">
                 {
-                    slides.map((_, index) => (
+                    images.map((image, index) => (
                         <img
                             className="size-15 rounded-sm"
-                            src={`https://picsum.photos/600/350?v=${index}`}
-                            alt="Your alt text"
+                            src={image.url}
+                            alt={image.name}
                             onMouseEnter={()=>api?.scrollTo(index, true)}
                         />
                     ))
@@ -32,12 +31,12 @@ function ProductDetailImageCarousel() {
                     //     ]}
                     className="w-full relative">
                     <CarouselContent>
-                        {slides.map((_, index) => (
-                            <CarouselItem key={index}>
+                        {images.map((image) => (
+                            <CarouselItem key={image.id}>
                                 <img
                                     className="w-full h-[80vh] rounded-sm"
-                                    src={`https://picsum.photos/600/350?v=${index}`}
-                                    alt="Your alt text"
+                                    src={image.url}
+                                    alt={image.name}
                                 />
                             </CarouselItem>
                         ))}

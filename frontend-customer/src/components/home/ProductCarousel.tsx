@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import ProductCard from "../shared/ProductCard"
 import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
-import type { ProductVariant } from "@/types/productVariant"
+import type { ProductVariant } from "@/types/product"
 
 interface CanScroll {
     canScrollNext: boolean

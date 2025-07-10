@@ -7,6 +7,6 @@ import type { Category } from '@/types/category';
 export function useGetAllDisplayedCategories() {
     return useQuery<PageResponse<Category>>({
         queryKey: [GET_ALL_DISPLAYED_CATEGORIES],
-        queryFn: ()=>getAll('/categories'),
+        queryFn: ()=>getAll('/categories/displayed'),
     })
 }
