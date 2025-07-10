@@ -97,4 +97,8 @@ public class StockOptionValueService {
         return stockOptionValueRepository.findBriefDetailById(stockOptionValueId)
             .orElseThrow(()-> new EntityNotFoundByIDException("Stock option value", stockOptionValueId.toString()));
     }
+
+    public List<StockOptionValue> findAllById(Iterable<Long> ids){
+        return stockOptionValueRepository.findAllById(ids);
+    }
 }

@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: order-service
+  config:
+    import: optional:configserver:${SPRING_CONFIG_IMPORT:http://localhost:8888}
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://${SPRING_DATASOURCE_URL:localhost:5432}/order_db
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: false
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+springdoc:
+  swagger-ui:
+    operations-sorter: method
+application:
+    open-api: 
+        security:
+        bearer-token: bearerAuth
+    openFeign:
+        customer-service:
+            name: customer-service
+            url: ${APPLICATION_CONFIG_CUSTOMER_SERVICE_URL:http://localhost:8062}/api/v1/customers
+        stock-service:
+            name: stock-service
+            url: ${APPLICATION_CONFIG_STOCK_SERVICE_URL:http://localhost:8070}/api/v1/stocks
+server:
+  port: 8071
+  servlet:
+    context-path: /api/v1

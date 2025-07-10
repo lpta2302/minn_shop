@@ -1,5 +1,7 @@
 package com.thienan.auth_service.authentication;
 
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import com.thienan.auth_service.account.Account;
@@ -14,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-
+    private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
     private final AccountService accountService;
     private final JwtTokenService jwtTokenService;
@@ -32,6 +34,12 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticateRequest loginRequest){
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.email(), 
+                loginRequest.password())
+        );
+        
         var user = accountService.findByEmail(loginRequest.email());
         var jwtToken = jwtTokenService.generateToken(user);
         var refreshToken = jwtTokenService.generateRefreshToken(user);

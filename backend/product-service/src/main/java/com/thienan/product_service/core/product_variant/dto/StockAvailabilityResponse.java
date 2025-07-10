@@ -5,10 +5,10 @@ import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
 import lombok.Builder;
 
 @Builder
-public record ProductAvailabilityResponse(
+public record StockAvailabilityResponse(
     ProductVariantResponse productVariant,
     StockOptionValueResponse stockOptionValue,
-    boolean available,
+    boolean isAvailable,
     int availableStock,
     String message
 ) {}

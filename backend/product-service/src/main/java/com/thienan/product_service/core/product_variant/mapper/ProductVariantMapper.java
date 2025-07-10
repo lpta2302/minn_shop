@@ -42,13 +42,7 @@ public class ProductVariantMapper {
     }
 
     public ProductVariantResponse convertToProductVariantResponse(ProductVariant productVariant, List<StockResponse> stockResponses) {
-        var thumbnail = productVariant
-                    .getImages()
-                    .stream()
-                    .filter(
-                        image->image.isThumbnail())
-                    .findFirst()
-                    .orElse(null);
+        var thumbnail = productVariant.getThumbnailImage();
         var thumbnailUrl = thumbnail == null ? null : thumbnail.getUrl();
 
         var finalPrice = PriceCalculator.calculateFinalPrice(productVariant);

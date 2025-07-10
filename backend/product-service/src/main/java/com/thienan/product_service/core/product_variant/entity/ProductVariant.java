@@ -22,6 +22,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -83,6 +84,9 @@ public class ProductVariant extends BaseEntity {
 
     @OneToMany(cascade={ ALL })
     private List<ProductVariantImage> images;
+
+    @OneToOne
+    private ProductVariantImage thumbnailImage;
 
     @Enumerated(STRING)
     private ProductVariantStatus status;

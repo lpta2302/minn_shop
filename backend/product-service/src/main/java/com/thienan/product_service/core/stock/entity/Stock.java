@@ -9,11 +9,16 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.thienan.product_service.core.product_variant.entity.ProductVariant;
+import com.thienan.product_service.core.stock.enums.StockStatus;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -64,6 +69,13 @@ public class Stock {
     @PositiveOrZero(message="quantity must be positive or zero")
     private int quantity;
 
+    @PositiveOrZero(message="quantity must be positive or zero")
+    @Schema(accessMode = AccessMode.READ_ONLY)
+    private int reservedQuantity;
+
     @PositiveOrZero(message="sold quantity must be positive or zero")
     private int soldQuantity;
+
+    @Enumerated(EnumType.STRING)
+    private StockStatus status;
 }

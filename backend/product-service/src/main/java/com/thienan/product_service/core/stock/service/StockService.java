@@ -1,28 +1,32 @@
 package com.thienan.product_service.core.stock.service;
 
 import static java.lang.String.format;
+import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.thienan.product_service.common.PageResponse;
-import com.thienan.product_service.core.product_variant.dto.ProductAvailabilityResponse;
+import com.thienan.product_service.core.product_variant.dto.StockAvailabilityResponse;
 import com.thienan.product_service.core.product_variant.service.ProductVariantService;
 import com.thienan.product_service.core.stock.dto.StockRequest;
 import com.thienan.product_service.core.stock.dto.StockResponse;
 import com.thienan.product_service.core.stock.dto.StockUpdateDetailRequest;
+import com.thienan.product_service.core.stock.dto.StockVariantOptionValuePair;
+import com.thienan.product_service.core.stock.dto.StockWithVariantAndOptionValue;
+import com.thienan.product_service.core.stock.dto.StocksAvailabilityResponse;
 import com.thienan.product_service.core.stock.entity.Stock;
 import com.thienan.product_service.core.stock.entity.StockId;
 import com.thienan.product_service.core.stock.mapper.StockMapper;
 import com.thienan.product_service.core.stock.repository.StockRepository;
 import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class StockService {
-
     private final ProductVariantService productVariantService;
     private final StockOptionValueService stockOptionValueService;
     private final StockRepository stockRepository;
@@ -120,7 +124,7 @@ public class StockService {
         stockRepository.hardDeleteById(productVariantId, stockOptionValueId);
     }
 
-    public ProductAvailabilityResponse checkProductAvailability(Long productVariantId, Long stockOptionValueId, Long quantity) {
+    public StockAvailabilityResponse checkProductAvailability(Long productVariantId, Long stockOptionValueId, Long quantity) {
         var validQuantity =  stockRepository.checkStockAvailability(productVariantId, stockOptionValueId, quantity)
             .orElseThrow(()->new EntityNotFoundByIDException(
                 "Stock", 
@@ -131,10 +135,10 @@ public class StockService {
         var stockOptionValue = stockOptionValueService.findBriefDetailById(stockOptionValueId);
         var productVariant = productVariantService.findProductVariantResponseById(productVariantId);
 
-        var response = ProductAvailabilityResponse.builder()
+        var response = StockAvailabilityResponse.builder()
             .productVariant(productVariant)
             .stockOptionValue(stockOptionValue)
-            .available(isValid)
+            .isAvailable(isValid)
             .availableStock(validQuantity)
             .message(
                 isValid ?
@@ -143,5 +147,68 @@ public class StockService {
             )
             .build();
         return response;
+    }
+
+    @Transactional
+    public StocksAvailabilityResponse reserveStock(List<StockRequest> requests){
+        for(StockRequest request : requests){
+            int totalUpdatedRow = stockRepository.reserveStock(request.productVariantId(), request.stockOptionValueId(), request.quantity());
+            if(totalUpdatedRow == 0){
+                return StocksAvailabilityResponse
+                    .builder()
+                    .isAvailable(false)
+                    .message(String.format("Out of stock or not found stock have variant id: %d and stock option value id: %d", 
+                        request.productVariantId(), 
+                        request.stockOptionValueId()))
+                    .build();
+            } else if(totalUpdatedRow > 1){
+                return StocksAvailabilityResponse
+                    .builder()
+                    .isAvailable(false)
+                    .message(String.format("Have duplicated stock reserve."))
+                    .build();
+            }
+        }
+
+        return StocksAvailabilityResponse.builder()
+            .isAvailable(true)
+            .message("Reserve successfully")
+            .build();
+    }
+
+    public List<StockWithVariantAndOptionValue> findStockWithVariantAndOptionValues(
+        List<StockVariantOptionValuePair> pairs
+    ){
+        return stockRepository
+            .findAllByVariantOptionIds(pairs);
+    }
+
+    @Transactional
+    public StocksAvailabilityResponse deductStock(List<StockRequest> requests) {
+        System.out.println("-----------------"+requests.size());
+        System.out.println(requests.get(0));
+        for (StockRequest request : requests) {
+            int totalUpdatedRow = stockRepository.deductStock(request.productVariantId(), request.stockOptionValueId(), request.quantity());
+            if(totalUpdatedRow == 0){
+                return StocksAvailabilityResponse
+                    .builder()
+                    .isAvailable(false)
+                    .message(String.format("Out of stock or not found stock have variant id: %d and stock option value id: %d", 
+                        request.productVariantId(), 
+                        request.stockOptionValueId()))
+                    .build();
+            } else if(totalUpdatedRow > 1){
+                return StocksAvailabilityResponse
+                    .builder()
+                    .isAvailable(false)
+                    .message(String.format("Have duplicated stock reserve."))
+                    .build();
+            }
+        }
+        return StocksAvailabilityResponse
+            .builder()
+            .isAvailable(true)
+            .message("Deducted stock")
+            .build();
     }
 }

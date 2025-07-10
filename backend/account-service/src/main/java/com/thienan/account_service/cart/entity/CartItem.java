@@ -1,9 +1,8 @@
 package com.thienan.account_service.cart.entity;
 
-import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thienan.account_service.product.ProductVariant;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import static io.swagger.v3.oas.annotations.media.Schema.AccessMode.READ_ONLY;
 import jakarta.persistence.AttributeOverride;
