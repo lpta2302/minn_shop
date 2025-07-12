@@ -25,7 +25,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) throws Exception{
         http
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
+            .csrf(csrf -> csrf.disable())
             .authorizeExchange((request) -> 
                 request.pathMatchers(WHITE_LIST_URL).permitAll()
                 .anyExchange().authenticated()
