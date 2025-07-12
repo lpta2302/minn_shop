@@ -1,9 +1,13 @@
 package com.thienan.auth_service.authentication;
 
+import java.io.IOException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.thienan.auth_service.account.Account;
 import com.thienan.auth_service.account.AccountDetail;
 import com.thienan.auth_service.account.AccountService;
@@ -11,6 +15,9 @@ import com.thienan.auth_service.handler.exceptions.common.BadRequestException;
 import com.thienan.auth_service.token.JwtTokenService;
 import com.thienan.auth_service.token.TokenService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.core.HttpHeaders;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -86,5 +93,38 @@ public class AuthenticationService {
         }
 
         return TokenValidatingResponse.builder().isValid(false).build();
+    }
+
+    public AuthenticationResponse refreshToken(
+        HttpServletRequest request,
+        HttpServletResponse response) 
+        throws StreamWriteException, 
+        DatabindException, 
+        IOException 
+    {
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String refreshToken;
+        final String userEmail;
+        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("Invalid Authorization header");
+        }
+        refreshToken = authHeader.substring(7);
+        userEmail = jwtTokenService.extractUsername(refreshToken);
+        if (userEmail == null) {
+            throw new IllegalArgumentException("Cannot extract user from token");
+        }
+
+        var user = accountService.findByEmail(userEmail);
+        if (!jwtTokenService.isTokenValid(refreshToken, user)) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
+        var accessToken = jwtTokenService.generateToken(user);
+        tokenService.createToken(user, accessToken);
+        var authResponse = AuthenticationResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+        return authResponse;
+
     }
 }
