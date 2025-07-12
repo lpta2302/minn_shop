@@ -4,13 +4,34 @@ const instance = axios.create({
     baseURL: `${import.meta.env.VITE_API_URL}/v${import.meta.env.VITE_API_VERSION}`
 })
 
-export async function getAll(url: string){
+instance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+export async function get(url: string){
     try {
         const response = await instance.get(url)
         
         return response.data
     } catch (error) {
-        console.error('Error fetching categories:', error)
+        console.error(error)
+        throw error
+    }
+}
+
+export async function patch(url:string, body: object) {
+    try {
+        const response = await instance.patch(url, body)
+        return response.data
+    } catch (error) {
+        console.error(error);
         throw error
     }
 }

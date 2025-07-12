@@ -1,0 +1,1 @@
+export const GET_OWN_CART = 'GET_OWN_CART'

@@ -1,11 +1,14 @@
 package com.thienan.product_service.core.stock.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
 import com.thienan.product_service.core.stock.entity.StockOptionValue;
 
 public interface StockOptionValueRepository extends JpaRepository<StockOptionValue, Long>{
@@ -21,4 +24,18 @@ public interface StockOptionValueRepository extends JpaRepository<StockOptionVal
         where sov.deleted = true
     """, nativeQuery = true)
     Page<StockOptionValue> findAllDeleted(Pageable pageable);
+
+    @Query("""
+       select new com.thienan.product_service.core.stock.dto.StockOptionValueResponse(
+        s.id,
+        s.name,
+        w.name,
+        w.minWeight,
+        w.maxWeight
+       )
+       from StockOptionValue s
+       left join s.weightType w
+       where s.id = :stockOptionValueId     
+    """)
+    Optional<StockOptionValueResponse> findBriefDetailById(Long stockOptionValueId);
 }

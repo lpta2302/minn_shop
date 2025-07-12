@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAll } from "../api/crud";
+import { get } from "../api/crud";
 import { GET_ALL_DISPLAYED_PRODUCT_VARIANTS, PRODUCT_WITH_FULL_VARIANTS_BY_ID } from "../keys/productKeys";
 import type { Product } from "@/types/product";
 
@@ -8,7 +8,7 @@ import type { Product } from "@/types/product";
 export function useGetProductWithFullVariantsById(productId: number){
     return useQuery<Product>({
         queryKey: [PRODUCT_WITH_FULL_VARIANTS_BY_ID, productId],
-        queryFn: ()=>getAll('/products/'+productId),
+        queryFn: ()=>get('/products/'+productId),
         enabled: !!productId
     })
 }
@@ -17,6 +17,6 @@ export function useGetProductWithFullVariantsById(productId: number){
 export function useGetAllDisplayedProductVariants() {
     return useQuery({
         queryKey: [GET_ALL_DISPLAYED_PRODUCT_VARIANTS],
-        queryFn: ()=>getAll('/product-variants'),
+        queryFn: ()=>get('/product-variants'),
     })
 }

@@ -1,8 +1,9 @@
 package com.thienan.product_service.core.stock.mapper;
 
+import org.springframework.stereotype.Component;
+
 import com.thienan.product_service.core.stock.dto.StockResponse;
 import com.thienan.product_service.core.stock.entity.Stock;
-import org.springframework.stereotype.Component;
 
 @Component
 public class StockMapper {
@@ -10,9 +11,10 @@ public class StockMapper {
         return StockResponse
             .builder()
             .productVariantId(stock.getStockId().getProductVariant().getId())
-            .productVariantId(stock.getStockId().getStockOptionValue().getId())
+            .stockOptionValueId(stock.getStockId().getStockOptionValue().getId())
             .sku(stock.getSku())
             .quantity(stock.getQuantity())
+            .reservedQuantity(stock.getReservedQuantity())
             .soldQuantity(stock.getSoldQuantity())
             .build();
     }

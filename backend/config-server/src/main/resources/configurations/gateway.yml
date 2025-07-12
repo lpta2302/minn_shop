@@ -9,19 +9,61 @@ spring:
               - GET
               - POST
               - PUT
-              - DELETE
+              - DELETEp
               - OPTIONS
             allowedHeaders: "*"
             allowCredentials: false
       routes:
+        - id: test-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/test/**
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/v1/auth/**
+
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/api/v1/accounts/**
+        - id: account-profiles-service
+          uri: lb://account-service
+          predicates:
+            - Path=/api/v1/account-profiles/**
+        - id: cart-service
+          uri: lb://account-service
+          predicates:
+            - Path=/api/v1/carts/**
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/orders/**
+
         - id: category-service
           uri: lb://category-service
           predicates:
             - Path=/api/v1/categories/**
+
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/products/**
         - id: product-variant-service
           uri: lb://product-service
           predicates:
             - Path=/api/v1/product-variants/**
-
+        - id: stock-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/stocks/**
+application:
+  openFeign:
+    auth-service:
+      url: ${APPLICATION_CONFIG_AUTH_SERVICE_URL:http://localhost:8222}/api/v1/auth
+logging:
+  level:
+    org.springframework.security: DEBUG
 server:
   port: 8222

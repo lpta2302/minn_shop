@@ -45,7 +45,17 @@ public class ProductVariantService {
         List<ProductVariantImage> images = 
             productVariantImageService.createProductVariantImages(
                 productVariantRequest.productVariantImageRequests());
+        ProductVariantImage thumbnailImage = images
+            .stream()
+            .filter(image->image.isThumbnail())
+            .findFirst()
+            .orElse(
+                !images.isEmpty() ?
+                images.get(0) :
+                null
+            );
         
+        productVariant.setThumbnailImage(thumbnailImage);
         productVariant.setImages(images);
 
         return productVariant;
@@ -67,10 +77,21 @@ public class ProductVariantService {
 
                 List<ProductVariantImage> images = productVariantImageService
                     .createProductVariantImages(productVariantRequest.productVariantImageRequests());
-
+                ProductVariantImage thumbnailImage = images
+                .stream()
+                .filter(image->image.isThumbnail())
+                .findFirst()
+                .orElse(
+                    !images.isEmpty() ?
+                    images.get(0) :
+                    null
+                );
+            
                 var productVariant = productVariantMapper.convertProductVariant(productVariantRequest);
+                
                 productVariant.setProductOption(productOption);
                 productVariant.setImages(images);
+                productVariant.setThumbnailImage(thumbnailImage);
 
                 return productVariant;
             })
@@ -118,17 +139,29 @@ public class ProductVariantService {
             updateProductOption(newVariant, productVariantRequest.productOptionName());
         }
 
-        newVariant.setImages(
-            productVariantImageService.updateInProductVariant(
-                updatingVariant.getImages(),
-                productVariantRequest.productVariantImageRequests())
+        var images = productVariantImageService.updateInProductVariant(
+            updatingVariant.getImages(),
+            productVariantRequest.productVariantImageRequests());
+
+        newVariant.setImages(images);
+        ProductVariantImage thumbnailImage = images
+            .stream()
+            .filter(image->image.isThumbnail())
+            .findFirst()
+            .orElse(
+                !images.isEmpty() ?
+                images.get(0) :
+                null
             );
+        newVariant.setThumbnailImage(thumbnailImage);
+        
 
         validatorPipeline.add(
             productVariantValidatorSteps.hasDiscountAndPriceAfterAllSet(
             ProductVariantRequest::discount,
             ProductVariantRequest::price)
         );
+
         newVariant.setDiscount(productVariantRequest.discount());
         newVariant.setPrice(productVariantRequest.price());
 
@@ -179,8 +212,28 @@ public class ProductVariantService {
         );
     }
 
+    public PageResponse<ProductVariantResponse> findAllDisplayed(Pageable pageable) {
+        var pageResult = productVariantRepository.findAllDisplayed(pageable);
+        return PageResponse.fromPage(
+            pageResult,
+            pageResult.stream()
+                .map((productVariant) -> 
+                    productVariantMapper.convertToProductVariantResponse(productVariant, null)    
+                )
+                .toList()
+        );
+    }
+
     // TODO: not be implemented
     public PageResponse<ProductVariantResponse> findAllByCategory(Pageable pageable, Long categoryId) {
         return null;
+    }
+
+    public ProductVariantResponse findProductVariantResponseById(long productVariantId) {
+        var variant = productVariantRepository.findProductVariantFullDetailById(productVariantId)
+            .orElseThrow(()-> new EntityNotFoundByIDException("Product variant", String.valueOf(productVariantId)));
+
+        return productVariantMapper
+            .convertToProductVariantResponse(variant);
     }
 }

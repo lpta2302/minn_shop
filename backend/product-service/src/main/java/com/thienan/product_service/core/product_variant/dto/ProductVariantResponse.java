@@ -15,14 +15,17 @@ import lombok.Builder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ProductVariantResponse(
     Long id,
+    Long productId,
     String variantId,
     String slug,
     String name,
     BigDecimal price,
     BigDecimal originalPrice,
+    BigDecimal finalPrice,
     float discount,
     int soldQuantity,
     List<ProductVariantImage> productVariantImages,
+    String thumbnail,
     List<StockResponse> stocks,
     ProductOptionResponse productOption,
     ProductVariantStatus status

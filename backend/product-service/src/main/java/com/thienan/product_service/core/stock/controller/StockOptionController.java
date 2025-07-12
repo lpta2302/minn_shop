@@ -1,6 +1,7 @@
 package com.thienan.product_service.core.stock.controller;
 
 import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
+
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,6 +16,12 @@ import com.thienan.product_service.core.stock.service.StockOptionService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.thienan.product_service.core.stock.entity.StockOptionValue;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -108,7 +115,6 @@ public class StockOptionController {
             Pageable pageable) {
         return ResponseEntity.ok(service.findAllStockOptionValuesDeleted(pageable));
     }
-    
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> softDeleteById(

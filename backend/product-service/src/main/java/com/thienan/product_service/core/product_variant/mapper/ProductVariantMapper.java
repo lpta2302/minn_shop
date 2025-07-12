@@ -8,6 +8,7 @@ import com.thienan.product_service.core.product_variant.dto.ProductOptionRespons
 import com.thienan.product_service.core.product_variant.dto.ProductVariantRequest;
 import com.thienan.product_service.core.product_variant.dto.ProductVariantResponse;
 import com.thienan.product_service.core.product_variant.entity.ProductVariant;
+import com.thienan.product_service.core.product_variant.utils.PriceCalculator;
 import com.thienan.product_service.core.stock.dto.StockResponse;
 import com.thienan.product_service.core.stock.entity.Stock;
 import com.thienan.product_service.core.stock.mapper.StockMapper;
@@ -41,17 +42,27 @@ public class ProductVariantMapper {
     }
 
     public ProductVariantResponse convertToProductVariantResponse(ProductVariant productVariant, List<StockResponse> stockResponses) {
+        var thumbnail = productVariant.getThumbnailImage();
+        var thumbnailUrl = thumbnail == null ? null : thumbnail.getUrl();
+
+        var finalPrice = PriceCalculator.calculateFinalPrice(productVariant);
+        
         return ProductVariantResponse
             .builder()
             .id(productVariant.getId())
+            .productId(productVariant.getProduct().getId())
             .variantId(productVariant.getVariantId())
             .name(productVariant.getName())
             .price(productVariant.getPrice())
             .originalPrice(productVariant.getOriginalPrice())
             .discount(productVariant.getDiscount())
+            .finalPrice(finalPrice)
             .slug(productVariant.getSlug())
             .soldQuantity(productVariant.getSoldQuantity())
             .productVariantImages(productVariant.getImages())
+            .thumbnail(
+                thumbnailUrl
+            )
             .productOption(ProductOptionResponse
                 .builder()
                 .id(productVariant.getProductOption().getId())
@@ -73,6 +84,7 @@ public class ProductVariantMapper {
         return ProductVariant
             .builder()
             .id(oldProductVariant.getId())
+       
             .version(oldProductVariant.getVersion())
             .variantId(oldProductVariant.getVariantId())
             .name(oldProductVariant.getName())

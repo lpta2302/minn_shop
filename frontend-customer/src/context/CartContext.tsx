@@ -1,35 +1,45 @@
-import { createContext, useContext, useState, type ReactElement } from "react"
+import { useGetOwnCart } from "@/tanstack/queries/cartQueries"
+import type { CartItem } from "@/types/cart"
+import { createContext, useContext, useEffect, useState, type ReactElement } from "react"
 
-interface CartInfo{
-    cartItems: number[]
-    addToCart: (productVariantId:number)=>void
+interface CartInfo {
+    cartItems: CartItem[]
+    addToCart: (newItem: CartItem) => void
 }
 
 const initCart = {
     cartItems: [],
-    addToCart: ()=>{}
+    addToCart: () => { }
 }
 
 const CartContext = createContext<CartInfo>(initCart)
- 
-export const CartProvider = ({ children } : { children: ReactElement}) => {
-  const [cartItems, setCartItems] = useState<number[]>([]);
 
-  const addToCart = (productVariantId: number) => {
-    setCartItems((prev) => {
-      const exists = prev.find((id) => id === productVariantId);
-      if (!exists) {
-        return [...prev, productVariantId];
-      }
-      return prev;
-    });
-  };
+export const CartProvider = ({ children }: { children: ReactElement }) => {
+    const [cartItems, setCartItems] = useState<CartItem[] | []>([]);
+    const { data: cart } = useGetOwnCart();
 
-  return (
-    <CartContext.Provider value={{addToCart, cartItems}}>
-      {children}
-    </CartContext.Provider>
-  );
+    const addToCart = (newItem: CartItem) => {
+        setCartItems((prev) => {
+            const exists = prev.find((item) =>
+                item.productVariant.id === newItem.productVariant.id
+                && item.productOptionValue.id === newItem.productOptionValue.id
+            );
+            if (!exists) {
+                return [...prev, newItem];
+            }
+            return prev;
+        });
+    };
+
+    useEffect(() => {
+        setCartItems(cart?.items ? cart.items : [])
+    }, [cart]);
+
+    return (
+        <CartContext.Provider value={{ addToCart, cartItems }}>
+            {children}
+        </CartContext.Provider>
+    );
 };
 
 // eslint-disable-next-line react-refresh/only-export-components

@@ -15,7 +15,6 @@ import com.thienan.product_service.core.stock.entity.StockId;
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.CascadeType.MERGE;
 import static jakarta.persistence.CascadeType.PERSIST;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import static jakarta.persistence.EnumType.STRING;
 import jakarta.persistence.Enumerated;
@@ -67,7 +66,7 @@ public class ProductVariant extends BaseEntity {
     private BigDecimal originalPrice;
 
     @PositiveOrZero(message="discount must be positive or zero")
-    private float discount;
+    private Float discount;
 
     @PositiveOrZero(message="sold quantity must be positive or zero")
     private int soldQuantity;
@@ -85,6 +84,9 @@ public class ProductVariant extends BaseEntity {
 
     @OneToMany(cascade={ ALL })
     private List<ProductVariantImage> images;
+
+    @OneToOne
+    private ProductVariantImage thumbnailImage;
 
     @Enumerated(STRING)
     private ProductVariantStatus status;

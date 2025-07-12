@@ -11,6 +11,7 @@ function ProductDetailImageCarousel({images} : {images: ProductVariantImage[]}) 
                 {
                     images.map((image, index) => (
                         <img
+                            key={index}
                             className="size-15 rounded-sm"
                             src={image.url}
                             alt={image.name}

@@ -43,3 +43,5 @@ app:
   aws-generate-key:
     maxRetries: 10
     retryDelayMillis: 1000
+server:
+  port: 8061

@@ -14,13 +14,20 @@ import com.thienan.product_service.core.stock.entity.StockId;
 
 import jakarta.persistence.Tuple;
 
-public interface StockRepository extends JpaRepository<Stock, StockId> {
+public interface StockRepository extends JpaRepository<Stock, StockId>, StockRepositoryCustom {
     @Query("""
         select s from Stock s
         where s.stockId.productVariant.id = :productVariantId
         and s.stockId.stockOptionValue.id = :stockOptionValueId
     """)
     Stock findById(Long productVariantId, Long stockOptionValueId);
+    
+    @Query("""
+        select s from Stock s
+        where s.stockId.productVariant.id in :productVariantIds
+        and s.stockId.stockOptionValue.id in :stockOptionValueIds
+    """)
+    Stock findAllById(Long productVariantId, Long stockOptionValueId);
 
     @Query("""
         select new com.thienan.product_service.core.stock.dto.StockResponse(
@@ -28,6 +35,7 @@ public interface StockRepository extends JpaRepository<Stock, StockId> {
             :stockOptionValueId,
             s.sku,
             s.quantity,
+            s.reservedQuantity,
             s.soldQuantity
         )
         from Stock s
@@ -42,6 +50,7 @@ public interface StockRepository extends JpaRepository<Stock, StockId> {
             s.stockId.stockOptionValue.id,
             s.sku,
             s.quantity,
+            s.reservedQuantity,
             s.soldQuantity
         )
         from Stock s
@@ -79,4 +88,38 @@ public interface StockRepository extends JpaRepository<Stock, StockId> {
         """, nativeQuery = true)
     @Modifying
     void hardDeleteById(Long productVariantId, Long stockOptionValueId);
+
+    @Query("""
+        select st.quantity
+        from Stock st
+        where st.stockId.productVariant.id = :productVariantId and
+        st.stockId.stockOptionValue.id = :stockOptionValueId
+    """)
+    Optional<Integer> checkStockAvailability(Long productVariantId, Long stockOptionValueId, Long quantity);
+
+    @Modifying
+    @Query("""
+        update Stock s
+        set s.reservedQuantity = s.reservedQuantity + :quantity
+        where s.stockId.productVariant.id = :productVariantId
+        and s.stockId.stockOptionValue.id = :stockOptionValueId
+        and s.quantity >= (s.reservedQuantity + :quantity)
+    """)
+    int reserveStock(Long productVariantId, Long stockOptionValueId, int quantity);
+
+    @Modifying
+    @Query("""
+        update Stock s
+        set s.reservedQuantity = s.reservedQuantity - :quantity,
+        s.quantity = s.quantity - :quantity,
+        s.status = CASE WHEN s.quantity - :quantity <= 0 THEN 'OUT_OF_STOCK' ELSE s.status END
+        where s.stockId.productVariant.id = :productVariantId
+        and s.stockId.stockOptionValue.id = :stockOptionValueId
+        and s.reservedQuantity >= :quantity       
+        and s.quantity >= :quantity
+
+    """)
+    int deductStock(Long productVariantId,
+            Long stockOptionValueId,
+            int quantity);
 }

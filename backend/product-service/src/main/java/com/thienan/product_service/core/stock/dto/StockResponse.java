@@ -8,6 +8,7 @@ public record StockResponse (
     Long stockOptionValueId,
     String sku,
     int quantity,
+    int reservedQuantity,
     int soldQuantity
 )
 {

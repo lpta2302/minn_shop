@@ -4,17 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.thienan.product_service.common.PageResponse;
-import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
-import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.thienan.product_service.common.PageResponse;
 import com.thienan.product_service.core.stock.dto.StockOptionValueRequest;
+import com.thienan.product_service.core.stock.dto.StockOptionValueResponse;
 import com.thienan.product_service.core.stock.entity.StockOptionValue;
 import com.thienan.product_service.core.stock.repository.StockOptionValueRepository;
 import com.thienan.product_service.core.weight_type.entity.WeightType;
 import com.thienan.product_service.core.weight_type.service.WeightTypeService;
+import com.thienan.product_service.handler.exceptions.common.EntityNotFoundByIDException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -91,5 +91,14 @@ public class StockOptionValueService {
             throw new EntityNotFoundByIDException("Stock option value", id.toString());
         }
         return stockOptionValueRepository.getReferenceById(id);
+    }
+
+    public StockOptionValueResponse findBriefDetailById(Long stockOptionValueId) {
+        return stockOptionValueRepository.findBriefDetailById(stockOptionValueId)
+            .orElseThrow(()-> new EntityNotFoundByIDException("Stock option value", stockOptionValueId.toString()));
+    }
+
+    public List<StockOptionValue> findAllById(Iterable<Long> ids){
+        return stockOptionValueRepository.findAllById(ids);
     }
 }

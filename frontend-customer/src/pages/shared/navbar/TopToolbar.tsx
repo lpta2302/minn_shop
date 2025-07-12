@@ -3,12 +3,16 @@ import MainSearchBar, { type SearchProps } from "../search-bar/MainSearchBar"
 import { HeartIcon, ShoppingBagIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/context/CartContext"
+import { useEffect, useState } from "react"
 
 
 
 function TopToolbar({ setIsSearching, isSearching, setSearchParams }: SearchProps) {
     const { cartItems } = useCart()
-    const cartItemQuantity = cartItems.length
+    const [cartItemQuantity, setCartItemQuantity] = useState<number>(0)
+    useEffect(() => {
+        setCartItemQuantity(cartItems.length)
+    }, [cartItems]);
 
     return (
         <div

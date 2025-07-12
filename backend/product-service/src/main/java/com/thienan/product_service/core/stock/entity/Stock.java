@@ -2,13 +2,25 @@ package com.thienan.product_service.core.stock.entity;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.type.TrueFalseConverter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.thienan.product_service.core.product_variant.entity.ProductVariant;
+import com.thienan.product_service.core.stock.enums.StockStatus;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Schema.AccessMode;
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -27,6 +39,13 @@ import lombok.Setter;
 @Table(name = "stocks")
 @SoftDelete(columnName="deleted", converter= TrueFalseConverter.class)
 public class Stock {
+    public Stock(ProductVariant productVariant, StockOptionValue stockOptionValue) {
+        this.stockId = StockId.builder()
+            .productVariant(productVariant)
+            .stockOptionValue(stockOptionValue)
+            .build();
+    }
+
     @EmbeddedId
     private StockId stockId;
 
@@ -35,7 +54,7 @@ public class Stock {
     private String sku;
 
     @Version
-    private int version;
+    private Long version;
 
     @Column(updatable = false, nullable = false)
     @CreatedDate
@@ -50,6 +69,13 @@ public class Stock {
     @PositiveOrZero(message="quantity must be positive or zero")
     private int quantity;
 
+    @PositiveOrZero(message="quantity must be positive or zero")
+    @Schema(accessMode = AccessMode.READ_ONLY)
+    private int reservedQuantity;
+
     @PositiveOrZero(message="sold quantity must be positive or zero")
     private int soldQuantity;
+
+    @Enumerated(EnumType.STRING)
+    private StockStatus status;
 }

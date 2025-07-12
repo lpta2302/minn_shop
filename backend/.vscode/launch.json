@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "AccountServiceApplication",
+            "request": "launch",
+            "mainClass": "com.thienan.account_service.AccountServiceApplication",
+            "projectName": "account-service"
+        },
+        {
+            "type": "java",
             "name": "FileServiceApplication",
             "request": "launch",
             "mainClass": "FileServiceApplication",
@@ -29,43 +36,14 @@
         },
         {
             "type": "java",
-            "name": "Spring Boot-ConfigServerApplication<config-server>",
+            "name": "Spring Boot-CustomerServiceApplication<account-service>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "com.thienan.config_server.ConfigServerApplication",
-            "projectName": "config-server",
+            "mainClass": "com.thienan.customer_service.CustomerServiceApplication",
+            "projectName": "account-service",
             "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-GatewayApplication<gateway>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.thienan.gateway.GatewayApplication",
-            "projectName": "gateway",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-CategoryServiceApplication<category-service>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.thienan.category_service.CategoryServiceApplication",
-            "projectName": "category-service",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
-        },
-        {
-            "type": "java",
-            "name": "Spring Boot-DiscoveryServerApplication<discovery-server>",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "mainClass": "com.thienan.discovery_server.DiscoveryServerApplication",
-            "projectName": "discovery-server",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": " -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=41825 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dspring.jmx.enabled=true -Djava.rmi.server.hostname=localhost -Dspring.application.admin.enabled=true -Dspring.boot.project.name=account-service"
         }
     ]
 }

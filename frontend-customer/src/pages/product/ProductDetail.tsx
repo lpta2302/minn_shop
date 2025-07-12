@@ -3,7 +3,9 @@ import Loading from "@/components/shared/Loading"
 import { Button } from "@/components/ui/button"
 import { getThumbnail } from "@/lib/imageUtils"
 import { toVND } from "@/lib/stringUtils"
+import { useAddToCart } from "@/tanstack/queries/cartQueries"
 import { useGetProductWithFullVariantsById } from "@/tanstack/queries/productQueries"
+import type { CartItemRequest } from "@/types/cart"
 import type { ProductVariant } from "@/types/product"
 import { HeartIcon } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
@@ -16,9 +18,11 @@ function ProductDetail() {
     const location = useLocation()
     const state = location.state
     
+    const [cartItem, setCartItem] = useState<undefined | CartItemRequest>(undefined)
+
     const {data: product, isLoading, isError} = useGetProductWithFullVariantsById(state?.productId)
+    const {mutateAsync} = useAddToCart()
     const variants = useMemo(() => product?.productVariants, [product?.productVariants])
-    console.log(product);
     
 
     const [currentVariant, setCurrentVariant] = useState<ProductVariant | undefined>(undefined)
@@ -40,13 +44,17 @@ function ProductDetail() {
         }
     }, [currentVariant, product?.productVariants, state.id]);
 
+    const handleAddToCart = async () =>{
+    }
+
     if (!state || !state.id || !state.slug) return null
 
 
     if (!currentVariant || isLoading) {
         return <Loading/>
     }
-
+    console.log(product);
+    
 
     return (
         <div className="flex flex-col space-y-10 px-page_x py-10">
@@ -96,11 +104,11 @@ function ProductDetail() {
                     </div>
                     <div className="mt-8">
                         <h2 className="font-semibold">Select size</h2>
-
+                        
                     </div>
                     <div className="flex max-w-sm flex-col space-y-4 mt-4">
                         <Button
-                        
+                            onClick={handleAddToCart}
                             className="py-6 rounded-full"
                         >
                             Add to bag    
