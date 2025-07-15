@@ -10,10 +10,10 @@ export function useAddToCart() {
     })
 }
 
-export function useGetOwnCart() {
+export function useGetOwnCart(isAuthenticated: boolean) {
     return useQuery<Cart>({
         queryKey: [GET_OWN_CART],
         queryFn: ()=> get("/carts/own"),
-        enabled: localStorage.getItem("accessToken") != null
+        enabled: isAuthenticated
     })
 }

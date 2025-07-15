@@ -14,7 +14,7 @@ const subTopBarLinks : SubTopBarLinkConfig[] = [
     },
     {
         label: "Sign in",
-        path: "#"
+        path: "/sign-in"
     },
 ]
 

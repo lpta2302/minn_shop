@@ -4,12 +4,15 @@ import { HeartIcon, ShoppingBagIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useCart } from "@/context/CartContext"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router"
 
 
 
 function TopToolbar({ setIsSearching, isSearching, setSearchParams }: SearchProps) {
+    const navigate = useNavigate()
     const { cartItems } = useCart()
     const [cartItemQuantity, setCartItemQuantity] = useState<number>(0)
+    
     useEffect(() => {
         setCartItemQuantity(cartItems.length)
     }, [cartItems]);
@@ -31,7 +34,8 @@ function TopToolbar({ setIsSearching, isSearching, setSearchParams }: SearchProp
             </Button>
             <Button
                 className="rounded-full has-[>svg]:p-2 relative"
-                variant="ghost">
+                variant="ghost"
+                onClick={()=> navigate("/cart")}>
                 <ShoppingBagIcon className="size-6" />
                 {
                     cartItemQuantity > 0 &&

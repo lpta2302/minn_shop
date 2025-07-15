@@ -10,12 +10,12 @@ type ProductOptionValue = {
 
 type ProductVariant = {
   id: number;
-  variantId?: string;
-  slug?: string;
-  name?: string;
-  finalPrice?: number;
-  thumbnail?: string | null;
-  productOption?: ProductOption;
+  variantId: string;
+  slug: string;
+  name: string;
+  finalPrice: number;
+  thumbnail: string | undefined;
+  productOption: ProductOption;
   status?: 'ACTIVE' | 'INACTIVE';
 };
 
