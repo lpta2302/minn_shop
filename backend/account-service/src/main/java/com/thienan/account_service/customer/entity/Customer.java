@@ -51,4 +51,8 @@ public class Customer extends BaseEntity {
     @Default
     @OneToOne(cascade = ALL)
     private Cart cart = new Cart();
+
+    public String getFullName(){
+        return String.format("%s %s", firstName, lastName);
+    }
 }
