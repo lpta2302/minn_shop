@@ -23,6 +23,7 @@ This project is a simple web-based clothing shop developed using a **microservic
 - **Kafka** – Asynchronous communication and event-driven messaging
 - **Spring Data JPA** – ORM and data persistence
 - **Spring WebFlux (Gateway)** – Reactive non-blocking CORS support
+- - **Amazon S3** – Images storage
 
 ---
 
@@ -30,11 +31,14 @@ This project is a simple web-based clothing shop developed using a **microservic
 
 The application is composed of several independently deployable microservices:
 
-- `api-gateway`: Handles routing and CORS, sits in front of all services.
+- `api-gateway`: Acts as the single entry point to the system. Handles routing, request forwarding, CORS, and token validation.
+- `config-server`: Centralized configuration management for all microservices using Spring Cloud Config.
+- `discovery-server`: A Eureka server that allows microservices to register themselves and discover each other dynamically.
 - `auth-service`: Handles authentication and token generation (JWT).
 - `product-service`: Manages product catalog.
 - `order-service`: Handles user orders.
 - `customer-service`: Manages customer accounts and profiles.
+- ...
 
 Microservices communicate over **REST APIs** or via **Kafka topics** for async messaging.
 
@@ -45,23 +49,4 @@ Microservices communicate over **REST APIs** or via **Kafka topics** for async m
 - Uses Spring Security with JWT
 - Frontend sends token via `Authorization: Bearer <token>` header
 - Gateway validates token and forwards requests to protected services
-- CORS properly configured to allow frontend (e.g. `http://localhost:5173`)
-
----
-
-## 🧪 How to Run
-
-> *(Instructions vary depending on your setup. Replace with real steps if needed)*
-
-```bash
-# Start each service individually
-cd api-gateway
-./mvnw spring-boot:run
-
-cd auth-service
-./mvnw spring-boot:run
-
-...
-
-# Or use Docker Compose (if configured)
-docker-compose up
+- CORS properly configured to allow frontend
