@@ -1,4 +1,4 @@
-import { getLocalstorage, removeLocalstorage, setLocalstorage } from "@/lib/localstorage";
+import { getLocalstorage, removeLocalstorage, setLocalstorage } from "@/lib/clientStorage";
 import { setBearerToken } from "@/tanstack/api/customAxios";
 import { useGetCurrentUser, useRefreshToken } from "@/tanstack/queries/authQueries";
 import type { Customer } from "@/types/auth";
@@ -43,8 +43,8 @@ export default function AuthProvider({ children } : {children: ReactElement}) {
     const {mutateAsync: getAuthTokens} = useRefreshToken()
     const {refetch: getCurrentUser} = useGetCurrentUser()
 
-    const accessToken = getLocalstorage("accessToken")
-    const refreshToken = getLocalstorage("refreshToken")
+    const accessToken = getLocalstorage<string>("accessToken")
+    const refreshToken = getLocalstorage<string>("refreshToken")
 
     const checkAuthUser = useCallback(async () =>{
         try {

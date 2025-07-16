@@ -5,7 +5,8 @@ type ProductOption = {
 
 type ProductOptionValue = {
   id: number;
-  name?: string;
+  name: string;
+  availableStock: number;
 };
 
 type ProductVariant = {
@@ -24,9 +25,11 @@ export interface CartItem {
     quantity: number,
     productVariant: ProductVariant
     productOptionValue: ProductOptionValue
+    isSelected?: boolean
 }
 
 export interface CartItemRequest{
+    id?: number,
     productVariant: {
         id: number
     }

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { get, patch } from "../api/crud";
 import type { Cart, CartItemRequest } from "@/types/cart";
 import { GET_OWN_CART } from "../keys/cartKeys";
@@ -15,5 +15,27 @@ export function useGetOwnCart(isAuthenticated: boolean) {
         queryKey: [GET_OWN_CART],
         queryFn: ()=> get("/carts/own"),
         enabled: isAuthenticated
+    })
+}
+
+export function useAddItem(){
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (newItem: CartItemRequest) => patch('/carts/items', newItem),
+        onSuccess: ()=>{
+            queryClient.invalidateQueries({ queryKey: [GET_OWN_CART] });
+        }
+    })
+}
+
+export function useUpdateItem(){
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (newItem: CartItemRequest) => patch('/carts/items/'+newItem.id, newItem),
+        onSuccess: ()=>{
+            queryClient.invalidateQueries({ queryKey: [GET_OWN_CART] });
+        }
     })
 }

@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignin } from "@/tanstack/queries/authQueries";
 import { useEffect } from "react";
-import { setLocalstorage } from "@/lib/localstorage";
+import { setLocalstorage } from "@/lib/clientStorage";
 import { useAuthContext } from "@/context/AuthContext";
 
 

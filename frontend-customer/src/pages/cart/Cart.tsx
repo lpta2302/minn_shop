@@ -1,20 +1,41 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { useCart } from "@/context/CartContext"
+import { useCartContext } from "@/context/CartContext"
 import type { CartItem } from "@/types/cart"
 import { Separator } from "@/components/ui/separator"
 import { Trash2, Minus, Plus } from "lucide-react"
-import { useMemo, useState } from "react"
+import { useMemo, useRef } from "react"
 import { toVND } from "@/lib/stringUtils"
-
+import { Link } from "react-router"
+import { Checkbox } from "@/components/ui/checkbox"
+import { setSessionStorage } from "@/lib/clientStorage"
 
 function Cart() {
-    const { cartItems } = useCart()
-    const [items, setItems] = useState<CartItem[] | []>(cartItems)
+    const { cartItems, setCartItems } = useCartContext()
     
     const subtotal = useMemo(
-        () => items.reduce((acc, item)=>acc+=item.productVariant.finalPrice,0), 
-    [])
+        () => cartItems.reduce((acc, item)=>item.isSelected ?acc+=item.productVariant.finalPrice : acc,0), 
+    [cartItems])
+    
+    const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+    const handleUpdateItem = async (newItem: CartItem) =>{
+        if (newItem.quantity > newItem.productOptionValue.availableStock||
+            newItem.quantity < 1 || !newItem.quantity
+        ) {
+            return
+        }
+        if (debounceTimer.current) {
+            clearTimeout(debounceTimer.current);
+        }
+
+        setCartItems(prev => prev.map(item=>
+            item.id != newItem.id ?
+            item : newItem
+        ))
+        debounceTimer.current = setTimeout(() => {
+            console.log("update" + cartItems);
+        }, 500);
+    }
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-6 max-w-6xl mx-auto">
@@ -23,7 +44,7 @@ function Cart() {
                 <h2 className="text-2xl font-semibold mb-4">Bag</h2>
                 <div className="flex flex-col gap-3">
                     {
-                        items?.map(item => (
+                        cartItems?.map(item => (
                             <div className="flex flex-col gap-2 py-2">
                                 <div className="flex flex-col md:flex-row gap-4 w-full">
                                     {/* Product Image */}
@@ -53,14 +74,40 @@ function Cart() {
                                         <Trash2 className="w-4 h-4" />
                                     </Button>
                                     <div className="flex items-center gap-2 border px-1 py-0.5 rounded-full">
-                                        <Button variant="ghost" size="icon">
+                                        <Button 
+                                            onClick={()=>handleUpdateItem({...item, quantity: (item.quantity - 1)})} variant="ghost" size="icon"
+                                            disabled = {item.quantity <= 1}
+
+                                        >
                                             <Minus className="w-3 h-3" />
                                         </Button>
-                                        <span className="text-sm">{item.quantity}</span>
-                                        <Button variant="ghost" size="icon">
+                                        <input
+                                            type="number" 
+                                            className="text-sm w-4"
+                                            value={item.quantity}
+                                            step={1}
+                                            max={item.productOptionValue.availableStock}
+                                            min={1}
+                                            onChange={(e)=>handleUpdateItem({...item, quantity: parseInt(e.target.value)})}
+                                            />
+                                        <Button
+                                            onClick={()=>handleUpdateItem({...item, quantity: (item.quantity + 1)})} variant="ghost" size="icon"
+                                            disabled = {item.productOptionValue.availableStock <= item.quantity}
+                                        >
                                             <Plus className="w-3 h-3" />
                                         </Button>
                                     </div>
+                                    <Checkbox 
+                                        className="ml-auto lg:w-6 lg:h-6 border-2"
+                                        checked={item.isSelected}
+                                        onCheckedChange={()=>{
+                                            setCartItems(prev=>prev.map(cartItem=>
+                                                cartItem.id === item.id ?
+                                                {...cartItem, isSelected: !cartItem.isSelected} :
+                                                cartItem
+                                            ))
+                                        }}
+                                    />
                                 </div>
                                 <Separator className="mt-6"/>
                             </div>
@@ -89,9 +136,18 @@ function Cart() {
                         </div>
                         <Separator />
                         <div className="flex flex-col gap-2 pt-4">
-                            <Button className="w-full py-6 rounded-full bg-black text-white hover:bg-gray-800">
-                                Checkout
-                            </Button>
+                            <Link 
+                                to={
+                                    cartItems.some(item=>item.isSelected) ? "/checkout" : ""} 
+                                onClick={()=>setSessionStorage('selectedItems', cartItems.filter(item=>item.isSelected))}
+                            >
+                                <Button 
+                                    className="w-full py-6 rounded-full"
+                                    disabled={!cartItems.some(item=>item.isSelected)}
+                                >
+                                    Checkout
+                                </Button>
+                            </Link>
                         </div>
                     </CardContent>
                 </Card>

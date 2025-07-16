@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Link, useNavigate } from "react-router";
 import { useRegister } from "@/tanstack/queries/authQueries";
 import { useAuthContext } from "@/context/AuthContext";
-import { setLocalstorage } from "@/lib/localstorage";
+import { setLocalstorage } from "@/lib/clientStorage";
 
 const registerSchema = z.object({
     email: z.email("Invalid email string"),

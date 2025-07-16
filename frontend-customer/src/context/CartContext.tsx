@@ -5,13 +5,16 @@ import { useAuthContext } from "./AuthContext"
 
 interface CartInfo {
     cartItems: CartItem[]
-    addToCart: (newItem: CartItem) => void
+    addToCart: (newItem: CartItem) => void,
+    setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>
 }
 
 const initCart = {
     cartItems: [],
-    addToCart: () => { }
+    addToCart: () => { },
+    setCartItems: () => { }
 }
+
 const items: CartItem[] = [
     {
         id: 1,
@@ -31,7 +34,8 @@ const items: CartItem[] = [
         },
         productOptionValue: {
             id: 10,
-            name: "S"
+            name: "S",
+            availableStock: 5
         }
     },
     {
@@ -52,7 +56,8 @@ const items: CartItem[] = [
         },
         productOptionValue: {
             id: 11,
-            name: "M"
+            name: "M",
+            availableStock: 5
         }
     }
 ]
@@ -60,8 +65,8 @@ const items: CartItem[] = [
 const CartContext = createContext<CartInfo>(initCart)
 
 export const CartProvider = ({ children }: { children: ReactElement }) => {
-    const {isAuthenticated} = useAuthContext()
-    const [cartItems, setCartItems] = useState<CartItem[] | []>(items);
+    const { isAuthenticated } = useAuthContext()
+    const [cartItems, setCartItems] = useState<CartItem[]>(items);
     const { data: cart } = useGetOwnCart(isAuthenticated);
 
     const addToCart = (newItem: CartItem) => {
@@ -82,11 +87,11 @@ export const CartProvider = ({ children }: { children: ReactElement }) => {
     }, [cart]);
 
     return (
-        <CartContext.Provider value={{ addToCart, cartItems }}>
+        <CartContext.Provider value={{ addToCart, cartItems, setCartItems }}>
             {children}
         </CartContext.Provider>
     );
 };
 
 // eslint-disable-next-line react-refresh/only-export-components
-export const useCart = () => useContext(CartContext);
+export const useCartContext = () => useContext(CartContext);

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import MainSearchBar, { type SearchProps } from "../search-bar/MainSearchBar"
 import { HeartIcon, ShoppingBagIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { useCart } from "@/context/CartContext"
+import { useCartContext } from "@/context/CartContext"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
 
@@ -10,7 +10,7 @@ import { useNavigate } from "react-router"
 
 function TopToolbar({ setIsSearching, isSearching, setSearchParams }: SearchProps) {
     const navigate = useNavigate()
-    const { cartItems } = useCart()
+    const { cartItems } = useCartContext()
     const [cartItemQuantity, setCartItemQuantity] = useState<number>(0)
     
     useEffect(() => {

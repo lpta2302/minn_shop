@@ -1,5 +1,6 @@
-import { getLocalstorage } from '@/lib/localstorage'
+import { getLocalstorage } from '@/lib/clientStorage'
 import customAxios from './customAxios'
+import type { AxiosError } from 'axios'
 
 export async function get(url: string) {
     try {
@@ -14,7 +15,7 @@ export async function get(url: string) {
         return response.data
     } catch (error) {
         console.error(error)
-        throw error
+        return error
     }
 }
 
@@ -24,7 +25,8 @@ export async function patch(url: string, body: object) {
         return response.data
     } catch (error) {
         console.error(error);
-        throw error
+        return error
+
     }
 }
 
@@ -35,7 +37,12 @@ export async function post<T>(url: string, body: object | string | null) {
         const response = await customAxios.post<T>(url, body)
         return response.data
     } catch (error) {
+        const err = error as AxiosError
         console.error(error);
-        throw error
+        if (err.response) {
+            return err.response
+        }
+        throw new Error(err.message || "Network error");
+
     }
 }
