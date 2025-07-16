@@ -29,6 +29,9 @@ public class JwtAuthenticationFilter implements WebFilter {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         final String authHeader = exchange.getRequest().getHeaders().getFirst(AUTHORIZATION_HEADER);
         final String jwt;
+        exchange.getRequest().getHeaders().forEach((key, value) -> {
+            System.out.println("Header: " + key + " = " + value);
+        });
 
         if (exchange.getRequest().getPath().toString().startsWith("/api/v1/auth")) {
             return chain.filter(exchange);
