@@ -5,9 +5,11 @@ import { getThumbnail } from "@/lib/imageUtils"
 import { toVND } from "@/lib/stringUtils"
 import { useAddToCart } from "@/tanstack/queries/cartQueries"
 import { useGetProductWithFullVariantsById } from "@/tanstack/queries/productQueries"
+import { useGetStocksByVariantId } from "@/tanstack/queries/stockQueries"
 import type { CartItemRequest } from "@/types/cart"
 import type { ProductVariant } from "@/types/product"
-import { HeartIcon } from "lucide-react"
+import type { Stock } from "@/types/stock"
+import { HeartIcon, Minus, Plus} from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 import { useLocation, useNavigate } from "react-router"
 
@@ -17,25 +19,29 @@ function ProductDetail() {
     const navigate = useNavigate()
     const location = useLocation()
     const state = location.state
-    
+
     const [cartItem, setCartItem] = useState<undefined | CartItemRequest>(undefined)
-
-    const {data: product, isLoading, isError} = useGetProductWithFullVariantsById(state?.productId)
-    const {mutateAsync} = useAddToCart()
-    const variants = useMemo(() => product?.productVariants, [product?.productVariants])
-    
-
+    const [quantity, setQuantity] = useState<number>(1)
     const [currentVariant, setCurrentVariant] = useState<ProductVariant | undefined>(undefined)
+    const [currentStock, setCurrentStock] = useState<Stock | undefined>(undefined)
+
+    const { data: product, isLoading, isError } = useGetProductWithFullVariantsById(state?.productId)
+    const { mutateAsync: addToCart } = useAddToCart()
+    const { data: stocks } = useGetStocksByVariantId(currentVariant?.id)
+
+    const variants = useMemo(() => product?.productVariants, [product?.productVariants])
+
+
 
     useEffect(() => {
         if (!state || !state.id || !state.slug) {
             navigate("/", { replace: true })
         }
     }, [state, navigate])
-    
+
     useEffect(() => {
         if (!currentVariant && state?.id) {
-            let variant = product?.productVariants.find(variant=>variant.id === state.id)
+            let variant = product?.productVariants.find(variant => variant.id === state.id)
             if (!variant && product?.productVariants?.length) {
                 variant = product?.productVariants[0]
             }
@@ -44,16 +50,40 @@ function ProductDetail() {
         }
     }, [currentVariant, product?.productVariants, state.id]);
 
-    const handleAddToCart = async () =>{
+    useEffect(() => {
+        if (stocks) {
+            setCurrentStock(stocks[0])
+        }
+    }, [stocks]);
+
+    const handleAddToCart = async () => {
+        if (!currentVariant || !currentStock) {
+            return
+        }
+        await addToCart({
+            productVariant: { id: currentVariant.id },
+            stockOptionValue: { id: currentStock.stockOptionValueId },
+            quantity: quantity
+        })
     }
 
     if (!state || !state.id || !state.slug) return null
 
 
     if (!currentVariant || isLoading) {
-        return <Loading/>
+        return <Loading />
     }
-    console.log(product);
+
+    const handleUpdateQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newQuantity = parseInt(e.target.value)
+        if (
+            !currentStock?.quantity || !newQuantity ||
+            newQuantity > currentStock?.quantity ||
+            newQuantity < 1
+        ) return
+
+        setQuantity(newQuantity)
+    }
     
 
     return (
@@ -93,40 +123,80 @@ function ProductDetail() {
                                         size-15 rounded-sm
                                         cursor-pointer
                                         hover:opacity-80
-                                        ${ currentVariant.id === variant?.id && "border-2 border-foreground opacity-80"}
+                                        ${currentVariant.id === variant?.id && "border-2 border-foreground opacity-80"}
                                     `}
                                     src={`${getThumbnail(variant.productVariantImages)?.url}`}
                                     alt="Your alt text"
-                                    onClick={()=>setCurrentVariant(variant)}
+                                    onClick={() => setCurrentVariant(variant)}
                                 />
                             ))
                         }
                     </div>
                     <div className="mt-8">
                         <h2 className="font-semibold">Select size</h2>
-                        
+                        {
+                            stocks?.map(stock => (
+                                <Button
+                                    variant={currentStock?.stockOptionValueId === stock.stockOptionValueId ?
+                                        "default" : "outline"
+                                    }
+                                >
+                                    {stock.stockOptionValueName}
+                                </Button>
+                            ))
+                        }
                     </div>
-                    <div className="flex max-w-sm flex-col space-y-4 mt-4">
+                    <div className="flex items-center w-28 gap-2 border px-1 py-0.5 rounded-full">
                         <Button
-                            onClick={handleAddToCart}
-                            className="py-6 rounded-full"
+                            onClick={() => setQuantity(prev => prev - 1)}
+                            variant="ghost"
+                            size="icon"
+                            disabled={quantity <= 1}
+
                         >
-                            Add to bag    
+                            <Minus className="w-3 h-3" />
                         </Button>
+                        <input
+                            type="number"
+                            className="text-sm w-full"
+                            value={quantity}
+                            step={1}
+                            max={currentStock?.quantity}
+                            min={1}
+                            onBlur={handleUpdateQuantity}
+                        />
                         <Button
-                            className="py-6 rounded-full"
-                            variant="outline"
+                            onClick={() => setQuantity(prev => prev + 1)}
+                            variant="ghost"
+                            size="icon"
+                            disabled={!currentStock?.quantity || currentStock?.quantity <= quantity}
                         >
-                            Favourite
-                            <HeartIcon/>
+                            <Plus className="w-3 h-3" />
                         </Button>
                     </div>
-                    <div className="max-w-sm mt-12 ">
-                        {product?.description}
+                    <div className="flex flex-col items-center gap-2">
                     </div>
-                    <div className="pt-8">
-                        <h1 className="font-semibold text-lg">Review</h1>
-                    </div>
+                        <div className="flex max-w-sm flex-col space-y-4 mt-4">
+                            <Button
+                                onClick={handleAddToCart}
+                                className="py-6 rounded-full"
+                            >
+                                Add to bag
+                            </Button>
+                            <Button
+                                className="py-6 rounded-full"
+                                variant="outline"
+                            >
+                                Favourite
+                                <HeartIcon />
+                            </Button>
+                        </div>
+                        <div className="max-w-sm mt-12 ">
+                            {product?.description}
+                        </div>
+                        <div className="pt-8">
+                            <h1 className="font-semibold text-lg">Review</h1>
+                        </div>
                 </div>
             </section>
             {/* <section className="mt-12">

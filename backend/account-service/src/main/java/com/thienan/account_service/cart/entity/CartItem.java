@@ -58,7 +58,10 @@ public class CartItem {
     private StockOptionValue stockOptionValue;
     
     @NotNull
-    private Long quantity;
+    private Integer quantity;
+
+    @Schema(accessMode=READ_ONLY)
+    private Integer availableQuantity;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore

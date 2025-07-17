@@ -31,7 +31,7 @@ function Signin() {
         }
     });
 
-    const {isAuthenticated} = useAuthContext()
+    const {isAuthenticated, checkAuthUser} = useAuthContext()
 
     const navigate = useNavigate()
 
@@ -45,6 +45,7 @@ function Signin() {
         const {accessToken} = await signIn(data)
         if (accessToken) {
             setLocalstorage('accessToken', accessToken)
+            await checkAuthUser()
             navigate('/')
         }
     };

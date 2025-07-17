@@ -32,7 +32,7 @@ const items: CartItem[] = [
                 name: "Size"
             }
         },
-        productOptionValue: {
+        stockOptionValue: {
             id: 10,
             name: "S",
             availableStock: 5
@@ -54,7 +54,7 @@ const items: CartItem[] = [
                 name: "Size"
             }
         },
-        productOptionValue: {
+        stockOptionValue: {
             id: 11,
             name: "M",
             availableStock: 5
@@ -73,7 +73,7 @@ export const CartProvider = ({ children }: { children: ReactElement }) => {
         setCartItems((prev) => {
             const exists = prev.find((item) =>
                 item.productVariant.id === newItem.productVariant.id
-                && item.productOptionValue.id === newItem.productOptionValue.id
+                && item.stockOptionValue.id === newItem.stockOptionValue.id
             );
             if (!exists) {
                 return [...prev, newItem];

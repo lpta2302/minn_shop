@@ -10,7 +10,6 @@ const axiosInstance = (function () {
         axios.defaults.withCredentials=false
     };
     axios.interceptors.request.use((config) => {
-        console.log('Authorization Header:', config.headers.Authorization);
         return config;
     });
 

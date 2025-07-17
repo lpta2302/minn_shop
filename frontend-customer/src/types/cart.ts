@@ -24,7 +24,7 @@ export interface CartItem {
     id: number,
     quantity: number,
     productVariant: ProductVariant
-    productOptionValue: ProductOptionValue
+    stockOptionValue: ProductOptionValue
     isSelected?: boolean
 }
 
@@ -33,7 +33,7 @@ export interface CartItemRequest{
     productVariant: {
         id: number
     }
-    productOptionValue: {
+    stockOptionValue: {
         id: number
     }
     quantity: number

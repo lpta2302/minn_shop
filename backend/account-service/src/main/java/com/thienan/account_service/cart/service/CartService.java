@@ -35,6 +35,7 @@ public class CartService {
         
         cartItem.setProductVariant(checkResponse.productVariant());
         cartItem.setStockOptionValue(checkResponse.stockOptionValue());
+        cartItem.setAvailableQuantity(checkResponse.availableStock());
     }
 
     public Long updateItem(long customerId ,CartItem cartItem, Long cartItemId){

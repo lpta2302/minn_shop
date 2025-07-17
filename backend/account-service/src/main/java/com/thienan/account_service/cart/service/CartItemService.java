@@ -40,13 +40,15 @@ public class CartItemService {
         
         cartItem.setProductVariant(checkResponse.productVariant());
             
-            if (!cartItem.getQuantity().equals(existedItem.getQuantity())) {
-                existedItem.setQuantity(cartItem.getQuantity());
-            }
-            
-            if (cartItem.getStockOptionValue().id() != existedItem.getStockOptionValue().id()) {
-                existedItem.setStockOptionValue(cartItem.getStockOptionValue());                
-                cartItem.setStockOptionValue(checkResponse.stockOptionValue());
+        if (!cartItem.getQuantity().equals(existedItem.getQuantity())) {
+            existedItem.setQuantity(cartItem.getQuantity());
         }
+        
+        if (cartItem.getStockOptionValue().id() != existedItem.getStockOptionValue().id()) {
+            existedItem.setStockOptionValue(cartItem.getStockOptionValue());                
+            cartItem.setStockOptionValue(checkResponse.stockOptionValue());
+        }
+
+        cartItem.setAvailableQuantity(checkResponse.availableStock());
     }
 }

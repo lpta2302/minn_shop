@@ -58,7 +58,7 @@ export default function CheckoutForm() {
       paymentMethod: data.paymentMethod,
       items: cartItems?.map((item) => ({
         productVariantId: item.productVariant.id,
-        stockOptionValueId: item.productOptionValue.id,
+        stockOptionValueId: item.stockOptionValue.id,
         quantity: item.quantity,
       })),
     };

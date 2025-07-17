@@ -19,7 +19,7 @@ function Cart() {
     
     const debounceTimer = useRef<NodeJS.Timeout | null>(null);
     const handleUpdateItem = async (newItem: CartItem) =>{
-        if (newItem.quantity > newItem.productOptionValue.availableStock||
+        if (newItem.quantity > newItem.stockOptionValue.availableStock||
             newItem.quantity < 1 || !newItem.quantity
         ) {
             return
@@ -60,7 +60,7 @@ function Cart() {
                                         <div className="text-sm text-gray-600">{item.productVariant.variantId}</div>
                                         <div className="text-sm text-gray-600">{item.productVariant.name}</div>
                                         <div className="text-subtitle">
-                                            Size <span className="underline px-2">{item.productOptionValue.name}</span>
+                                            Size <span className="underline px-2">{item.stockOptionValue.name}</span>
                                         </div>
                                     </div>
                                     <span className="font-semibold whitespace-nowrap">
@@ -86,13 +86,13 @@ function Cart() {
                                             className="text-sm w-4"
                                             value={item.quantity}
                                             step={1}
-                                            max={item.productOptionValue.availableStock}
+                                            max={item.stockOptionValue.availableStock}
                                             min={1}
                                             onChange={(e)=>handleUpdateItem({...item, quantity: parseInt(e.target.value)})}
                                             />
                                         <Button
                                             onClick={()=>handleUpdateItem({...item, quantity: (item.quantity + 1)})} variant="ghost" size="icon"
-                                            disabled = {item.productOptionValue.availableStock <= item.quantity}
+                                            disabled = {item.stockOptionValue.availableStock <= item.quantity}
                                         >
                                             <Plus className="w-3 h-3" />
                                         </Button>
