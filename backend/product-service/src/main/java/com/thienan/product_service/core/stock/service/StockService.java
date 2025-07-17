@@ -80,6 +80,10 @@ public class StockService {
                     productVariantId, stockOptionValueId)));
     }
 
+    public List<StockResponse> findStocksByVariantId(Long productVariantId){
+        return stockRepository.findStocksByVariantId(productVariantId);
+    }
+
     public PageResponse<StockResponse> findAll(Pageable pageable) {
         var pageResult = stockRepository.findAll(pageable);
         return PageResponse.fromPage(

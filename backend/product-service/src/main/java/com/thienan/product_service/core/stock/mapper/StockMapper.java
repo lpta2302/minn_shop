@@ -12,6 +12,7 @@ public class StockMapper {
             .builder()
             .productVariantId(stock.getStockId().getProductVariant().getId())
             .stockOptionValueId(stock.getStockId().getStockOptionValue().getId())
+            .stockOptionValueName(stock.getStockId().getStockOptionValue().getName())
             .sku(stock.getSku())
             .quantity(stock.getQuantity())
             .reservedQuantity(stock.getReservedQuantity())

@@ -1,5 +1,6 @@
 package com.thienan.product_service.core.stock.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -33,6 +34,7 @@ public interface StockRepository extends JpaRepository<Stock, StockId>, StockRep
         select new com.thienan.product_service.core.stock.dto.StockResponse(
             :productVariantId,
             :stockOptionValueId,
+            s.stockId.stockOptionValue.name,
             s.sku,
             s.quantity,
             s.reservedQuantity,
@@ -42,12 +44,28 @@ public interface StockRepository extends JpaRepository<Stock, StockId>, StockRep
         where s.stockId.productVariant.id = :productVariantId
         and s.stockId.stockOptionValue.id = :stockOptionValueId
         """)
-    Optional<StockResponse> findDetailById(Long productVariantId, Long stockOptionValueId);
+        Optional<StockResponse> findDetailById(Long productVariantId, Long stockOptionValueId);
+        
+    @Query("""
+        select new com.thienan.product_service.core.stock.dto.StockResponse(
+            :productVariantId,
+            s.stockId.stockOptionValue.id,
+            s.stockId.stockOptionValue.name,
+            s.sku,
+            s.quantity,
+            s.reservedQuantity,
+            s.soldQuantity
+        )
+        from Stock s
+        where s.stockId.productVariant.id = :productVariantId
+        """)
+    List<StockResponse> findStocksByVariantId(Long productVariantId);
 
     @Query("""
         select new com.thienan.product_service.core.stock.dto.StockResponse(
             s.stockId.productVariant.id,
             s.stockId.stockOptionValue.id,
+            s.stockId.stockOptionValue.name,
             s.sku,
             s.quantity,
             s.reservedQuantity,
@@ -122,4 +140,5 @@ public interface StockRepository extends JpaRepository<Stock, StockId>, StockRep
     int deductStock(Long productVariantId,
             Long stockOptionValueId,
             int quantity);
+
 }

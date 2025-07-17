@@ -60,6 +60,12 @@ public class StockController {
         return ResponseEntity.ok(stockService.findFullDetailById(productVariantId, stockOptionValueId));
     }
 
+    @GetMapping("/{productVariantId}")
+    public ResponseEntity<List<StockResponse>> findStocksByVariantId(
+        @PathVariable Long productVariantId) {
+        return ResponseEntity.ok(stockService.findStocksByVariantId(productVariantId));
+    }
+
     @GetMapping
     public ResponseEntity<PageResponse<StockResponse>> findAll(
             @ParameterObject
